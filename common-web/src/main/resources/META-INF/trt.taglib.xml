@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<facelet-taglib version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd">
+ <namespace>http://trt.jus.br/facelets</namespace>
+ <tag>
+  <description>Estrutura genérica para a composição de qualquer componente de formulário com a 
+seguinte formação básica: [label]: [corpo dinâmico] [validation msg]</description>
+  <tag-name>anyField</tag-name>
+  <source>facelets/tags/anyField.xhtml</source>
+  <attribute>
+   <description>Identificador GLOBAL deste componente. Os componentes internos terão IDs derivados deste
+valor global. Ex: Label ID = &lt;id&gt;_label</description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Label a ser exibido, associado ao campo.</description>
+   <name>label</name>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Identificador do campo associado a este componente. Será utilizado para associar aos
+elementos de renderizam o Label e a Mensagem de validação.</description>
+   <name>idField</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+ <tag>
+  <description>Componente de fomulário para formação de campo de texto simples para entrada de dados,
+com a seguinte formação básica: [label]: [inputText] [validation msg] </description>
+  <tag-name>inputText</tag-name>
+  <source>facelets/tags/inputText.xhtml</source>
+  <attribute>
+   <description>Identificador GLOBAL deste componente. Os componentes internos terão IDs derivados deste
+valor global. Ex: Label ID = &lt;id&gt;_label</description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Label a ser exibido, associado ao campo.</description>
+   <name>label</name>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Valor associado a este campo.</description>
+   <name>value</name>
+   <required>true</required>
+  </attribute>
+  <attribute>
+   <description>(true/false) Determina se o campo é obrigatório. Para campos obrigatórios, a tag incluirá um asterisco ao lado do label.</description>
+   <name>required</name>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>(true/false) determina se o componente deve ser renderizado</description>
+   <name>rendered</name>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>set</tag-name>
+  <handler-class>br.jus.trt6.lib.common_web.util.SetOnceHandler</handler-class>
+  <attribute>
+   <name>var</name>
+  </attribute>
+  <attribute>
+   <name>value</name>
+  </attribute>
+ </tag>
+ <tag>
+  <description>Componente de fomulário para formação de campo de texto simples para entrada de dados,
+com a seguinte formação básica: [label]: [inputText] [validation msg] </description>
+  <tag-name>inputSelect</tag-name>
+  <source>facelets/tags/inputSelect.xhtml</source>
+  <attribute>
+   <description>Identificador GLOBAL deste componente. Os componentes internos terão IDs derivados deste
+valor global. Ex: Label ID = &lt;id&gt;_label</description>
+   <name>id</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Label a ser exibido, associado ao campo.</description>
+   <name>label</name>
+   <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Valor associado a este campo.</description>
+   <name>value</name>
+   <required>true</required>
+  </attribute>
+  <attribute>
+   <description>(true/false) Determina se o campo é obrigatório. Para campos obrigatórios, a tag incluirá um asterisco ao lado do label.</description>
+   <name>required</name>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>Propriedade de backbean que contém a lista para preenchimento do listbox.</description>
+   <name>items</name>
+   <required>true</required>
+  </attribute>
+  <attribute>
+   <description>Propriedade do bean (bean que compõe a lista a ser montada no listbox) para ser exibida no componente.</description>
+   <name>itemLabel</name>
+   <required>true</required>
+   <type>java.lang.String</type>
+  </attribute>
+ </tag>
+</facelet-taglib>

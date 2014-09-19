@@ -1,0 +1,298 @@
+package br.jus.trt6.lib.common_web.action;
+
+import br.jus.trt.lib.common_core.business.domain.Entity;
+import br.jus.trt.lib.common_core.business.facade.CrudFacade;
+import br.jus.trt.lib.common_core.util.ReflectionUtil;
+import br.jus.trt.lib.qbe.api.Filter;
+import br.jus.trt.lib.qbe.api.operator.Operators;
+
+/**
+ * Classe base para Actions do tipo CRUD, associados a uma entidade de domínio específica. Implementa o comportamento padrão
+ * determinado para CRUDs, permitindo a customização de todas as operações.
+ * @author augusto
+ * 
+ * @param <ENTITY> Entidade de domínio associada a este Action Crud.
+ * @param <FACADE> Manager compatível com a entidade de negócio a ser utilizado.
+ */
+@SuppressWarnings("serial")
+public abstract class CrudActionBase<ENTITY extends Entity<?>, FACADE extends CrudFacade<ENTITY>> extends QuerierActionBase<ENTITY, CrudFacade<ENTITY>> {
+
+	/**
+	 * Representa a operação sendo executada neste fluxo de CRUD
+	 */
+	private CrudOperation crudOperation = CrudOperation.SEARCH; // inicia em modo Consulta
+	
+	
+	/** Para uso em formulários de manutenção */
+	private ENTITY entity;
+	
+	@Override
+	public void init() {
+		super.init();
+		initEntity();
+	}
+	
+	/**
+	 * Inicializa o objeto que representa a entidade associada a este action.
+	 */
+	protected void initEntity() {
+		this.entity = ReflectionUtil.instantiate(getEntityType());
+	}
+	
+	/**
+	 * Persiste um objeto na base de dados e atualiza a listagem. 
+	 * Permite operações de INCLUSÃO E ALTERAÇÃO, desde que a chave primária seja gerada em banco por uma sequence (diferenciando inclusão de alteração).
+	 */
+	public void save() {
+		preSave();
+		doSave();
+		postSave();
+	}
+
+	/**
+	 * Executado após a persistência da entidade. Exibe a mensagem de sucesso, limpa o formulário, altera a operação, realiza a consulta.
+	 */
+	protected void postSave() {
+		postPersist();
+	}
+	
+	/** Precede a persistência da entidade */
+	protected void preSave() {
+		// nada
+	}
+
+	/**
+	 * Persiste de fato a entidade, exibindo mensagem de sucesso.
+	 */
+	protected void doSave() {
+		getFacade().save(getEntity());
+	}
+	
+	/**
+	 * Na configuração básica desta classe, o comportamento após persistência 
+	 * é sempre igual: Exibe a mensagem de sucesso, limpa o formulário, altera a operação, realiza a consulta.
+	 */
+	private void postPersist() {
+		showInfoMessage(getSaveSuccessMessage());
+		initEntity();
+		setCrudOperation(CrudOperation.SEARCH);
+		search();
+	}
+	
+	/**
+	 * Insere um objeto na base de dados e atualiza a listagem. 
+	 * Permite apenas a operação de INCLUSÃO.
+	 */
+	public void insert() {
+		preInsert();
+		doInsert();
+		postUpdate();
+	}
+
+	/**
+	 * Operações pós-insert. Exibe a mensagem de sucesso, limpa o formulário, altera a operação, realiza a consulta.
+	 */
+	protected void postInsert() {
+		showInfoMessage(getSaveSuccessMessage());
+		postPersist();
+	}
+
+	/**
+	 * Realiza de fato a operação insert.
+	 */
+	protected void doInsert() {
+		getFacade().insert(getEntity());
+	}
+	
+	/**
+	 * Precede a operacao doInsert.
+	 */
+	protected void preInsert() {
+		// nada
+	}
+
+	/**
+	 * Atualiza um objeto na base de dados e atualiza a listagem. 
+	 * Permite apenas a operação de ALTERAÇÂO/ATUALIZAÇÃO.
+	 */
+	public void update() {
+		preUpdate();
+		doUpdate();
+		postUpdate();
+	}
+
+	/**
+	 * Operações pós-update. Exibe a mensagem de sucesso, limpa o formulário, altera a operação, realiza a consulta.
+	 */
+	protected void postUpdate() {
+		postPersist();
+	}
+
+	/**
+	 * Realiza de fato o update
+	 */
+	protected void doUpdate() {
+		getFacade().update(getEntity());
+	}
+
+	/**
+	 * Precede a operação de update.
+	 */
+	protected void preUpdate() {
+		// nada
+	}
+
+	/**
+	 * Exclui um registro da base de dados e atualiza a listagem. 
+	 * @param entidade Registro para exclusão
+	 */
+	public void delete(ENTITY entidade) {
+		preDelete(entidade);
+		doDelete(entidade);
+		postDelete(entidade);
+	}
+
+	/**
+	 * Operações pós-update. Exibe a mensagem de sucesso, limpa o formulário, altera a operação, realiza a consulta.
+	 */
+	protected void postDelete(ENTITY entidade) {
+		showInfoMessage(getRemoveSuccessMessage());
+		setCrudOperation(CrudOperation.SEARCH);
+		search();
+	}
+
+	/**
+	 * Delete de fato o registro.
+	 * @param entidade Registro para exclusão.
+	 */
+	protected void doDelete(ENTITY entidade) {
+		getFacade().delete(entidade);
+	}
+	
+	/**
+	 * Precede a operação delete.
+	 * @param entidade Registro para exclusão.
+	 */
+	protected void preDelete(ENTITY entidade) {
+		// nada
+	}
+
+	/**
+	 * Carrega os dados de um registro para alteração.
+	 * @param entidade Objeto com os dados para alteração.
+	 */
+	public void prepareToEdit(ENTITY entidade) {
+		preLoad(entidade);
+		doLoad(entidade);
+		postLoad();
+	}
+
+	/**
+	 * Operações pós-carregamento. Configuração a operação seguinte.
+	 */
+	protected void postLoad() {
+		setCrudOperation(CrudOperation.EDIT);
+	}
+
+	/**
+	 * Realiza de fato a preparação para edição de uma entidade.
+	 * @param entidade Entidade para preparação.
+	 */
+	protected void doLoad(ENTITY entidade) {
+		// cria um filtro para realizar o carregamento e permitir outras configurações
+		Filter<ENTITY> loadFilter = createFilter();
+		configLoad(entidade, loadFilter);
+		
+		
+		setEntity(getFacade().find(loadFilter));
+	}
+
+	/**
+	 * Método para configuração do carregamento de uma entidade para edição. Esta implementação
+	 * default considera apenas o ID da entidade para carregamento, deixando o desenvolvedor à vontade para incluir outras configurações.
+	 * @param entidade Entidade para carregamento.
+	 * @param loadFilter Filtro a ser utilizado no carregamento.
+	 */
+	protected void configLoad(ENTITY entidade, Filter<ENTITY> loadFilter) {
+		loadFilter.filterBy("id", Operators.equal(), entidade.getId());
+	}
+	
+	/**
+	 * Precede o carregamendo de uma entidade para alteração
+	 * @param entidade Entidade para preparação para alteração
+	 */
+	protected void preLoad(ENTITY entidade) {
+		// nada
+	}
+	
+	/**
+	 * Prepara o action para inclusão de um novo registro
+	 */
+	public void prepareToInsert() {
+		prePrepareToInsert();
+		doPrepareToInsert();
+		postPrepareToInsert();
+	}
+
+	/**
+	 * Operações pós-preparacao. 
+	 */
+	protected void postPrepareToInsert() {
+		setCrudOperation(CrudOperation.EDIT);
+	}
+
+	/**
+	 * Instancia novamente a entidade para permitir o cadastro de um novo registro
+	 */
+	protected void doPrepareToInsert() {
+		initEntity(); // garante que há uma nova entidade para o formulário
+	}
+	
+	/**
+	 * Precede o prepareToInsert()
+	 */
+	protected void prePrepareToInsert() {
+		// nada
+	}
+
+	/**
+	 * Cancela o andamento da operação corrente, direcionando o fluxo
+	 * para a página de listagem.
+	 */
+	public void cancelOperation() {
+		initEntity();
+        setCrudOperation(CrudOperation.SEARCH);
+	}
+	
+	/**
+	 * @return Mensagem a ser exibida após a operação "excluir".
+	 */
+	protected String getRemoveSuccessMessage() {
+		return "Registro excluído com sucesso.";
+	}
+	
+	/**
+	 * @return Mensagem a ser exibida após a operação "salvar".
+	 */
+	protected String getSaveSuccessMessage() {
+		return "Operação realizada com sucesso.";
+	}
+
+	public ENTITY getEntity() {
+		return entity;
+	}
+
+	protected void setEntity(ENTITY entity) {
+		this.entity = entity;
+	}
+
+	public CrudOperation getCrudOperation() {
+		return crudOperation;
+	}
+
+	protected void setCrudOperation(CrudOperation operacao) {
+		this.crudOperation = operacao;
+	}
+	
+	
+}

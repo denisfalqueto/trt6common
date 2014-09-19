@@ -1,0 +1,146 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.jus.trt.lib</groupId>
+	<artifactId>common</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<modules>
+		<module>common-core</module>
+		<module>common-web</module>
+		<module>common-qbe</module>
+		<module>common-tests</module>
+	</modules>
+
+
+	<dependencyManagement>
+		<dependencies>
+
+			<dependency>
+				<groupId>br.jus.trt.lib</groupId>
+				<artifactId>common-core</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<type>jar</type>
+			</dependency>
+
+			<dependency>
+				<groupId>br.jus.trt.lib</groupId>
+				<artifactId>common-web</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<type>jar</type>
+			</dependency>
+
+			<dependency>
+				<groupId>br.jus.trt.lib</groupId>
+				<artifactId>common-qbe</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<type>jar</type>
+			</dependency>
+
+			<!-- Define the version of JBoss' Java EE 6 APIs we want to import. Any 
+				dependencies from org.jboss.spec will have their version defined by this 
+				BOM -->
+			<!-- JBoss distributes a complete set of Java EE 6 APIs including a Bill 
+				of Materials (BOM). A BOM specifies the versions of a "stack" (or a collection) 
+				of artifacts. We use this here so that we always get the correct versions 
+				of artifacts. Here we use the jboss-javaee-web-6.0 stack (you can read this 
+				as the JBoss stack of the Java EE Web Profile 6 APIs), and we use version 
+				2.0.0.Beta1 which is the latest release of the stack. You can actually use 
+				this stack with any version of JBoss AS that implements Java EE 6, not just 
+				JBoss AS 7! -->
+			<dependency>
+				<groupId>org.jboss.spec</groupId>
+				<artifactId>jboss-javaee-web-6.0</artifactId>
+				<version>2.0.0.Final</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- JSR-303 (Bean Validation) Implementation -->
+			<!-- Provides portable constraints such as @Email -->
+			<!-- Hibernate Validator is shipped in JBoss AS 7 -->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>4.1.0.Final</version>
+				<scope>provided</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>4.1.0.Final</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-entitymanager</artifactId>
+				<version>4.1.0.Final</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.derby</groupId>
+				<artifactId>derby</artifactId>
+				<version>10.10.2.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>1.8.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.enterprise</groupId>
+				<artifactId>cdi-api</artifactId>
+				<version>1.0-SP4</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>com.sun.faces</groupId>
+				<artifactId>jsf-impl</artifactId>
+				<version>2.2.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.sun.faces</groupId>
+				<artifactId>jsf-api</artifactId>
+				<version>2.2.0</version>
+			</dependency>
+
+			<!-- Test dependencies -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.10</version>
+				<type>jar</type>
+				<scope>test</scope>
+			</dependency>
+
+
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+</project>

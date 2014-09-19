@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:trt="http://trt.jus.br/facelets">
+
+<ui:decorate template="fieldTemplate.xhtml">
+	<ui:define name="content">
+	
+		<p:selectOneMenu id="#{id}_input" value="#{value}" converter="entityConverter">
+			<f:selectItems value="#{items}" var="item" 
+						itemLabel="#{empty itemLabel ? item : item[itemLabel]}" itemValue="#{item}"/>
+			
+			<ui:insert/>
+		</p:selectOneMenu> 	
+
+	</ui:define>
+		
+</ui:decorate>
+
+</html>
