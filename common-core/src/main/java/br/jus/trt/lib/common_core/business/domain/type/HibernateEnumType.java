@@ -20,7 +20,7 @@ import br.jus.trt.lib.common_core.util.ReflectionUtil;
 
 
 /**
- * Classe que implementa um tipo dustomizado do Hibernate que permite o mapeamento de Java Enum de forma customizada. 
+ * Classe que implementa um tipo customizado do Hibernate que permite o mapeamento de Java Enum de forma customizada. 
  * O mapeamento é realizado nos dois sentidos, ou seja, na persistência e na leitura.
  * 
  * Por padrão, O JPA/Hibernate permite o mapemaneto de enuns através da anotação &#064;Enumerated. No entanto, o valor persistido
