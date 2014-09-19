@@ -13,7 +13,7 @@
 
 			<!-- dados da conexao -->
 			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:derby:test;create=true" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:derby:target/testderby;create=true" />
 			<property name="javax.persistence.jdbc.user" value="qbe" />
 			<property name="javax.persistence.jdbc.password" value="qbe" />
 

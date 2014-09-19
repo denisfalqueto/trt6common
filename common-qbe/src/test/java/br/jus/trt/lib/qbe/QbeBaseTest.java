@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 
 import br.jus.trt.lib.common_tests.cdi.CdiJUnitRunner;
 import br.jus.trt.lib.common_tests.jpa.JPAStandaloneUtil;
+import org.junit.Ignore;
 
 /**
  * Classe base para os casos de testes do módulo QBE.
@@ -26,6 +27,7 @@ import br.jus.trt.lib.common_tests.jpa.JPAStandaloneUtil;
  * @author augusto
  */
 @RunWith(CdiJUnitRunner.class)
+@Ignore
 public class QbeBaseTest extends Assert {
 
 	private static JPAStandaloneUtil jpa;
