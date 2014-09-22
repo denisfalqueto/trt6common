@@ -26,7 +26,7 @@ import javax.persistence.TemporalType;
  */
 @SuppressWarnings({ "serial", "rawtypes" })
 @MappedSuperclass
-public abstract class EntityBase<PK> implements Entity {
+public abstract class EntityBase<PK> implements Entity<PK> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
