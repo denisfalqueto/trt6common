@@ -6,7 +6,7 @@
   <description>Estrutura genérica para a composição de qualquer componente de formulário com a 
 seguinte formação básica: [label]: [corpo dinâmico] [validation msg]</description>
   <tag-name>anyField</tag-name>
-  <source>facelets/tags/anyField.xhtml</source>
+  <source>resources/common/tags/anyField.xhtml</source>
   <attribute>
    <description>Identificador GLOBAL deste componente. Os componentes internos terão IDs derivados deste
 valor global. Ex: Label ID = &lt;id&gt;_label</description>
@@ -55,7 +55,7 @@ elementos de renderizam o Label e a Mensagem de validação.</description>
   <description>Componente de fomulário para formação de campo de texto simples para entrada de dados,
 com a seguinte formação básica: [label]: [inputText] [validation msg] </description>
   <tag-name>inputText</tag-name>
-  <source>facelets/tags/inputText.xhtml</source>
+  <source>resources/common/tags/inputText.xhtml</source>
   <attribute>
    <description>Identificador GLOBAL deste componente. Os componentes internos terão IDs derivados deste
 valor global. Ex: Label ID = &lt;id&gt;_label</description>
@@ -111,7 +111,7 @@ valor global. Ex: Label ID = &lt;id&gt;_label</description>
   <description>Componente de fomulário para formação de campo de texto simples para entrada de dados,
 com a seguinte formação básica: [label]: [inputText] [validation msg] </description>
   <tag-name>inputSelect</tag-name>
-  <source>facelets/tags/inputSelect.xhtml</source>
+  <source>resources/common/tags/inputSelect.xhtml</source>
   <attribute>
    <description>Identificador GLOBAL deste componente. Os componentes internos terão IDs derivados deste
 valor global. Ex: Label ID = &lt;id&gt;_label</description>
