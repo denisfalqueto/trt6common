@@ -19,6 +19,8 @@ e parâmetros:
 		
  		. load default scripts
  		> insert ponto de extensão "base-javascript"
+ 		
+ 		> insert ponto de extensão "favicon": para definição de favicon.
 
 	<body>
 		> insert ponto de extensão "base-body"
@@ -33,12 +35,14 @@ e parâmetros:
 		<title><h:outputText value="#{browser_title}" /></title>
 		
 		<h:outputStylesheet library="common" name="css/common-base.css"/>
+		<h:outputStylesheet library="common" name="css/common-page.css"/>
+		<h:outputStylesheet library="common" name="css/common-fieldTemplate.css"/>
 		<ui:insert name="base-style" />
 
 		<h:outputScript library="common" name="js/common-base.js"/>					
 		<ui:insert name="base-javascript" />
 		
-		<ui:insert name="fav-icon">
+		<ui:insert name="favicon">
 			<link href="#{resource['common:img/favicon-jus.ico']}" rel="shortcut icon" type="image/x-icon" />
 		</ui:insert>
 	</h:head>
