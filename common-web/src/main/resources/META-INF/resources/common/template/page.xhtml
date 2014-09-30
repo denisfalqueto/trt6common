@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.org/ui"
+   xmlns:c="http://java.sun.com/jstl/core">
+   
+<!-- 
+
+Template mais específico que define a estrutura tradicional de uma página de aplicação, com as seções principais: cabeçalho, rodapé e corpo. 
+Neste arquivo estão definidas as seguintes seções e parâmetros:
+
+* SEÇÕES:
+	cabecalho
+ 		. app title
+		> insert ponto de extensão "menu"
+		> insert ponto de extensão "menu_app"
+
+	body
+		> insert ponto de extensão "msg"
+		> insert ponto de extensão "body"
+		> insert ponto de extensão "pageFooter"
+		
+* PARÂMETROS
+	"app_logo": Caminho para imagem de logo da aplicação.
+	"showMenubar": Define se a barra de menu deve ser exibida.
+	"page_title": Título da página a ser exibido no cabeçalho.
+	"page_subtitle": Sub-Título da página a ser exibido no cabeçalho.
+	"showGlobalMessages": (true|false) Define se as mensagens devem ser exibidas ou ocultadas. Default true.
+	
+			
+-->   
+   
+<ui:composition template="base.xhtml">
+   
+   	<ui:define name="base-style">
+   		<h:outputStylesheet library="common" name="css/common-page.css"/>
+		<ui:insert name="page-style" />
+   	</ui:define>
+   
+	<ui:define name="base-body">    
+
+			<div id="app_header">
+				<h1>
+					<h:outputText value="#{app_title}" />
+				</h1>
+			</div>
+			
+			<h:panelGroup id="menu" rendered="#{empty showMenubar ? true : showMenuBar}">
+				<ui:insert name="menu"/>
+			</h:panelGroup>
+	
+			<h:panelGroup id="body-build"> 
+			
+				<h:panelGroup  id="page_title" rendered="#{page_title != null}">
+					<h2> <h:outputText value="#{page_title}" /> </h2>
+				</h:panelGroup>
+				
+				<h:panelGroup  id="page_subtitle" rendered="#{page_subtitle != null}">
+					<h3> <h:outputText value="#{page_subtitle}" /> </h3>
+				</h:panelGroup>
+				
+				
+				<ui:insert name="page_message">
+					<p:growl id="growl" showDetail="false" sticky="true" globalOnly="true" rendered="#{empty showGlobalMessages ? true : showGlobalMessages}"/>
+				</ui:insert>
+				
+				<ui:insert name="body-content" />
+				
+			</h:panelGroup>			
+			
+		<ui:insert name="pageFooter">
+			<div id="rodape">
+				<address>Rodapé</address>
+			</div>
+		</ui:insert>
+      	
+	</ui:define>
+	
+</ui:composition>	 
+</html>

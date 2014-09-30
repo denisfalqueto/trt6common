@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.org/ui"
+   xmlns:c="http://java.sun.com/jstl/core">
+
+<!-- 
+
+Template mais externo do layout base das aplicações web. Neste arquivo estão definidas as seguintes seções 
+e parâmetros:
+
+* SEÇÕES:
+	<head>
+ 		. load default styles
+		> insert ponto de extensão "base-style" : Para customização de estilos nas páginas filhas
+		
+ 		. load default scripts
+ 		> insert ponto de extensão "base-javascript"
+
+	<body>
+		> insert ponto de extensão "base-body"
+		
+* PARÂMETROS
+	"browser_title": Define o texto a ser exibido na barra de título do browser.
+			
+-->   
+   
+	<h:head>
+		<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+		<title><h:outputText value="#{browser_title}" /></title>
+		
+		<h:outputStylesheet library="common" name="css/common-base.css"/>
+		<ui:insert name="base-style" />
+
+		<h:outputScript library="common" name="js/common-base.js"/>					
+		<ui:insert name="base-javascript" />
+		
+		<ui:insert name="fav-icon">
+			<link href="#{resource['common:img/favicon-jus.ico']}" rel="shortcut icon" type="image/x-icon" />
+		</ui:insert>
+	</h:head>
+	
+	<h:body>
+	
+		<ui:insert name="status">
+		
+			
+		</ui:insert>
+		
+		<h:panelGroup id="base-body">	
+	 		<ui:insert name="base-body">
+	 			<!-- Aqui vem o conteúdo das páginas: cabecalho, corpo e rodape -->
+	 		</ui:insert>
+ 		</h:panelGroup>
+ 		
+   	</h:body>
+</html>
