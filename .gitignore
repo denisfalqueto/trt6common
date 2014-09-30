@@ -2,3 +2,4 @@ target/
 *.log
 *.project
 *.classpath
+*rebel.xml
