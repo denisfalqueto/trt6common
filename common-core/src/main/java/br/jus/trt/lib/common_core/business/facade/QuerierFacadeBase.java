@@ -3,7 +3,7 @@ package br.jus.trt.lib.common_core.business.facade;
 import java.util.List;
 
 import br.jus.trt.lib.common_core.integration.persistence.NonUniqueEntityException;
-import br.jus.trt.lib.common_core.integration.persistence.QuerierObject;
+import br.jus.trt.lib.common_core.integration.persistence.CrudRepository;
 import br.jus.trt.lib.common_core.business.domain.Entity;
 import br.jus.trt.lib.qbe.api.Filter;
 
@@ -11,7 +11,7 @@ import br.jus.trt.lib.qbe.api.Filter;
 @BusinessExceptionHandler
 public abstract class QuerierFacadeBase <ENTITY extends Entity<?>> implements QuerierFacade<ENTITY> {
 
-	protected abstract QuerierObject<ENTITY> getBObject();
+	protected abstract CrudRepository<ENTITY> getBObject();
 	
 	@Override
 	public ENTITY find(Object id) {
