@@ -1,4 +1,4 @@
-package br.jus.trt.lib.common_core.business.bobject;
+package br.jus.trt.lib.common_core.integration.persistence;
 
 import java.util.List;
 

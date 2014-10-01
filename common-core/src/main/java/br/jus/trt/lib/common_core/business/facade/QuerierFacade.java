@@ -2,7 +2,7 @@ package br.jus.trt.lib.common_core.business.facade;
 
 import java.util.List;
 
-import br.jus.trt.lib.common_core.business.bobject.NonUniqueEntityException;
+import br.jus.trt.lib.common_core.integration.persistence.NonUniqueEntityException;
 import br.jus.trt.lib.common_core.business.domain.Entity;
 import br.jus.trt.lib.qbe.api.Filter;
 

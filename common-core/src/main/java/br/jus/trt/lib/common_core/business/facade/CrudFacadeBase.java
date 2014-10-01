@@ -1,6 +1,6 @@
 package br.jus.trt.lib.common_core.business.facade;
 
-import br.jus.trt.lib.common_core.business.bobject.CrudBObject;
+import br.jus.trt.lib.common_core.integration.persistence.CrudBObject;
 import br.jus.trt.lib.common_core.business.domain.Entity;
 
 @SuppressWarnings("serial")
