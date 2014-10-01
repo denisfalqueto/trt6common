@@ -6,7 +6,7 @@
   <description>Estrutura genérica para a composição de qualquer componente de formulário com a 
 seguinte formação básica: [label]: [corpo dinâmico] [validation msg]</description>
   <tag-name>anyField</tag-name>
-  <source>facelets/tags/anyField.xhtml</source>
+  <source>resources/common/tags/anyField.xhtml</source>
   <attribute>
    <description>Identificador GLOBAL deste componente. Os componentes internos terão IDs derivados deste
 valor global. Ex: Label ID = &lt;id&gt;_label</description>
@@ -26,12 +26,36 @@ elementos de renderizam o Label e a Mensagem de validação.</description>
    <required>true</required>
    <type>java.lang.String</type>
   </attribute>
+  <attribute>
+   <description>Separador exibido entre label e value. Valor padrão " :".</description>
+   <name>separator</name>
+  </attribute>
+  <attribute>
+   <description>Permite informar propriedades de estilo para customização individual do label deste campo. Para customização genérica, deve-se realizar configuração via css.
+</description>
+   <name>labelStyle</name>
+  </attribute>
+  <attribute>
+   <description>Define a largura do label. Ex: "120px", "10em", "20pt". 
+</description>
+   <name>labelWidth</name>
+  </attribute>
+  <attribute>
+   <description>(true|false) Determina se o label deve ser exibido ACIMA do componente. Valor Default "false".</description>
+   <name>showLabelAbove</name>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>(true|false) Determina se o label deve ser exibido. Valor Default "true".</description>
+   <name>renderLabel</name>
+   <type>java.lang.Boolean</type>
+  </attribute>
  </tag>
  <tag>
   <description>Componente de fomulário para formação de campo de texto simples para entrada de dados,
 com a seguinte formação básica: [label]: [inputText] [validation msg] </description>
   <tag-name>inputText</tag-name>
-  <source>facelets/tags/inputText.xhtml</source>
+  <source>resources/common/tags/inputText.xhtml</source>
   <attribute>
    <description>Identificador GLOBAL deste componente. Os componentes internos terão IDs derivados deste
 valor global. Ex: Label ID = &lt;id&gt;_label</description>
@@ -58,22 +82,36 @@ valor global. Ex: Label ID = &lt;id&gt;_label</description>
    <description>(true/false) determina se o componente deve ser renderizado</description>
    <name>rendered</name>
   </attribute>
- </tag>
- <tag>
-  <tag-name>set</tag-name>
-  <handler-class>br.jus.trt6.lib.common_web.util.SetOnceHandler</handler-class>
   <attribute>
-   <name>var</name>
+   <description>Separador exibido entre label e value. Valor padrão " :".</description>
+   <name>separator</name>
   </attribute>
   <attribute>
-   <name>value</name>
+   <description>Permite informar propriedades de estilo para customização individual do label deste campo. Para customização genérica, deve-se realizar configuração via css.
+</description>
+   <name>labelStyle</name>
+  </attribute>
+  <attribute>
+   <description>Define a largura do label. Ex: "120px", "10em", "20pt". 
+</description>
+   <name>labelWidth</name>
+  </attribute>
+  <attribute>
+   <description>(true|false) Determina se o label deve ser exibido ACIMA do componente. Valor Default "false".</description>
+   <name>showLabelAbove</name>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>(true|false) Determina se o label deve ser exibido. Valor Default "true".</description>
+   <name>renderLabel</name>
+   <type>java.lang.Boolean</type>
   </attribute>
  </tag>
  <tag>
   <description>Componente de fomulário para formação de campo de texto simples para entrada de dados,
 com a seguinte formação básica: [label]: [inputText] [validation msg] </description>
   <tag-name>inputSelect</tag-name>
-  <source>facelets/tags/inputSelect.xhtml</source>
+  <source>resources/common/tags/inputSelect.xhtml</source>
   <attribute>
    <description>Identificador GLOBAL deste componente. Os componentes internos terão IDs derivados deste
 valor global. Ex: Label ID = &lt;id&gt;_label</description>
@@ -106,6 +144,40 @@ valor global. Ex: Label ID = &lt;id&gt;_label</description>
    <name>itemLabel</name>
    <required>true</required>
    <type>java.lang.String</type>
+  </attribute>
+  <attribute>
+   <description>Separador exibido entre label e value. Valor padrão " :".</description>
+   <name>separator</name>
+  </attribute>
+  <attribute>
+   <description>Permite informar propriedades de estilo para customização individual do label deste campo. Para customização genérica, deve-se realizar configuração via css.
+</description>
+   <name>labelStyle</name>
+  </attribute>
+  <attribute>
+   <description>Define a largura do label. Ex: "120px", "10em", "20pt". 
+</description>
+   <name>labelWidth</name>
+  </attribute>
+  <attribute>
+   <description>(true|false) Determina se o label deve ser exibido ACIMA do componente. Valor Default "false".</description>
+   <name>showLabelAbove</name>
+   <type>java.lang.Boolean</type>
+  </attribute>
+  <attribute>
+   <description>(true|false) Determina se o label deve ser exibido. Valor Default "true".</description>
+   <name>renderLabel</name>
+   <type>java.lang.Boolean</type>
+  </attribute>
+ </tag>
+ <tag>
+  <tag-name>set</tag-name>
+  <handler-class>br.jus.trt6.lib.common_web.util.SetOnceHandler</handler-class>
+  <attribute>
+   <name>var</name>
+  </attribute>
+  <attribute>
+   <name>value</name>
   </attribute>
  </tag>
 </facelet-taglib>
