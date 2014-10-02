@@ -38,8 +38,8 @@ public class DIContainerUtil {
 		}
 		Bean<T> bean = (Bean<T>) iter.next();
 		CreationalContext<T> ctx = bm.createCreationalContext(bean);
-		T dao = (T) bm.getReference(bean, clazz, ctx);
-		return dao;
+		T result = (T) bm.getReference(bean, clazz, ctx);
+		return result;
 	}
 
 	public <T> T lookup(Class<T> clazz) {
