@@ -115,7 +115,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	protected void initGenericTypes() {
 		List<Class<?>> genericsTypedArguments = JavaGenericsUtil.getGenericTypedArguments(CrudActionBase.class, this.getClass());
 		this.entityType = (Class<ENTITY>) genericsTypedArguments.get(0); // a entidade é o primeiro tipo declarado no action
-		this.facadeType = (Class<FACADE>) genericsTypedArguments.get(1); // a facade é o segundo tipo declarado.
+		this.facadeType = (Class<FACADE>) genericsTypedArguments.get(2); // a facade é o segundo tipo declarado.
 	}
 
 	/**
