@@ -6,7 +6,6 @@ import br.jus.trt.lib.common_core.util.JavaGenericsUtil;
 import br.jus.trt.lib.qbe.api.Filter;
 import java.io.Serializable;
 import java.util.List;
-import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
@@ -18,8 +17,6 @@ public abstract class CrudFacadeBase<E extends Entity<PK>, PK extends Serializab
 
     private Class<CrudRepository<E, PK>> repositoryClass;
     private CrudRepository<E, PK> repository;
-    @Inject
-    private BeanProvider beanProvider;
 
     protected Class<CrudRepository<E, PK>> getRepositoryClass() {
         if (repositoryClass == null) {
@@ -31,7 +28,7 @@ public abstract class CrudFacadeBase<E extends Entity<PK>, PK extends Serializab
 
     protected CrudRepository<E, PK> getRepository() {
         if (repository == null) {
-            repository = (CrudRepository<E, PK>) beanProvider.getContextualReference(getRepositoryClass());
+            repository = (CrudRepository<E, PK>) BeanProvider.getContextualReference(getRepositoryClass());
         }
         return repository;
     }
