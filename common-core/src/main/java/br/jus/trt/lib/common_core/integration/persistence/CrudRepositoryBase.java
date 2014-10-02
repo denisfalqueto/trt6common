@@ -1,4 +1,4 @@
-package br.jus.trt.lib.common_core.business.bobject;
+package br.jus.trt.lib.common_core.integration.persistence;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -7,7 +7,6 @@ import javax.persistence.Id;
 
 import br.jus.trt.lib.common_core.business.domain.Entity;
 import br.jus.trt.lib.common_core.exception.AppException;
-import br.jus.trt.lib.common_core.integration.persistence.Dao;
 import br.jus.trt.lib.common_core.util.JavaGenericsUtil;
 import br.jus.trt.lib.common_core.util.ReflectionUtil;
 import br.jus.trt.lib.qbe.QBEFilter;
@@ -16,6 +15,7 @@ import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.api.SortConfig;
 import br.jus.trt.lib.qbe.api.SortConfig.SortType;
 import br.jus.trt.lib.qbe.api.operator.Operators;
+import java.io.Serializable;
 
 /**
  * Querier Object para entidades de domínio. Expõe apenas operações para recuperação de 
@@ -24,8 +24,8 @@ import br.jus.trt.lib.qbe.api.operator.Operators;
  *
  */
 @SuppressWarnings("serial")
-public abstract class QuerierObjectBase <ENTITY extends Entity<?>> 
-					extends BObjectBase<ENTITY> implements QuerierObject<ENTITY> {
+public abstract class CrudRepositoryBase <ENTITY extends Entity<PK>, PK extends Serializable> 
+					implements CrudRepository<ENTITY, PK> {
 
 	private QBERepository qbeRepository;
 	
@@ -35,21 +35,12 @@ public abstract class QuerierObjectBase <ENTITY extends Entity<?>>
 	 * @param dao DAO para operações de persistência de dados.
 	 * @param qbeRepository Mecanismo QBE para realização de consultas dinâmicas.
 	 */
-	public QuerierObjectBase(Dao<ENTITY> dao, QBERepository qbeRepository) {
-		super(dao);
+	public CrudRepositoryBase(QBERepository qbeRepository) {
 		this.qbeRepository = qbeRepository;
 	}
 
-	/** 
-	 * @see br.jus.trt.lib.common_core.business.bobject.QuerierObject#find(java.lang.Object)
-	 */
 	@Override
-	public ENTITY find(Object id) {
-		return getDao().find(id);
-	}
-
-	@Override
-	public ENTITY find(Object id, String... fetch) {
+	public ENTITY findBy(PK id, String... fetch) {
 		
 		Field idField = getIdField(getEntityClass());
 		
@@ -65,16 +56,16 @@ public abstract class QuerierObjectBase <ENTITY extends Entity<?>>
 			}
 		}
 	
-		return find(filtro);
+		return findBy(filtro);
 	}
 	
 	/**
 	 * @see QuerierObject#find(Filter)
 	 */
 	@Override
-	public ENTITY find(Filter<? extends ENTITY> filter) throws NonUniqueEntityException {
+	public ENTITY findBy(Filter<? extends ENTITY> filter) throws NonUniqueEntityException {
 		
-		List<ENTITY> list = search(filter);
+		List<ENTITY> list = findAllBy(filter);
 		
 		if (list == null || list.isEmpty()) {
 			return null;
@@ -85,18 +76,10 @@ public abstract class QuerierObjectBase <ENTITY extends Entity<?>>
 	}
 	
 	/**
-	 * @see br.jus.trt.lib.common_core.business.bobject.QuerierObject#list()
-	 */	
-	@Override
-	public List<ENTITY> list() {
-		return getDao().list();
-	}
-	
-	/**
 	 * @see QuerierObject#list(boolean, String...)
 	 */
 	@Override
-	public List<ENTITY> list(boolean ascedant, String... orderBy) {
+	public List<ENTITY> findAll(boolean ascedant, String... orderBy) {
 		SortConfig.SortType tipoOrdenacao = ascedant ? SortType.ASCENDANT : SortType.DESCENDANT;
 		
 		QBEFilter<ENTITY> filtro = new QBEFilter<ENTITY>(getEntityClass());
@@ -106,17 +89,9 @@ public abstract class QuerierObjectBase <ENTITY extends Entity<?>>
 			}
 		}
 		
-		return getQbeRepository().search(filtro);		
+		return getQbeRepository().search(filtro);
 	}
 	
-	/**
-	 * @see QuerierObject#count()
-	 */
-	@Override
-	public Long count() {
-		return getDao().count();
-	}
-
 	/**
 	 * @see QuerierObject#count(Filter)
 	 */
@@ -127,28 +102,12 @@ public abstract class QuerierObjectBase <ENTITY extends Entity<?>>
 	}
 	
 	/**
-	 * @see QuerierObject#count(Entity)
-	 */
-	@Override
-	public Long count(ENTITY entity) {
-		return count(new QBEFilter<ENTITY>(entity));
-	}
-	
-	/**
 	 * @see QuerierObject#search(Filter)
 	 */
 	@Override
-	public List<ENTITY> search(Filter<? extends ENTITY> filter) {
+	public List<ENTITY> findAllBy(Filter<? extends ENTITY> filter) {
 		List<ENTITY> search = getQbeRepository().search(filter);
 		return search;
-	}
-	
-	/**
-	 * @see QuerierObject#search(Entity)
-	 */
-	@Override
-	public List<ENTITY> search(ENTITY example) {
-		return search(new QBEFilter<ENTITY>(example));
 	}
 	
 	/**
@@ -164,7 +123,7 @@ public abstract class QuerierObjectBase <ENTITY extends Entity<?>>
 	@SuppressWarnings("unchecked")
 	protected Class<? extends ENTITY> getEntityClass() {
 		if (this.entityClass == null) {
-			List<Class<?>> typeArguments = JavaGenericsUtil.getGenericTypedArguments(BObjectBase.class, this.getClass());
+			List<Class<?>> typeArguments = JavaGenericsUtil.getGenericTypedArguments(CrudRepositoryBase.class, this.getClass());
 			this.entityClass = (Class<? extends ENTITY>) typeArguments.get(0);
 		}
 		
