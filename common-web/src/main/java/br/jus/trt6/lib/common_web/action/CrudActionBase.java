@@ -2,9 +2,14 @@ package br.jus.trt6.lib.common_web.action;
 
 import br.jus.trt.lib.common_core.business.domain.Entity;
 import br.jus.trt.lib.common_core.business.facade.CrudFacade;
+import br.jus.trt.lib.common_core.util.DIContainerUtil;
+import br.jus.trt.lib.common_core.util.JavaGenericsUtil;
 import br.jus.trt.lib.common_core.util.ReflectionUtil;
+import br.jus.trt.lib.qbe.QBEFilter;
 import br.jus.trt.lib.qbe.api.Filter;
 import br.jus.trt.lib.qbe.api.operator.Operators;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Classe base para Actions do tipo CRUD, associados a uma entidade de domínio específica. Implementa o comportamento padrão
@@ -12,10 +17,35 @@ import br.jus.trt.lib.qbe.api.operator.Operators;
  * @author augusto
  * 
  * @param <ENTITY> Entidade de domínio associada a este Action Crud.
+ * @param <PK> Tipo da chave primária da entidade
  * @param <FACADE> Manager compatível com a entidade de negócio a ser utilizado.
  */
 @SuppressWarnings("serial")
-public abstract class CrudActionBase<ENTITY extends Entity<?>, FACADE extends CrudFacade<ENTITY>> extends QuerierActionBase<ENTITY, CrudFacade<ENTITY>> {
+public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Serializable, FACADE extends CrudFacade<ENTITY, PK>> extends ActionBase {
+
+	/**
+	 * Fachada de serviços para impleentação de um fluxo CRUD.
+	 */
+	private FACADE facade;
+
+	/** Filtro para configurações das consultas a serem realizadas */
+	private Filter<ENTITY> filter;
+	
+	/** Exemplo para utilização no formulário de consulta e preenchimento do filtro de consulta */
+	private ENTITY example;
+	
+	/** Lista para armazenar o resultado da consulta. Pode ser uma lista simples ou paginada. */
+	private List<ENTITY> resultList;
+	
+	/**
+	 * Tipo da entidade associada. É importante para instanciação de objetos em algumas operações genéricas.
+	 */
+	private Class<ENTITY> entityType;
+	
+	/**
+	 * Tipo do facade associado, para lookup do serviço no container de DI.
+	 */
+	private Class<FACADE> facadeType;
 
 	/**
 	 * Representa a operação sendo executada neste fluxo de CRUD
@@ -29,9 +59,134 @@ public abstract class CrudActionBase<ENTITY extends Entity<?>, FACADE extends Cr
 	@Override
 	public void init() {
 		super.init();
+		initObjects();
 		initEntity();
 	}
 	
+	/**
+	 * Consulta registros na base de dados de acordo com os dados preenchidos no filtro.
+	 */
+	public void search() {
+		// sempre cria um novo filtro para evitar "lixo" de configurações anteriores
+		initFilter();
+
+		// inclui o exemplo no filtro
+		getFilter().setExample(example);
+		
+		// permite a configuração dinâmica da consulta
+		configSearch(getFilter());
+
+		doSearch();
+	}
+	
+	/**
+	 * Executa, de fato, a operação de consulta, armazenando o resultado em {@link QuerierAction#entityList} 
+	 */
+	protected void doSearch() {
+		List<ENTITY> result = getFacade().findAllBy(filter);
+		setResultList(result);
+	}
+	
+	/**
+	 * Permite à subclasse configurar os parâmetros desejados para a realização da consulta.
+	 * @param filter Classe a ser configurada com os parâmetros para realização da consulta
+	 */
+	protected void configSearch(Filter<? extends ENTITY> filter) {
+		/*
+		 * ponto de extensão para configuração da consulta pela sub-classe.
+		 * a implementação default considera a configuração por anotações
+		 */
+	}
+	
+	/**
+	 * Inicializa os objetos de controle desclarados.
+	 */
+	protected void initObjects() {
+		initGenericTypes();
+		initExample();
+		initFilter();
+		initFacade();
+	}
+	
+	/**
+	 * Inicializa os tipos genéricos utilizados nesta classe, ENTITY e FACADE.
+	 */
+	@SuppressWarnings("unchecked")
+	protected void initGenericTypes() {
+		List<Class<?>> genericsTypedArguments = JavaGenericsUtil.getGenericTypedArguments(CrudActionBase.class, this.getClass());
+		this.entityType = (Class<ENTITY>) genericsTypedArguments.get(0); // a entidade é o primeiro tipo declarado no action
+		this.facadeType = (Class<FACADE>) genericsTypedArguments.get(1); // a facade é o segundo tipo declarado.
+	}
+
+	/**
+	 * Inicializa o objeto concreto que representa a Facade.
+	 */
+	protected void initFacade() {
+		this.facade = new DIContainerUtil().lookup(getFacadeType());
+	}
+
+	/**
+	 * Inicializa o objeto que representa o exemplo do filtro da consulta
+	 */
+	protected void initExample() {
+		this.example = ReflectionUtil.instantiate(getEntityType());
+	}
+
+	/**
+	 * Inicializa o objeto Filtro para ser utilizar na busca com filtro.
+	 */
+	protected void initFilter() {
+		filter = createFilter();
+	}
+
+	/**
+	 * Método de fábrica de um {@link Filter}
+	 * @return Nova instância de {@link Filter}
+	 */
+	protected QBEFilter<ENTITY> createFilter() {
+		return new QBEFilter<ENTITY>(getEntityType());
+	}
+	
+	protected FACADE getFacade() {
+		return facade;
+	}
+
+	protected void setFacade(FACADE facade) {
+		this.facade = facade;
+	}
+
+	public Filter<ENTITY> getFilter() {
+		return filter;
+	}
+
+	protected void setFilter(Filter<ENTITY> filter) {
+		this.filter = filter;
+	}
+
+	public ENTITY getExample() {
+		return example;
+	}
+
+	protected void setExample(ENTITY example) {
+		this.example = example;
+	}
+
+	public List<ENTITY> getResultList() {
+		return resultList;
+	}
+
+	protected void setResultList(List<ENTITY> entityList) {
+		this.resultList = entityList;
+	}
+
+	protected Class<ENTITY> getEntityType() {
+		return entityType;
+	}
+
+	protected Class<FACADE> getFacadeType() {
+		return facadeType;
+	}
+
 	/**
 	 * Inicializa o objeto que representa a entidade associada a este action.
 	 */
@@ -101,7 +256,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<?>, FACADE extends Cr
 	 * Realiza de fato a operação insert.
 	 */
 	protected void doInsert() {
-		getFacade().insert(getEntity());
+		getFacade().save(getEntity());
 	}
 	
 	/**
@@ -132,7 +287,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<?>, FACADE extends Cr
 	 * Realiza de fato o update
 	 */
 	protected void doUpdate() {
-		getFacade().update(getEntity());
+		getFacade().save(getEntity());
 	}
 
 	/**
@@ -166,7 +321,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<?>, FACADE extends Cr
 	 * @param entidade Registro para exclusão.
 	 */
 	protected void doDelete(ENTITY entidade) {
-		getFacade().delete(entidade);
+		getFacade().remove(entidade);
 	}
 	
 	/**
@@ -204,7 +359,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<?>, FACADE extends Cr
 		configLoad(entidade, loadFilter);
 		
 		
-		setEntity(getFacade().find(loadFilter));
+		setEntity(getFacade().findBy(loadFilter));
 	}
 
 	/**
@@ -261,7 +416,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<?>, FACADE extends Cr
 	 */
 	public void cancelOperation() {
 		initEntity();
-        setCrudOperation(CrudOperation.SEARCH);
+            setCrudOperation(CrudOperation.SEARCH);
 	}
 	
 	/**
