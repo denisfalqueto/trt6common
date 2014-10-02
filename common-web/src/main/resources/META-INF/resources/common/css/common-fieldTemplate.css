@@ -1,0 +1,35 @@
+@charset "utf-8";
+
+/**** ESTRUTURA DOS CAMPOS DE FORMULARIO: LABEL + INPUT ou OUTPUT + MESSAGE ****/
+
+.entry {
+	display: inline-block;
+	margin: 0px 5px;
+}
+
+.entry .label {
+	display: inline-block;
+	text-align: right;
+	font-weight: bold;
+	padding-right: 5px;
+	vertical-align: middle;
+}
+
+.entry .content {
+	display: inline-block;
+	text-align: left;
+	white-space: nowrap;
+	vertical-align: middle;
+}
+
+.entry .message {
+	display: inline-block;
+	text-align: left;
+	white-space: nowrap;
+}
+
+.required {
+    color: #FF0000;
+    padding-left: 2px;
+}
+

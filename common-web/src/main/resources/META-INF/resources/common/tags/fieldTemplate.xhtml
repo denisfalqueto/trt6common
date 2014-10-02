@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:trt="http://trt.jus.br/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:component>
+
+	<!-- Parâmetros Utilizados Neste Template -->
+	<ui:param name="p_id"       		value="#{not empty id ? id : jsfSupport.generateId(label)}" />
+	<ui:param name="p_separator" 		value="#{empty separator ? ':' : separator}" />
+	
+	<ui:param name="p_labelStyle" 		value="width: #{not empty labelWidth and not showLabelAbove ? labelWidth : '100px'}; #{not showLabelAbove ? 'line-height: 22px;' : ''} #{labelStyle}" />
+	<ui:param name="p_showLabelAbove" 	value="#{showLabelAbove ? 'display: block; text-align: left; padding-right: 0px !important;' : ''}" />
+
+	<h:panelGroup rendered="#{empty rendered ? true : rendered}" styleClass="entry">
+	  
+		<h:panelGroup class="label" style="#{p_labelStyle} #{p_showLabelAbove}" rendered="#{empty renderLabel ? 'true' : renderLabel}">
+			<h:outputLabel id="#{p_id}_label" value="#{label}" for="#{p_id}" />
+			
+			<h:panelGroup rendered="#{required}">
+				<span class="required" title="Campo Obrigatório">*</span>
+			</h:panelGroup>
+			
+			<h:outputText value="#{p_separator}" />			
+		</h:panelGroup>	
+
+		<div class="content">
+			<!-- Área para definição dinâmica do conteúdo deste campo -->
+			<ui:insert name="content"/>
+		</div>	
+
+		<div class="message">
+			<p:message id="#{p_id}_msg" for="#{p_id}" />
+		</div>	
+		
+	</h:panelGroup>	
+</ui:component>
+</html>

@@ -7,8 +7,9 @@
 	xmlns:trt="http://trt.jus.br/facelets">
 
 <ui:decorate template="fieldTemplate.xhtml">
+
 	<ui:define name="content">
-		<h:inputText id="#{id}_input" value="#{value}" required="#{required}"/>
+		<h:inputText id="#{p_id}" value="#{value}" required="#{required}"/>
 		<ui:insert/>
 	</ui:define>
 </ui:decorate>
