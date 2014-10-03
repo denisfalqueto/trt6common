@@ -16,6 +16,7 @@ import br.jus.trt.lib.qbe.api.SortConfig;
 import br.jus.trt.lib.qbe.api.SortConfig.SortType;
 import br.jus.trt.lib.qbe.api.operator.Operators;
 import java.io.Serializable;
+import javax.inject.Inject;
 
 /**
  * Querier Object para entidades de domínio. Expõe apenas operações para recuperação de 
@@ -27,17 +28,10 @@ import java.io.Serializable;
 public abstract class CrudRepositoryBase <ENTITY extends Entity<PK>, PK extends Serializable> 
 					implements CrudRepository<ENTITY, PK> {
 
+        @Inject
 	private QBERepository qbeRepository;
 	
 	private Class<? extends ENTITY> entityClass;
-	
-	/**
-	 * @param dao DAO para operações de persistência de dados.
-	 * @param qbeRepository Mecanismo QBE para realização de consultas dinâmicas.
-	 */
-	public CrudRepositoryBase(QBERepository qbeRepository) {
-		this.qbeRepository = qbeRepository;
-	}
 
 	@Override
 	public ENTITY findBy(PK id, String... fetch) {
