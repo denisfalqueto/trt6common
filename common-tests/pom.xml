@@ -55,14 +55,21 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-                        <scope>compile</scope>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.jboss.weld.se</groupId>
 			<artifactId>weld-se</artifactId>
-			<version>1.1.8.Final</version>
+			<version>2.1.0.CR1</version>
 		</dependency>
+
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<version>1.1</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>commons-beanutils</groupId>
