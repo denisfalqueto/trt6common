@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.jus.trt.lib</groupId>
 	<artifactId>common</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${common.version}</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>common-core</module>
@@ -16,140 +16,137 @@
 	<dependencyManagement>
 		<dependencies>
 
-                <!-- DeltaSpike - extensions for CDI -->
-                <dependency>
-                    <groupId>org.apache.deltaspike.core</groupId>
-                    <artifactId>deltaspike-core-api</artifactId>
-                    <version>${deltaspike.version}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>org.apache.deltaspike.core</groupId>
-                    <artifactId>deltaspike-core-impl</artifactId>
-                    <version>${deltaspike.version}</version>
-                    <scope>runtime</scope>
-                </dependency>
+			<!-- DeltaSpike - extensions for CDI -->
+			<dependency>
+				<groupId>org.apache.deltaspike.core</groupId>
+				<artifactId>deltaspike-core-api</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.deltaspike.core</groupId>
+				<artifactId>deltaspike-core-impl</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
 
-                <!-- 
-                    ! Deltaspike modules 
-                    ! Cada módulo deve ser descomentado se necessário 
-                -->
+			<!-- ! Deltaspike modules ! Cada módulo deve ser descomentado se necessário -->
 
-                <!-- Deltaspike Security Module
-                    ! Para usar este módulo, é necessário ativar o interceptador
-                    ! org.apache.deltaspike.security.impl.extension.SecurityInterceptor
-                    ! no arquivo beans.xml
-                -->
-                <dependency>
-                    <groupId>org.apache.deltaspike.modules</groupId>
-                    <artifactId>deltaspike-security-module-api</artifactId>
-                    <version>${deltaspike.version}</version>
-                    <scope>compile</scope>
-                </dependency>
+			<!-- Deltaspike Security Module ! Para usar este módulo, é necessário 
+				ativar o interceptador ! org.apache.deltaspike.security.impl.extension.SecurityInterceptor 
+				! no arquivo beans.xml -->
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-security-module-api</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>compile</scope>
+			</dependency>
 
-                <dependency>
-                    <groupId>org.apache.deltaspike.modules</groupId>
-                    <artifactId>deltaspike-security-module-impl</artifactId>
-                    <version>${deltaspike.version}</version>
-                    <scope>runtime</scope>
-                </dependency>
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-security-module-impl</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
 
-                <!-- Deltaspike JPA Module
-                    ! Para usar este módulo, é necessário ativar o interceptador
-                    ! org.apache.deltaspike.jpa.impl.transaction.TransactionalInterceptor
-                    ! no arquivo beans.xml.
-                    ! Também é necessário implementar um producer que forneca instâncias
-                    ! de EntityManager.
-                -->
-                <dependency>
-                    <groupId>org.apache.deltaspike.modules</groupId>
-                    <artifactId>deltaspike-jpa-module-api</artifactId>
-                    <version>${deltaspike.version}</version>
-                    <scope>compile</scope>
-                </dependency>
+			<!-- Deltaspike JPA Module ! Para usar este módulo, é necessário ativar 
+				o interceptador ! org.apache.deltaspike.jpa.impl.transaction.TransactionalInterceptor 
+				! no arquivo beans.xml. ! Também é necessário implementar um producer que 
+				forneca instâncias ! de EntityManager. -->
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-jpa-module-api</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>compile</scope>
+			</dependency>
 
-                <dependency>
-                    <groupId>org.apache.deltaspike.modules</groupId>
-                    <artifactId>deltaspike-jpa-module-impl</artifactId>
-                    <version>${deltaspike.version}</version>
-                    <scope>runtime</scope>
-                </dependency>
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-jpa-module-impl</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
 
-                <!-- Deltaspike JSF Module -->
-                <dependency>
-                    <groupId>org.apache.deltaspike.modules</groupId>
-                    <artifactId>deltaspike-jsf-module-api</artifactId>
-                    <version>${deltaspike.version}</version>
-                    <scope>compile</scope>
-                </dependency>
+			<!-- Deltaspike JSF Module -->
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-jsf-module-api</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>compile</scope>
+			</dependency>
 
-                <dependency>
-                    <groupId>org.apache.deltaspike.modules</groupId>
-                    <artifactId>deltaspike-jsf-module-impl-ee6</artifactId>
-                    <version>${deltaspike.version}</version>
-                    <scope>runtime</scope>
-                </dependency>
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-jsf-module-impl-ee6</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
 
-                <!-- Deltaspike BeanValidation Module -->
-                <dependency>
-                    <groupId>org.apache.deltaspike.modules</groupId>
-                    <artifactId>deltaspike-bean-validation-module-impl</artifactId>
-                    <version>${deltaspike.version}</version>
-                    <scope>runtime</scope>
-                </dependency>
+			<!-- Deltaspike BeanValidation Module -->
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-bean-validation-module-impl</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
 
-                <!-- Deltaspike Data Module
-                    ! Para usar este módulo, é necessário configurar uma alternativa
-                    ! org.apache.deltaspike.jpa.impl.transaction.BeanManagedUserTransactionStrategy
-                    ! no arquivo beans.xml
-                -->
-                <dependency>
-                    <groupId>org.apache.deltaspike.modules</groupId>
-                    <artifactId>deltaspike-data-module-api</artifactId>
-                    <version>${deltaspike.version}</version>
-                    <scope>compile</scope>
-                </dependency>
+			<!-- Deltaspike Data Module ! Para usar este módulo, é necessário configurar 
+				uma alternativa ! org.apache.deltaspike.jpa.impl.transaction.BeanManagedUserTransactionStrategy 
+				! no arquivo beans.xml -->
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-data-module-api</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>compile</scope>
+			</dependency>
 
-                <dependency>
-                    <groupId>org.apache.deltaspike.modules</groupId>
-                    <artifactId>deltaspike-data-module-impl</artifactId>
-                    <version>${deltaspike.version}</version>
-                    <scope>runtime</scope>
-                </dependency>
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-data-module-impl</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
 
-                <!-- Deltaspike Test Control Module -->
-                <dependency>
-                    <groupId>org.apache.deltaspike.modules</groupId>
-                    <artifactId>deltaspike-test-control-module-api</artifactId>
-                    <version>${deltaspike.version}</version>
-                    <scope>compile</scope>
-                </dependency>
+			<!-- Deltaspike Test Control Module -->
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-test-control-module-api</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>compile</scope>
+			</dependency>
 
-                <dependency>
-                    <groupId>org.apache.deltaspike.modules</groupId>
-                    <artifactId>deltaspike-test-control-module-impl</artifactId>
-                    <version>${deltaspike.version}</version>
-                    <scope>runtime</scope>
-                </dependency>
+			<dependency>
+				<groupId>org.apache.deltaspike.modules</groupId>
+				<artifactId>deltaspike-test-control-module-impl</artifactId>
+				<version>${deltaspike.version}</version>
+				<scope>runtime</scope>
+			</dependency>
 
 			<dependency>
 				<groupId>br.jus.trt.lib</groupId>
 				<artifactId>common-core</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${common.version}</version>
 				<type>jar</type>
 			</dependency>
 
 			<dependency>
 				<groupId>br.jus.trt.lib</groupId>
 				<artifactId>common-web</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${common.version}</version>
 				<type>jar</type>
 			</dependency>
 
 			<dependency>
 				<groupId>br.jus.trt.lib</groupId>
 				<artifactId>common-qbe</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${common.version}</version>
+				<type>jar</type>
+			</dependency>
+
+			<dependency>
+				<groupId>br.jus.trt.lib</groupId>
+				<artifactId>common-tests</artifactId>
+				<version>${common.version}</version>
 				<type>jar</type>
 			</dependency>
 
@@ -246,7 +243,6 @@
 				<scope>test</scope>
 			</dependency>
 
-
 		</dependencies>
 	</dependencyManagement>
 
@@ -273,8 +269,9 @@
 			</plugin>
 		</plugins>
 	</build>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <deltaspike.version>1.0.1</deltaspike.version>
-    </properties>
+	<properties>
+		<common.version>0.0.1-SNAPSHOT</common.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<deltaspike.version>1.0.1</deltaspike.version>
+	</properties>
 </project>

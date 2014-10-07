@@ -28,7 +28,7 @@ import javax.inject.Inject;
 public abstract class CrudRepositoryBase <ENTITY extends Entity<PK>, PK extends Serializable> 
 					implements CrudRepository<ENTITY, PK> {
 
-        @Inject
+    @Inject
 	private QBERepository qbeRepository;
 	
 	private Class<? extends ENTITY> entityClass;

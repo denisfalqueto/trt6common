@@ -220,7 +220,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	 * Persiste de fato a entidade, exibindo mensagem de sucesso.
 	 */
 	protected void doSave() {
-		getFacade().save(getEntity());
+		getFacade().saveAndFlush(getEntity());
 	}
 	
 	/**
@@ -256,7 +256,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	 * Realiza de fato a operação insert.
 	 */
 	protected void doInsert() {
-		getFacade().save(getEntity());
+		getFacade().saveAndFlush(getEntity());
 	}
 	
 	/**
@@ -287,7 +287,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	 * Realiza de fato o update
 	 */
 	protected void doUpdate() {
-		getFacade().save(getEntity());
+		getFacade().saveAndFlush(getEntity());
 	}
 
 	/**
@@ -321,7 +321,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	 * @param entidade Registro para exclusão.
 	 */
 	protected void doDelete(ENTITY entidade) {
-		getFacade().remove(entidade);
+		getFacade().removeAndFlush(entidade);
 	}
 	
 	/**
