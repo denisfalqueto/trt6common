@@ -1,5 +1,6 @@
 package br.jus.trt.lib.qbe;
 
+import static org.junit.Assert.*;
 import java.util.List;
 
 import org.hibernate.Hibernate;

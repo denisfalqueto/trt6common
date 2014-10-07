@@ -18,7 +18,7 @@ import org.hibernate.Session;
  * Não é uma classe estática, e manipula apenas uma PersistenceUnit por vez. Para situações onde
  * são necessárias utilizar mais de uma base de dados, deve-se intanciar vários objetos desta classe.
  */
-public class JPAStandaloneUtil {
+public class JPAStandalone {
 	
 	/** Factory associada à persistence unit */
 	private EntityManagerFactory emf;
@@ -32,7 +32,7 @@ public class JPAStandaloneUtil {
 	/**
 	 * @param persistenceUnitName Nome da Persistence unit
 	 */
-	public JPAStandaloneUtil(String persistenceUnitName) {
+	public JPAStandalone(String persistenceUnitName) {
 		this.persistenceUnitName = persistenceUnitName;
 		configure();
 	}
@@ -40,7 +40,7 @@ public class JPAStandaloneUtil {
 	/**
 	 * @param emf {@link EntityManagerFactory} para associar a esta classe.
 	 */
-	public JPAStandaloneUtil(EntityManagerFactory emf) {
+	public JPAStandalone(EntityManagerFactory emf) {
 		this.emf = emf;
 	}
 	

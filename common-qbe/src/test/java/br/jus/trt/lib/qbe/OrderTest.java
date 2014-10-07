@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
 import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.domain.Cidade;
 import br.jus.trt.lib.qbe.repository.criteria.CriteriaQbeRepository;
