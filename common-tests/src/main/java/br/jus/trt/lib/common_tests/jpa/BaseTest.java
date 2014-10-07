@@ -36,16 +36,6 @@ public class BaseTest {
 	@Inject
 	private JPAStandalone jpaInstance;
 
-	private String puName;
-
-	/**
-	 * @param puName Nome do Persitence Unit a ser utilizado neste teste.
-	 */
-	public BaseTest(String puName) {
-		super();
-		this.puName = puName;
-	}
-
 	@BeforeClass
 	public static void beforeAll() {
 	}
@@ -245,14 +235,6 @@ public class BaseTest {
 		query.setMaxResults(1);
 		query.setFirstResult(posicao);
 		return (TIPO) query.getSingleResult();
-	}
-
-	protected String getPuName() {
-		return puName;
-	}
-
-	protected void setPuName(String puName) {
-		this.puName = puName;
 	}
 
 }

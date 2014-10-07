@@ -15,10 +15,6 @@ import br.jus.trt.lib.common_tests.jpa.BaseTest;
  */
 public class QbeBaseTest extends BaseTest {
 
-	public QbeBaseTest() {
-		super("qbe_pu");
-	}
-	
 	/**
 	 * Converte uma String em uma Data Formatada utilizando o formato padrão de data.
 	 * @param data	String a ser formatada.
