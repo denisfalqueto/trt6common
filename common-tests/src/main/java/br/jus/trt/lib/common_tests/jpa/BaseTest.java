@@ -7,8 +7,6 @@ import static org.junit.Assert.fail;
 import java.util.Collection;
 import java.util.List;
 
-import javax.enterprise.inject.Default;
-import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -23,7 +21,7 @@ import br.jus.trt.lib.common_tests.cdi.CdiJUnitRunner;
 
 /**
  * Classe base com comportamento comum para testes unitários que utilizam um
- * contexto transacional. Gerencia o ciclo de vida do JUnit, JPA e dos recursos
+ * contexto transacional. Gerencia o ciclo de vida do JUnit, JPA, suporta CDI, e outros recursos
  * necessários para testes.
  * 
  * @author Augusto
@@ -33,21 +31,30 @@ import br.jus.trt.lib.common_tests.cdi.CdiJUnitRunner;
 @Ignore
 public class BaseTest {
 
-	@Inject
+	/** para controle de transações e acesso à base de dados */
 	private JPAStandalone jpaInstance;
 
+	/**
+	 * Executado antes de todos os métodos de testes desta classe de teste. 
+	 */
 	@BeforeClass
-	public static void beforeAll() {
+	public static void beforeClassTests() {
 	}
 
+	/**
+	 * Executado antes de cada método de teste. Realiza o controle do início da transação.
+	 */
 	@Before
-	public void beforeEach() {
+	public void beforeEachTest() {
 		jpaInstance.startSession();
 		jpaInstance.startTransaction();
 	}
 
+	/**
+	 * Executado após de cada método de teste. Realiza o controle do término da transação.
+	 */
 	@After
-	public void afterEach() {
+	public void afterEachTest() {
 		jpaInstance.rollbackTransaction();
 		jpaInstance.closeSession();
 	}
@@ -56,11 +63,11 @@ public class BaseTest {
 		return jpaInstance.getEm();
 	}
 
-	@Produces @Default
 	public JPAStandalone getJpa() {
 		return jpaInstance;
 	}
 
+	@Inject
 	public void setJpa(JPAStandalone jpa) {
 		this.jpaInstance = jpa;
 	}
