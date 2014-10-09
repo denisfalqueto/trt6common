@@ -17,8 +17,6 @@
 		<dependency>
 			<groupId>br.jus.trt.lib</groupId>
 			<artifactId>common-tests</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
