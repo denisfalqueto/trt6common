@@ -30,7 +30,7 @@
 			<artifactId>cdi-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
+ 		<dependency>
 			<groupId>javax.enterprise</groupId>
 			<artifactId>cdi-api</artifactId>
 			<version>1.1</version>
@@ -99,13 +99,14 @@
 		<dependency>
 			<groupId>br.jus.trt.lib</groupId>
 			<artifactId>common-tests</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
+			<scope>test</scope>
 		</dependency>
-
 
 	</dependencies>
 </project>
