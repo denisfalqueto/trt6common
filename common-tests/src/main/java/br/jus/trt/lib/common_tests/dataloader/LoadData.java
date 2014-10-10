@@ -29,10 +29,10 @@ public @interface LoadData {
 	String[] sql() default {};
 	
 	/**
-	 * @return Classes que realizarão a carga de dados.
+	 * @return {@link DataLoader} que realizará a carga de dados.
 	 */
 	@Nonbinding
-	Class<? extends DataLoader>[] bean() default {};
+	Class<? extends DataLoader>[] dataLoader() default {};
 	
 	/**
 	 * @return A precedência de execução dos DataLoader, permitindo a configuração de

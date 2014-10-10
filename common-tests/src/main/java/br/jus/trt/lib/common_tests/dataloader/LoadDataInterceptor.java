@@ -107,7 +107,7 @@ public class LoadDataInterceptor implements Serializable {
 		}
 		
 		// carregando beans
-		Class<? extends DataLoader>[] beans = loadData.bean();
+		Class<? extends DataLoader>[] beans = loadData.dataLoader();
 		for (Class<? extends DataLoader> dataLoaderType : beans) {
 			DataLoader beanDataLoader = CDI.current().select(dataLoaderType).get();
 			
