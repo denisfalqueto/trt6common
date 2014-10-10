@@ -17,6 +17,7 @@ import br.jus.trt.lib.qbe.api.SortConfig.SortType;
 import br.jus.trt.lib.qbe.api.operator.Operators;
 import java.io.Serializable;
 import javax.inject.Inject;
+import org.apache.deltaspike.data.api.EntityRepository;
 
 /**
  * Querier Object para entidades de domínio. Expõe apenas operações para recuperação de 
@@ -26,7 +27,7 @@ import javax.inject.Inject;
  */
 @SuppressWarnings("serial")
 public abstract class CrudRepositoryBase <ENTITY extends Entity<PK>, PK extends Serializable> 
-					implements CrudRepository<ENTITY, PK> {
+					implements CrudRepository<ENTITY, PK>, EntityRepository<ENTITY, PK> {
 
     @Inject
 	private QBERepository qbeRepository;
