@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.junit.Ignore;
+
 import br.jus.trt.lib.common_tests.jpa.BaseTest;
 
 /**
@@ -13,6 +15,7 @@ import br.jus.trt.lib.common_tests.jpa.BaseTest;
  * Gerencia o ciclo de vida do JUnit e dos recursos necessários para testes.
  * @author augusto
  */
+@Ignore
 public class QbeBaseTest extends BaseTest {
 
 	/**

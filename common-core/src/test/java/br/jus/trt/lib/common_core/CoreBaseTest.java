@@ -1,6 +1,8 @@
 package br.jus.trt.lib.common_core;
 
 
+import org.junit.Ignore;
+
 import br.jus.trt.lib.common_tests.jpa.BaseTest;
 
 /**
@@ -8,6 +10,7 @@ import br.jus.trt.lib.common_tests.jpa.BaseTest;
  * Gerencia o ciclo de vida do JUnit e dos recursos necessários para testes.
  * @author augusto
  */
+@Ignore
 public class CoreBaseTest extends BaseTest {
 
 	
