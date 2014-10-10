@@ -4,4 +4,8 @@
  <alternatives>
   <class>br.jus.trt.lib.common_tests.cdi.AlternativeProducers</class>
  </alternatives>
+ <interceptors>
+  <class>org.apache.deltaspike.jpa.impl.transaction.TransactionalInterceptor</class>
+  <class>br.jus.trt.lib.common_tests.dataloader.LoadDataInterceptor</class>
+ </interceptors>
 </beans>

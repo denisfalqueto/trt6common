@@ -10,6 +10,5 @@ import br.jus.trt.lib.common_tests.jpa.BaseTest;
  */
 public class CoreBaseTest extends BaseTest {
 
-
 	
 }
