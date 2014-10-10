@@ -9,7 +9,6 @@
 	</parent>
 	<artifactId>common-core</artifactId>
 
-
 	<dependencies>
 
 		<!-- Declare the APIs we depend on and need for compilation. All of them 
@@ -28,13 +27,6 @@
 		<dependency>
 			<groupId>javax.enterprise</groupId>
 			<artifactId>cdi-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
- 		<dependency>
-			<groupId>javax.enterprise</groupId>
-			<artifactId>cdi-api</artifactId>
-			<version>1.1</version>
-			<scope>test</scope>
 		</dependency>
 
 
@@ -99,14 +91,13 @@
 		<dependency>
 			<groupId>br.jus.trt.lib</groupId>
 			<artifactId>common-tests</artifactId>
-			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
-			<scope>test</scope>
 		</dependency>
+
 
 	</dependencies>
 </project>

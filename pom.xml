@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.jus.trt.lib</groupId>
 	<artifactId>common</artifactId>
-	<version>${common.version}</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>common-core</module>
@@ -148,7 +148,8 @@
 				<artifactId>common-tests</artifactId>
 				<version>${common.version}</version>
 				<type>jar</type>
-			</dependency>
+                                <scope>test</scope>
+                        </dependency>
 
 			<!-- Define the version of JBoss' Java EE 6 APIs we want to import. Any 
 				dependencies from org.jboss.spec will have their version defined by this 
