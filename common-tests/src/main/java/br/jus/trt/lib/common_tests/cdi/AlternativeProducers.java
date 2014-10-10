@@ -2,12 +2,10 @@ package br.jus.trt.lib.common_tests.cdi;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
 import javax.persistence.EntityManager;
 
 import br.jus.trt.lib.common_tests.jpa.JPAStandalone;
@@ -67,14 +65,4 @@ public class AlternativeProducers {
 		return new JPAStandalone(persistenceUnitName);
 	}
 
-	/**
-	 * Cria um Logger básico para utilização em testes unitários.
-	 * @param caller para obtenção dos dados do bean interceptado.
-	 * @return Logger configurado segundo o bean interceptado.
-	 */
-	@Produces
-	public Logger createLogger(InjectionPoint caller) {
-		return Logger.getLogger(caller.getBean().getClass().getName());
-	}
-	
 }
