@@ -1,8 +1,10 @@
 package br.jus.trt.lib.common_core.business.facade;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import javax.inject.Inject;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import br.jus.trt.lib.common_core.CoreBaseTest;
@@ -19,14 +21,12 @@ public class CrudFacadeBaseInjectionTest extends CoreBaseTest {
 	
 	@Test
 	public void repositoryInjectionTest() {
-		Assert.assertNotNull(ufFacade);
-		Assert.assertNotNull(ufFacade.getRepository());
+		assertNotNull(ufFacade.getRepository());
 	}
 	
 	@Test
 	public void repositoryTypeInjectionTest() {
-		Assert.assertNotNull(ufFacade);
-		Assert.assertNotNull(ufFacade.getRepository());
-		Assert.assertTrue(UFRepository.class.isAssignableFrom(ufFacade.getRepository().getClass()));
+		assertNotNull(ufFacade.getRepository());
+		assertTrue(UFRepository.class.isAssignableFrom(ufFacade.getRepository().getClass()));
 	}
 }
