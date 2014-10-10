@@ -26,7 +26,6 @@ public class CrudFacadeBaseInjectionTest extends CoreBaseTest {
 	
 	@Test
 	public void repositoryTypeInjectionTest() {
-		assertNotNull(ufFacade.getRepository());
 		assertTrue(UFRepository.class.isAssignableFrom(ufFacade.getRepository().getClass()));
 	}
 }
