@@ -29,7 +29,7 @@ import br.jus.trt.lib.common_tests.cdi.CdiJUnitRunner;
  */
 @RunWith(CdiJUnitRunner.class)
 @Ignore
-public class BaseTest {
+public class TestBase {
 
 	/** para controle de transações e acesso à base de dados */
 	private JPAStandalone jpaInstance;

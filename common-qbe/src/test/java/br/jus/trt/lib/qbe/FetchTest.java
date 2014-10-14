@@ -21,7 +21,7 @@ import br.jus.trt.lib.qbe.domain.UF;
 import br.jus.trt.lib.qbe.repository.criteria.CriteriaQbeRepository;
 import br.jus.trt.lib.qbe.repository.criteria.OperatorProcessorRepositoryFactory;
 
-public class FetchTest extends QbeBaseTest {
+public class FetchTest extends QbeTestBase {
 
 	@Test
 	public void consultarEntidadeComFetchAssociacao() {

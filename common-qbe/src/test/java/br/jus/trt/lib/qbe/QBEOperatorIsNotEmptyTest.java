@@ -17,7 +17,7 @@ import br.jus.trt.lib.qbe.repository.criteria.OperatorProcessorRepositoryFactory
 /**
  * Testes do operador {@link IsNotEmpty} 
  */
-public class QBEOperatorIsNotEmptyTest extends QbeBaseTest {
+public class QBEOperatorIsNotEmptyTest extends QbeTestBase {
 
 	@Test
 	public void searchInSimpleAssociation() throws Exception {

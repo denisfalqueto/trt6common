@@ -22,7 +22,7 @@ import br.jus.trt.lib.qbe.repository.criteria.OperatorProcessorRepositoryFactory
  * @author augusto
  *
  */
-public class FetchJoinTableTest extends QbeBaseTest {
+public class FetchJoinTableTest extends QbeTestBase {
 
 	@Test
 	public void consultarEntidadeComFetchInnerJoin() {

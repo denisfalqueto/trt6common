@@ -19,7 +19,7 @@ import br.jus.trt.lib.qbe.repository.criteria.OperatorProcessorRepositoryFactory
  * Classe de teste que avalia as op��es de operadores das consultas QBE 
  * @author augusto
  */
-public class QBEOperatorTest extends QbeBaseTest {
+public class QBEOperatorTest extends QbeTestBase {
 
 	/**
 	 * Testa consulta utilizando uma propriedade simples como filtro

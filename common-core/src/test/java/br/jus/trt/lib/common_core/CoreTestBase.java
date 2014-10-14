@@ -3,7 +3,7 @@ package br.jus.trt.lib.common_core;
 
 import org.junit.Ignore;
 
-import br.jus.trt.lib.common_tests.jpa.BaseTest;
+import br.jus.trt.lib.common_tests.jpa.TestBase;
 
 /**
  * Classe base para os casos de testes do módulo CORE.
@@ -11,7 +11,7 @@ import br.jus.trt.lib.common_tests.jpa.BaseTest;
  * @author augusto
  */
 @Ignore
-public class CoreBaseTest extends BaseTest {
+public class CoreTestBase extends TestBase {
 
 	
 }

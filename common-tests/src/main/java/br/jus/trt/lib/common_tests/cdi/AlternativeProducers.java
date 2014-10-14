@@ -32,8 +32,8 @@ public class AlternativeProducers {
 	 * de testes em execução.
 	 * @return
 	 */
-	@Produces @Default
-    public JPAStandalone produceJpaStandAlone() {
+	@Produces @Default 
+    public JPAStandalone createJpaStandAlone() {
 		String persistenceUnitName = "default_pu";
 		
 		JPAStandalone jpaStandalone;
@@ -53,7 +53,7 @@ public class AlternativeProducers {
 	 * @return {@link EntityManager} devidamente configurado e pronto para uso.
 	 */
 	@Produces 
-    public EntityManager produceEntityManager(JPAStandalone jpaStandalone) {
+    public EntityManager createEntityManager(JPAStandalone jpaStandalone) {
         return jpaStandalone.getEm();
     }
 	
@@ -72,7 +72,7 @@ public class AlternativeProducers {
 	 * @param caller para obtenção dos dados do bean interceptado.
 	 * @return Logger configurado segundo o bean interceptado.
 	 */
-	@Produces
+	@Produces @Alternative
 	public Logger createLogger(InjectionPoint caller) {
 		return Logger.getLogger(caller.getBean().getClass().getName());
 	}

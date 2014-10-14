@@ -16,7 +16,7 @@ import br.jus.trt.lib.qbe.domain.UF;
 import br.jus.trt.lib.qbe.repository.criteria.CriteriaQbeRepository;
 import br.jus.trt.lib.qbe.repository.criteria.OperatorProcessorRepositoryFactory;
 
-public class CountTest extends QbeBaseTest {
+public class CountTest extends QbeTestBase {
 
 	@Test
 	public void contarSimples() {

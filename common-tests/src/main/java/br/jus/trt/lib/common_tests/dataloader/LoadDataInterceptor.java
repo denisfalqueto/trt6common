@@ -8,12 +8,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import javax.enterprise.inject.spi.CDI;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
 import org.junit.Test;
+
+import br.jus.trt.lib.common_tests.cdi.CDI;
 
 /**
  * Interceptador associado à anotação {@link LoadData} e executa as tarefas de
@@ -99,7 +100,7 @@ public class LoadDataInterceptor implements Serializable {
 		// carregando scripts
 		String[] scripts = loadData.sql();
 		for (String script : scripts) {
-			DataLoaderSQL scriptDataLoader = CDI.current().select(DataLoaderSQL.class).get();
+			DataLoaderSQL scriptDataLoader = CDI.getInstance().instance(DataLoaderSQL.class);
 			scriptDataLoader.setScript(script);
 			
 			DataLoaderPrecedence dataLoader = new DataLoaderPrecedence(loadData.precedence(), scriptDataLoader);
@@ -109,7 +110,7 @@ public class LoadDataInterceptor implements Serializable {
 		// carregando beans
 		Class<? extends DataLoader>[] beans = loadData.dataLoader();
 		for (Class<? extends DataLoader> dataLoaderType : beans) {
-			DataLoader beanDataLoader = CDI.current().select(dataLoaderType).get();
+			DataLoader beanDataLoader = CDI.getInstance().instance(dataLoaderType);
 			
 			DataLoaderPrecedence dataLoader = new DataLoaderPrecedence(loadData.precedence(), beanDataLoader);
 			loaders.add(dataLoader);
