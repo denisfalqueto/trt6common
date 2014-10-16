@@ -1,4 +1,4 @@
-package br.jus.trt.lib.common_core.util;
+package br.jus.trt.lib.common_core.integration;
 
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
@@ -17,7 +17,7 @@ public class EntityManagerProducer {
     @PersistenceUnit
     private EntityManagerFactory emf;
     
-    @Produces
+    @Produces 
     public EntityManager produceEntityManager() {
         return emf.createEntityManager();
     }

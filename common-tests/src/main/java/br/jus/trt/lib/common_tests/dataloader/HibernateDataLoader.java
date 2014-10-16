@@ -7,6 +7,8 @@ import javax.persistence.EntityManager;
 
 import org.hibernate.Session;
 
+import br.jus.trt.lib.common_tests.cdi.ForTest;
+
 /**
  * Data loader que utiliza o EntityManager para carregamento dos dados.
  * @author augusto
@@ -30,7 +32,7 @@ public abstract class HibernateDataLoader implements DataLoader {
 	}
 
 	@Inject
-	protected void setLogger(Logger logger) {
+	protected void setLogger(@ForTest Logger logger) {
 		this.logger = logger;
 	}
 
