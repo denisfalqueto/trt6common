@@ -100,7 +100,7 @@ public class LoadDataInterceptor implements Serializable {
 		// carregando scripts
 		String[] scripts = loadData.sql();
 		for (String script : scripts) {
-			DataLoaderSQL scriptDataLoader = CDI.getInstance().instance(DataLoaderSQL.class);
+			DataLoaderSQL scriptDataLoader = CDI.getInstance().lookup(DataLoaderSQL.class);
 			scriptDataLoader.setScript(script);
 			
 			DataLoaderPrecedence dataLoader = new DataLoaderPrecedence(loadData.precedence(), scriptDataLoader);
@@ -110,7 +110,7 @@ public class LoadDataInterceptor implements Serializable {
 		// carregando beans
 		Class<? extends DataLoader>[] beans = loadData.dataLoader();
 		for (Class<? extends DataLoader> dataLoaderType : beans) {
-			DataLoader beanDataLoader = CDI.getInstance().instance(dataLoaderType);
+			DataLoader beanDataLoader = CDI.getInstance().lookup(dataLoaderType);
 			
 			DataLoaderPrecedence dataLoader = new DataLoaderPrecedence(loadData.precedence(), beanDataLoader);
 			loaders.add(dataLoader);

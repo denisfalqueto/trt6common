@@ -13,7 +13,7 @@ public class CdiJUnitRunner extends BlockJUnit4ClassRunner {
  
     @Override
     protected Object createTest() throws Exception {
-		final Object test = CDI.getInstance().instance(clazz);
+		final Object test = CDI.getInstance().lookup(clazz);
         return test;
     }
 

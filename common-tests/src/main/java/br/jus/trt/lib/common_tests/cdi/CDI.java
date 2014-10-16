@@ -51,7 +51,20 @@ public class CDI {
     * @return A instância.
     * 
     */
-   public <T> T instance(Class<T> subtype, Annotation... qualifiers) {
+   public <T> T lookup(Class<T> subtype, Annotation... qualifiers) {
+	   return getContainer().instance().select(subtype, qualifiers).get();
+   }
+   
+   /**
+    * Delegate method para operação que recupera uma instância de um determinado bean no CDI.
+    * 
+    * @param <T> Tipo do bean.
+    * @param subtype Um {@link java.lang.Class} representando o tipo desejado.
+    * @param qualifiers Qualificadores para seleção (se necessário)
+    * @return A instância.
+    * 
+    */
+   public <T> T lookup(Class<T> subtype) {
 	   return getContainer().instance().select(subtype).get();
    }
     
