@@ -7,6 +7,6 @@ import br.jus.trt.lib.common_tests.suite.BaseSuite;
  * 
  * @author augusto
  */
-public class SuiteTestRepositorioQBE extends BaseSuite {
+public class QBETestSuite extends BaseSuite {
 
 }

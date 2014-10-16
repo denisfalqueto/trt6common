@@ -24,7 +24,7 @@ import br.jus.trt.lib.common_tests.util.classpath.ClassPathScannerException;
 /**
  * Test Runner que descobre automaticamente as classes de teste dentro do package desta classe, adicionando à suite de testes dinamicamente.
  */
-public class DynamicSuite extends ParentRunner<Runner> {
+public class DynamicSuiteRunner extends ParentRunner<Runner> {
 
 	private final List<Runner> fRunners;
 
@@ -36,7 +36,7 @@ public class DynamicSuite extends ParentRunner<Runner> {
 	 * @throws InitializationError
 	 * @throws ClassPathScannerException 
 	 */
-	public DynamicSuite(Class<?> klass, RunnerBuilder builder) throws InitializationError, ClassPathScannerException {
+	public DynamicSuiteRunner(Class<?> klass, RunnerBuilder builder) throws InitializationError, ClassPathScannerException {
 		this(builder, klass, searchForTests(klass));
 	}
 
@@ -48,7 +48,7 @@ public class DynamicSuite extends ParentRunner<Runner> {
 	 * @param classes the classes in the suite
 	 * @throws InitializationError 
 	 */
-	public DynamicSuite(RunnerBuilder builder, Class<?>[] classes) throws InitializationError {
+	public DynamicSuiteRunner(RunnerBuilder builder, Class<?>[] classes) throws InitializationError {
 		this(null, builder.runners(null, classes));
 	}
 	
@@ -58,7 +58,7 @@ public class DynamicSuite extends ParentRunner<Runner> {
 	 * @param suiteClasses the classes in the suite
 	 * @throws InitializationError
 	 */
-	protected DynamicSuite(Class<?> klass, Class<?>[] suiteClasses) throws InitializationError {
+	protected DynamicSuiteRunner(Class<?> klass, Class<?>[] suiteClasses) throws InitializationError {
 		this(new AllDefaultPossibilitiesBuilder(true), klass, suiteClasses);
 	}
 	
@@ -70,7 +70,7 @@ public class DynamicSuite extends ParentRunner<Runner> {
 	 * @param suiteClasses the classes in the suite
 	 * @throws InitializationError
 	 */
-	protected DynamicSuite(RunnerBuilder builder, Class<?> klass, Class<?>[] suiteClasses) throws InitializationError {
+	protected DynamicSuiteRunner(RunnerBuilder builder, Class<?> klass, Class<?>[] suiteClasses) throws InitializationError {
 		this(klass, builder.runners(klass, suiteClasses));
 	}
 	
@@ -81,7 +81,7 @@ public class DynamicSuite extends ParentRunner<Runner> {
 	 * @param runners for each class in the suite, a {@link Runner}
 	 * @throws InitializationError 
 	 */
-	protected DynamicSuite(Class<?> klass, List<Runner> runners) throws InitializationError {
+	protected DynamicSuiteRunner(Class<?> klass, List<Runner> runners) throws InitializationError {
 		super(klass);
 		fRunners = runners;
 	}	
@@ -91,7 +91,7 @@ public class DynamicSuite extends ParentRunner<Runner> {
 	 */
 	public static Runner emptySuite() {
 		try {
-			return new DynamicSuite((Class<?>)null, new Class<?>[0]);
+			return new DynamicSuiteRunner((Class<?>)null, new Class<?>[0]);
 		} catch (InitializationError e) {
 			throw new RuntimeException("Este erro não deve ocorrer.");
 		}
@@ -186,7 +186,7 @@ public class DynamicSuite extends ParentRunner<Runner> {
 	 */
 	private static boolean isDynamicSuiteClass(Class<?> candidateClass) {
 		RunWith runWith = candidateClass.getAnnotation(RunWith.class);
-		return !isAbstract(candidateClass) && runWith != null && runWith.value().equals(DynamicSuite.class);
+		return !isAbstract(candidateClass) && runWith != null && runWith.value().equals(DynamicSuiteRunner.class);
 	}
 
 	private static boolean isAbstract(Class<?> clazz) {

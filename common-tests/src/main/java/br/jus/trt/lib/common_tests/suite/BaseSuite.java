@@ -6,10 +6,10 @@ import org.junit.runner.Runner;
 /**
  * Classe base para Suítes de testes. Configura um {@link Runner} do Junit que procura
  * as classes de testes automaticamente, a partir do package da classe Suíte em execução.
- * @see DynamicSuite 
+ * @see DynamicSuiteRunner 
  * @author augusto
  */
-@RunWith(DynamicSuite.class)
+@RunWith(DynamicSuiteRunner.class)
 public abstract class BaseSuite {
 
 }

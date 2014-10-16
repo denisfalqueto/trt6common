@@ -6,19 +6,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import br.jus.trt.lib.common_tests.jpa.BaseTest;
+import org.junit.Ignore;
+
+import br.jus.trt.lib.common_tests.jpa.TestBase;
 
 /**
  * Classe base para os casos de testes do módulo QBE.
  * Gerencia o ciclo de vida do JUnit e dos recursos necessários para testes.
  * @author augusto
  */
-public class QbeBaseTest extends BaseTest {
+@Ignore
+public class QbeTestBase extends TestBase {
 
-	public QbeBaseTest() {
-		super("qbe_pu");
-	}
-	
 	/**
 	 * Converte uma String em uma Data Formatada utilizando o formato padrão de data.
 	 * @param data	String a ser formatada.

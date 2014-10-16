@@ -18,7 +18,7 @@ import br.jus.trt.lib.qbe.domain.UF;
 import br.jus.trt.lib.qbe.repository.criteria.CriteriaQbeRepository;
 import br.jus.trt.lib.qbe.repository.criteria.OperatorProcessorRepositoryFactory;
 
-public class FetchMultipleCollectionsTest extends QbeBaseTest {
+public class FetchMultipleCollectionsTest extends QbeTestBase {
 
 	
 	@Test

@@ -6,7 +6,7 @@ import java.io.IOException;
 import br.jus.trt.lib.common_tests.util.classpath.ClassPathFilter;
 
 /**
- * Filtro que identifica o output-folder das classes de teste das aplicações do TRT6.
+ * Filtro que identifica o output-folder das classes de teste das aplicações.
  * Por default, as aplicações têm este tipo de source folder configurado para "test-classes"
  * 
  * @author augusto

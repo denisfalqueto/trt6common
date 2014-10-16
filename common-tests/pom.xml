@@ -27,7 +27,6 @@
 		<dependency>
 			<groupId>javax.enterprise</groupId>
 			<artifactId>cdi-api</artifactId>
-			<version>1.1</version>
 		</dependency>
 
 		<!-- Import the JPA API, we use provided scope as the API is included in 
@@ -61,9 +60,9 @@
 		<dependency>
 			<groupId>org.jboss.weld.se</groupId>
 			<artifactId>weld-se</artifactId>
-			<version>2.1.0.CR1</version>
+	 		<version>1.2.0.Beta1</version> 
 		</dependency>
-
+		
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>

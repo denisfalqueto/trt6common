@@ -20,7 +20,7 @@ import br.jus.trt.lib.qbe.repository.criteria.OperatorProcessorRepositoryFactory
  * @author augusto
  *
  */
-public class ContainerTest extends QbeBaseTest {
+public class ContainerTest extends QbeTestBase {
 
 	/**
 	 * O container default configurado na classe FiltroQBE deve utilizar o conector AND
