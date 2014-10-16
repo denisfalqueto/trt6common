@@ -2,45 +2,26 @@ package br.jus.trt.lib.common_core.business.facade;
 
 import br.jus.trt.lib.common_core.business.domain.Entity;
 import br.jus.trt.lib.common_core.integration.persistence.CrudRepository;
-import br.jus.trt.lib.common_core.integration.persistence.CrudRepositoryBase;
+import br.jus.trt.lib.common_core.util.DIContainerUtil;
 import br.jus.trt.lib.common_core.util.JavaGenericsUtil;
 import br.jus.trt.lib.qbe.api.Filter;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.metamodel.SingularAttribute;
-import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 
 @Transactional
 @BusinessExceptionHandler
-public abstract class CrudFacadeBase<E extends Entity<PK>, PK extends Serializable>
+public abstract class CrudFacadeBase<CR extends CrudRepository<E, PK>, E extends Entity<PK>, PK extends Serializable>
         implements CrudFacade<E, PK> {
 
-    private CrudRepository<E, PK> repository;
+    private CR repository;
 
     protected CrudRepository<E, PK> getRepository() {
         if (repository == null) {
-            // Precisamos descobrir qual dos CrudRepository registrados possui os mesmos tipos
-            // genéricos que a fachada atual. Infelizmente, não podemos usar generics do Java,
-            // pois os tipos são apagados depois da compilação (type erasure) e isto acaba
-            // com vários casos de uso úteis para generics. O compilador não vai conseguir
-            // resolver os tipos genéricos em tempo de execução, então temos que fazer
-            // esse contorno.
-            
-            // Descobrir a lista de tipos genéricos da instância atual
-            List<Class<?>> genericsAtual = JavaGenericsUtil.getGenericTypedArguments(CrudFacadeBase.class, this.getClass());
-            
-            // Descobrir a lista de CrudRepositories registrados via CDI.
-            List<CrudRepositoryBase> repos = BeanProvider.getContextualReferences(CrudRepositoryBase.class, false);
-            for (CrudRepositoryBase repo : repos) {
-                // Descobrir a lsita de tipos genéricos do repositório atual
-                List<Class<?>> genericsRepo = JavaGenericsUtil.getGenericTypedArguments(CrudRepositoryBase.class, repo.getClass());
-                
-                // Comparar com a lsita de tipos da fachada. Se forem iguais, este é o repositório que precisamos
-                if (genericsAtual.containsAll(genericsRepo)) {
-                    repository = repo;
-                }
-            }
+            List<Class<?>> genericsTypedArguments = JavaGenericsUtil.getGenericTypedArguments(CrudFacadeBase.class, this.getClass());
+            Class<CR> repositoryType = (Class<CR>) genericsTypedArguments.get(0); // o repostiório é o primeiro parãmetro genérico
+            repository = new DIContainerUtil().lookup(repositoryType);
         }
         return repository;
     }
