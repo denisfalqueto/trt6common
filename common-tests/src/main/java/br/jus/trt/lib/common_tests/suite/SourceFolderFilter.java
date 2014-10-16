@@ -12,7 +12,7 @@ import br.jus.trt.lib.common_tests.util.classpath.ClassPathFilter;
  * @author augusto
  *
  */
-public class TestSourceFolderFilter implements ClassPathFilter {
+public class SourceFolderFilter implements ClassPathFilter {
 
 	/** Diretório padronizado para output folder das classes de teste*/
 	public static final String TEST_OUTPUT_FOLDER = "test-classes";
