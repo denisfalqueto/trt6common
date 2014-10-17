@@ -101,7 +101,7 @@ public class LoadDataInterceptor implements Serializable {
 		String[] scripts = loadData.sql();
 		for (String script : scripts) {
 			DataLoaderSQL scriptDataLoader = CDI.getInstance().lookup(DataLoaderSQL.class);
-			scriptDataLoader.setScript(script);
+			scriptDataLoader.setScriptPath(script);
 			
 			DataLoaderPrecedence dataLoader = new DataLoaderPrecedence(loadData.precedence(), scriptDataLoader);
 			loaders.add(dataLoader);
