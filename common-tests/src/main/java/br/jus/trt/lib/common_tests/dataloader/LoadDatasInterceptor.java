@@ -4,15 +4,16 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
+
 /**
  * Interceptador associado à anotação {@link LoadData} e executa as tarefas de
  * interceptação das classes de testes e execução dos DataLoaders configurados.
  */
 
 @SuppressWarnings("serial")
-@LoadData
+@LoadDatas
 @Interceptor
-public class LoadDataInterceptor extends LoadInterceptor {
+public class LoadDatasInterceptor extends LoadInterceptor {
 
 	@Override
 	@AroundInvoke

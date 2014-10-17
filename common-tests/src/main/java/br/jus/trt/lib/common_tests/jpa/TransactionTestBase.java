@@ -84,6 +84,19 @@ public class TransactionTestBase extends TestBase {
 	/**
 	 * Executa um hql com o entitymanager corrente.
 	 * 
+	 * @param hql
+	 *            HQL a ser executado.
+	 * @param parametros
+	 *            Parâmetros a serem setados na query. Opcional.
+	 * @return Lista de retorno da query.
+	 */
+	protected Long executeCountQuery(String hql, Object... parametros) {
+		return executeCountQuery(getEntityManager(), hql, parametros);
+	}	
+	
+	/**
+	 * Executa um hql com o entitymanager corrente.
+	 * 
 	 * @param em
 	 *            EntityManager para realização da operação.
 	 * @param hql
@@ -98,6 +111,19 @@ public class TransactionTestBase extends TestBase {
 		return (Long) query.getSingleResult();
 	}
 
+	/**
+	 * Cria uma query.
+	 * 
+	 * @param hql
+	 *            HQL para criação da query.
+	 * @param parametros
+	 *            Parâmetros a serem adicionados à query.
+	 * @return Query criada.
+	 */
+	protected Query createQuery(String hql, Object... parametros) {
+		return createQuery(getEntityManager(), hql, parametros);
+	}	
+	
 	/**
 	 * Cria uma query.
 	 * 
@@ -124,6 +150,20 @@ public class TransactionTestBase extends TestBase {
 	/**
 	 * Executa um hql com o entitymanager corrente.
 	 * 
+	 * @param hql
+	 *            HQL a ser executado.
+	 * @param parametros
+	 *            Parâmetros a serem setados na query. Opcional.
+	 * @return Lista de retorno da query.
+	 */
+	@SuppressWarnings("rawtypes")
+	protected List executeQuery(String hql, Object... parametros) {
+		return executeQuery(getEntityManager(), hql, parametros);
+	}	
+	
+	/**
+	 * Executa um hql com o entitymanager corrente.
+	 * 
 	 * @param em
 	 *            EntityManager para realização da operação.
 	 * @param hql
@@ -140,6 +180,25 @@ public class TransactionTestBase extends TestBase {
 	}
 
 	/**
+	 * Executa um hql com o entitymanager corrente.
+	 * 
+	 * @param hql
+	 *            HQL a ser executado.
+	 * @param maxRegistros
+	 *            Número máximo de registro a ser retornado.
+	 * @param posPrimeiroRegistro
+	 *            Posição do primeiro registro a ser devolvido.
+	 * @param parametros
+	 *            Parâmetros a serem setados na query. Opcional.
+	 * @return Lista de retorno da query.
+	 */
+	@SuppressWarnings("rawtypes")
+	protected List executeQuery(String hql,
+			int posPrimeiroRegistro, int maxRegistros, Object... parametros) {
+		return executeQuery(getEntityManager(), hql, posPrimeiroRegistro, maxRegistros, parametros);
+	}
+	
+   /**
 	 * Executa um hql com o entitymanager corrente.
 	 * 
 	 * @param em
@@ -173,7 +232,7 @@ public class TransactionTestBase extends TestBase {
 	@SuppressWarnings("unchecked")
 	protected <TIPO> TIPO getAny(Class<TIPO> tipo) {
 		String hql = "from " + tipo.getSimpleName();
-		Query query = getJpa().getEm().createQuery(hql);
+		Query query = getEntityManager().createQuery(hql);
 		query.setMaxResults(1);
 		return (TIPO) query.getSingleResult();
 	}
@@ -191,7 +250,7 @@ public class TransactionTestBase extends TestBase {
 	@SuppressWarnings("unchecked")
 	protected <TIPO> TIPO getInPosition(Class<TIPO> tipo, int posicao) {
 		String hql = "from " + tipo.getSimpleName();
-		Query query = getJpa().getEm().createQuery(hql);
+		Query query = getEntityManager().createQuery(hql);
 		query.setMaxResults(1);
 		query.setFirstResult(posicao);
 		return (TIPO) query.getSingleResult();

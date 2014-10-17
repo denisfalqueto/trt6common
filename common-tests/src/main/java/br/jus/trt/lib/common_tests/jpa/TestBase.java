@@ -28,13 +28,13 @@ public abstract class TestBase {
 	 * Executado antes de cada método de teste. 
 	 */
 	@Before
-	public abstract void beforeEachTest();
+	public void beforeEachTest() {};
 
 	/**
 	 * Executado após de cada método de teste.
 	 */
 	@After
-	public abstract void afterEachTest();
+	public void afterEachTest() {};
 
 	/**
 	 * Verifica se ambas as listas possuem os mesmos objetos. A ordem não é

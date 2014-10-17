@@ -52,10 +52,12 @@ public class JPAStandalone {
 	}
 
 	/**
-	 * Inicia um novo EntityManager
+	 * Inicia um novo EntityManager caso não exista um já pronto para uso.
 	 */
 	public void startSession() {
-		em = emf.createEntityManager();
+		if (em == null || !em.isOpen()) {
+			em = emf.createEntityManager();
+		}	
 	}
 	
 	/**
