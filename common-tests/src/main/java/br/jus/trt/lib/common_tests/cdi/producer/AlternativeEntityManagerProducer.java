@@ -20,6 +20,7 @@ public class AlternativeEntityManagerProducer {
 	 */
 	@Produces @Alternative
     public EntityManager createEntityManager(JPAStandalone jpaStandalone) {
+		jpaStandalone.startSession(); // garante um EM disponível
         return jpaStandalone.getEm();
     }
 	

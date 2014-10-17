@@ -149,7 +149,7 @@ public class DynamicSuiteRunner extends ParentRunner<Runner> {
 	 * @return Filtro para identificação dos diretórios e classes de teste
 	 */
 	protected static ClassPathFilter getFilter() {
-		return new TestSourceFolderFilter();
+		return new SourceFolderFilter();
 	}
 
 	/**

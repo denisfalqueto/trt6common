@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import org.apache.deltaspike.core.util.StringUtils;
 import org.hibernate.jdbc.Work;
 
 /**
@@ -24,28 +25,28 @@ public class DataLoaderSQL extends HibernateDataLoader {
 	/** Caminho para o diretório src/test/resources*/
 	public static final String TEST_RESOURCES_PATH = "src" + File.separator + "test" + File.separator + "resources"; 
 	
-	/** Script SQL para execução */
-	private String script;
+	/** Caminho para o Script SQL para execução */
+	private String scriptPath;
 
 	public DataLoaderSQL() {
 		// Default
 	}
 	
 	/**
-	 * @param script Script SQL para execução.
+	 * @param scriptPath Caminho para o Script SQL para execução.
 	 */
-	public DataLoaderSQL(String script) {
+	public DataLoaderSQL(String scriptPath) {
 		super();
-		this.script = script;
+		this.scriptPath = scriptPath;
 	}
 
 	@Override
 	public void load() throws Exception {
 		try {
-			getLogger().info("Executando script de carga de dados: " + getScript());
-			executeDMLScript(getScript());
+			getLogger().info("Executando script de carga de dados: " + getScriptPath());
+			executeDMLScript(getScriptPath());
 		} catch (Exception e) {
-			throw new Exception("Não foi possível executar scripts de carga para testes: " + getScript(), e);
+			throw new Exception("Não foi possível executar scripts de carga para testes: " + getScriptPath(), e);
 		}	
 	}
 
@@ -67,10 +68,31 @@ public class DataLoaderSQL extends HibernateDataLoader {
 			    public void execute(Connection connection) throws SQLException {
 			    	Statement st = connection.createStatement();
 			        for (String command : commands) {
-			            st.addBatch(command);
+			        	if (isValid(command)) {
+			        		st.addBatch(removeEndOfFile(command));
+			        	}
 			        }
 			        st.executeBatch();
 			    }
+
+			    /**
+			     * Verifica se é um comando válido. Descarta comentários iniciados com -- 
+			     */
+			    private boolean isValid(String command) {
+					return !StringUtils.isEmpty(command) && !command.trim().startsWith("--");
+				}
+
+				/**
+			     * Remove ";" do final do comando, já que causa problemas quando executado em batch. 
+			     */
+				private String removeEndOfFile(String command) {
+					String removed = command.trim();
+					int lastIndexOf = removed.lastIndexOf(";");
+					if (lastIndexOf + 1 == removed.length()) {
+						removed = removed.substring(0, lastIndexOf);
+					}
+					return removed;
+				}
 			});
 			
 		}
@@ -99,16 +121,16 @@ public class DataLoaderSQL extends HibernateDataLoader {
 	
 	// getter and setters
 	
-	protected String getScript() {
-		return script;
+	protected String getScriptPath() {
+		return scriptPath;
 	}
 
-	protected void setScript(String script) {
-		this.script = script;
+	protected void setScriptPath(String script) {
+		this.scriptPath = script;
 	}
 	
 	@Override
 	public String toString() {
-		return "Script to load:" + getScript();
+		return "Script to load:" + getScriptPath();
 	}
 }
