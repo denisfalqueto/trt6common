@@ -1,8 +1,6 @@
 package br.jus.trt.lib.common_core.business.facade;
 
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
@@ -11,6 +9,7 @@ import javax.interceptor.InvocationContext;
 
 import br.jus.trt.lib.common_core.exception.AppException;
 import br.jus.trt.lib.common_core.exception.BusinessException;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Responsável pela interceptação das exceções e realização de tratamentos genéricos da camada de negócio. 
@@ -50,15 +49,15 @@ public class BusinessExceptionInterceptor implements Serializable {
 				
 			} catch (BusinessException ne) {
 				// relançando mensagem de negócio
-				log.log(Level.FINE, "Relançando validação de negócio" , ne);
+				log.error("Relançando validação de negócio" , ne);
 				throw ne;
 				
 			} catch (AppException ne) {
-				log.log(Level.SEVERE, "Erro não identificado" , ne);
+				log.error("Erro não identificado" , ne);
 				throw ne;
 				
 			} catch (Throwable ne) {
-				log.log(Level.SEVERE, "Erro não esperado pela aplicação. Encapsulando em um TRT6Expetion", ne);
+				log.error("Erro não esperado pela aplicação. Encapsulando em um TRT6Expetion", ne);
 				throw new AppException(ne);
 				
 			} finally {

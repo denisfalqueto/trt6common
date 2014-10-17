@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -28,6 +27,8 @@ import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.api.exception.QbeException;
 import br.jus.trt.lib.qbe.util.PropertyComparator;
 import br.jus.trt.lib.qbe.util.ReflectionUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Realiza o fetch manual das coleções configuradas. Fetch manual significa realizar uma segunda consulta manualmente, simulando o funcionamento
@@ -39,7 +40,7 @@ import br.jus.trt.lib.qbe.util.ReflectionUtil;
  */
 public class FetchesManualProcessor extends FetchesProcessor {
 
-	protected final static Logger log = Logger.getLogger(QBERepository.class.getName());
+	protected final static Logger log = LogManager.getLogger(QBERepository.class);
 	
 	/** lista o resultado da consulta principal */
 	private List<Identifiable> resultList;
@@ -166,7 +167,7 @@ public class FetchesManualProcessor extends FetchesProcessor {
 				// era do INNER, o registro deve ser removido do resultado.
 				if (JoinType.INNER.equals(groupToFetch.primaryProperty.getJoinType())) {
 					iterator.remove();
-					log.warning("A utilização de FETCH + INNER pode provocar diferenças de resultados entre a consulta de registros e o count: " + groupToFetch.primaryProperty);
+					log.warn("A utilização de FETCH + INNER pode provocar diferenças de resultados entre a consulta de registros e o count: " + groupToFetch.primaryProperty);
 					continue; // ABANDONA ESTA ITERACAO
 				} 
 				

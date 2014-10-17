@@ -10,6 +10,8 @@ import br.jus.trt.lib.qbe.api.Filter;
 import br.jus.trt.lib.qbe.api.operator.Operators;
 import java.io.Serializable;
 import java.util.List;
+import javax.inject.Inject;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Classe base para Actions do tipo CRUD, associados a uma entidade de domínio específica. Implementa o comportamento padrão
@@ -23,6 +25,9 @@ import java.util.List;
 @SuppressWarnings("serial")
 public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Serializable, FACADE extends CrudFacade<ENTITY, PK>> extends ActionBase {
 
+    @Inject 
+    private Logger log;
+    
 	/**
 	 * Fachada de serviços para impleentação de um fluxo CRUD.
 	 */
@@ -59,6 +64,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	@Override
 	public void init() {
 		super.init();
+                log.entry();
 		initObjects();
 		initEntity();
 	}
@@ -67,6 +73,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	 * Consulta registros na base de dados de acordo com os dados preenchidos no filtro.
 	 */
 	public void search() {
+            log.entry();
 		// sempre cria um novo filtro para evitar "lixo" de configurações anteriores
 		initFilter();
 
@@ -83,6 +90,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	 * Executa, de fato, a operação de consulta, armazenando o resultado em {@link QuerierAction#entityList} 
 	 */
 	protected void doSearch() {
+            log.entry();
 		List<ENTITY> result = getFacade().findAllBy(filter);
 		setResultList(result);
 	}
@@ -96,12 +104,14 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 		 * ponto de extensão para configuração da consulta pela sub-classe.
 		 * a implementação default considera a configuração por anotações
 		 */
+            log.entry();
 	}
 	
 	/**
 	 * Inicializa os objetos de controle desclarados.
 	 */
 	protected void initObjects() {
+            log.entry();
 		initGenericTypes();
 		initExample();
 		initFilter();
@@ -113,8 +123,11 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	 */
 	@SuppressWarnings("unchecked")
 	protected void initGenericTypes() {
+            log.entry();
 		List<Class<?>> genericsTypedArguments = JavaGenericsUtil.getGenericTypedArguments(CrudActionBase.class, this.getClass());
+                log.debug("Descobrir tipo da entidade via generics");
 		this.entityType = (Class<ENTITY>) genericsTypedArguments.get(0); // a entidade é o primeiro tipo declarado no action
+                log.debug("Descobrir tipo da fachada via generics");
 		this.facadeType = (Class<FACADE>) genericsTypedArguments.get(2); // a facade é o segundo tipo declarado.
 	}
 
@@ -122,6 +135,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	 * Inicializa o objeto concreto que representa a Facade.
 	 */
 	protected void initFacade() {
+            log.entry();
 		this.facade = new DIContainerUtil().lookup(getFacadeType());
 	}
 
@@ -129,6 +143,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	 * Inicializa o objeto que representa o exemplo do filtro da consulta
 	 */
 	protected void initExample() {
+            log.entry();
 		this.example = ReflectionUtil.instantiate(getEntityType());
 	}
 
@@ -136,6 +151,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	 * Inicializa o objeto Filtro para ser utilizar na busca com filtro.
 	 */
 	protected void initFilter() {
+            log.entry();
 		filter = createFilter();
 	}
 
@@ -191,6 +207,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	 * Inicializa o objeto que representa a entidade associada a este action.
 	 */
 	protected void initEntity() {
+            log.entry();
 		this.entity = ReflectionUtil.instantiate(getEntityType());
 	}
 	

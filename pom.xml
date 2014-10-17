@@ -209,6 +209,12 @@
 				<groupId>commons-beanutils</groupId>
 				<artifactId>commons-beanutils</artifactId>
 				<version>1.8.0</version>
+                                <exclusions>
+                                    <exclusion>
+                                        <groupId>commons-logging</groupId>
+                                        <artifactId>commons-logging</artifactId>
+                                    </exclusion>
+                                </exclusions>
 			</dependency>
 
 			<dependency>
@@ -243,6 +249,48 @@
 				<type>jar</type>
 				<scope>test</scope>
 			</dependency>
+                        
+                        <!-- Log4j2 -->
+                        <dependency>
+                            <groupId>org.apache.logging.log4j</groupId>
+                            <artifactId>log4j-api</artifactId>
+                            <version>${log4j2.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.apache.logging.log4j</groupId>
+                            <artifactId>log4j-core</artifactId>
+                            <version>${log4j2.version}</version>
+                        </dependency>
+                        
+                        <!-- Log4j2 bridges -->
+                        <!-- Log4j-->
+                        <dependency>
+                            <groupId>org.apache.logging.log4j</groupId>
+                            <artifactId>log4j-1.2-api</artifactId>
+                            <version>${log4j2.version}</version>
+                        </dependency>
+                        
+                        <!-- Commons-logging -->
+                        <dependency>
+                            <groupId>org.apache.logging.log4j</groupId>
+                            <artifactId>log4j-jcl</artifactId>
+                            <version>${log4j2.version}</version>
+                        </dependency>
+                        
+                        <!-- slfj -->
+                        <dependency>
+                            <groupId>org.apache.logging.log4j</groupId>
+                            <artifactId>log4j-slf4j-impl</artifactId>
+                            <version>${log4j2.version}</version>
+                        </dependency>
+                        
+                        <!-- Web servlet support -->
+                        <dependency>
+                            <groupId>org.apache.logging.log4j</groupId>
+                            <artifactId>log4j-web</artifactId>
+                            <version>${log4j2.version}</version>
+                            <scope>runtime</scope>
+                        </dependency>
 
 		</dependencies>
 	</dependencyManagement>
@@ -274,5 +322,6 @@
 		<common.version>0.0.1-SNAPSHOT</common.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<deltaspike.version>1.0.1</deltaspike.version>
+                <log4j2.version>2.0.2</log4j2.version>
 	</properties>
 </project>

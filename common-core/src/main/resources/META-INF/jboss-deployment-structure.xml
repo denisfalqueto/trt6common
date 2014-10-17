@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2">
+    <depoloyment>
+        <exclusions>
+            <module name="org.apache.log4j"/>
+            <module name="org.apache.commons.logging"/>
+            <module name="org.jboss.log4j"/>
+            <module name="org.jboss.logging"/>
+            <module name="org.jboss.logmanager"/>
+            <module name="org.slf4j"/>
+        </exclusions>
+    </depoloyment>
+</jboss-deployment-structure>

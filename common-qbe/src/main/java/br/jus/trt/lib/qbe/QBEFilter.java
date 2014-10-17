@@ -14,6 +14,8 @@ import br.jus.trt.lib.qbe.api.Operator;
 import br.jus.trt.lib.qbe.api.Pagination;
 import br.jus.trt.lib.qbe.api.SortConfig;
 import br.jus.trt.lib.qbe.api.operator.Operators;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Classe que encapsula as opções de configuração para consultas dinâmicas utilizando
@@ -24,6 +26,8 @@ import br.jus.trt.lib.qbe.api.operator.Operators;
 @SuppressWarnings("serial")
 public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filter<TIPO>{
 
+        private Logger log = LogManager.getLogger();
+        
 	/** Instância da entidade que servirá como exemplo para "descoberta" dos atributos
 	 * e valores a serem considerados na consulta */
 	private TIPO example;
@@ -63,11 +67,13 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	 */		
 	@SuppressWarnings("unchecked")
 	public <SUBTIPO extends TIPO> QBEFilter(SUBTIPO entity) {
+                log.entry(entity);
 		this.example = entity;
 		this.entityClass = (Class<TIPO>) entity.getClass();
 	}
 
 	public <SUBTIPO extends TIPO> QBEFilter(Class<SUBTIPO> clazz) {
+                log.entry(clazz);
 		this.entityClass = clazz;
 	}
 	
@@ -75,6 +81,7 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	 * @see br.jus.trt.lib.qbe.Filter#addOrder(br.jus.trt.lib.qbe.OrderConfig)
 	 */
 	public Filter<TIPO> sortBy(SortConfig ... orderings) {
+                log.entry(orderings);
 		return sortBy(false, orderings);
 	}
 	
@@ -82,6 +89,7 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	 * @see br.jus.trt.lib.qbe.Filter#addOrder(boolean, br.jus.trt.lib.qbe.OrderConfig)
 	 */
 	public Filter<TIPO> sortBy(boolean putFirst, SortConfig ... orderings) {
+                log.entry(putFirst, orderings);
 		if (orderings != null) {
 			for (SortConfig ordenacao : orderings) {
 				if (ordenacao != null) {
@@ -100,6 +108,7 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	 * @see br.jus.trt.lib.qbe.Filter#addAscOrder(java.lang.String)
 	 */
 	public Filter<TIPO> sortAscBy(String...properties) {
+                log.entry(properties);
 		if (properties != null) {
 			for (String prop : properties) {
 				sortBy(SortConfig.ASC(prop));
@@ -112,6 +121,7 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	 * @see br.jus.trt.lib.qbe.Filter#addDescOrder(java.lang.String)
 	 */
 	public Filter<TIPO> sortDescBy(String...properties) {
+                log.entry(properties);
 		if (properties != null) {
 			for (String prop : properties) {
 				sortBy(SortConfig.DESC(prop));
@@ -124,6 +134,7 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	 * @see br.jus.trt.lib.qbe.Filter#removeOrder(java.lang.String)
 	 */
 	public Filter<TIPO> clearSortings(String... properties) {
+                log.entry(properties);
 		this.orderings.clear(); 
 		return this;		
 	}
@@ -132,6 +143,7 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	 * @see br.jus.trt.lib.qbe.Filter#paginate(java.lang.Integer, java.lang.Integer)
 	 */
 	public Filter<TIPO> paginate(Integer posPrimeiroRegistro, Integer numeroMaxRegistros) {
+                log.entry(posPrimeiroRegistro, numeroMaxRegistros);
 		this.pagination = new Pagination(posPrimeiroRegistro, numeroMaxRegistros);
 		return this;
 	}
@@ -140,6 +152,7 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	 * @see br.jus.trt.lib.qbe.Filter#addOperation(br.jus.trt.lib.qbe.Operation)
 	 */
 	public Filter<TIPO> filterBy(Operation...operations) {
+                log.entry(operations);
 		rootContainer.addOperation(operations);
 		return this;
 	}
@@ -148,6 +161,7 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	 * @see Filter#filterBy(String, Operator)
 	 */
 	public Filter<TIPO> filterBy(String property, Operator<?> operador) {
+                log.entry(property, operador);
 		rootContainer.addOperation(new Operation(property, operador));
 		return this;
 	}
@@ -156,6 +170,7 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	 * @see br.jus.trt.lib.qbe.Filter#addOperation(java.lang.String, br.jus.trt.lib.qbe.Operator, java.lang.Object)
 	 */
 	public Filter<TIPO> filterBy(String property, Operator<?> operator, Object ... values) {
+                log.entry(property, operator, values);
 		rootContainer.addOperation(new Operation(property, operator, values));
 		return this;
 	}
@@ -164,6 +179,7 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	 * @see br.jus.trt.lib.qbe.Filter#addContainerOperation(br.jus.trt.lib.qbe.OperationContainer)
 	 */
 	public Filter<TIPO> addContainerOperation(OperationContainer container) {
+                log.entry(container);
 		this.rootContainer.addSubContainer(container);
 		return this;
 	}
@@ -172,6 +188,7 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	 * @see br.jus.trt.lib.qbe.Filter#addOr(br.jus.trt.lib.qbe.Operation)
 	 */
 	public OperationContainer addOr(Operation...operations) {
+                log.entry(operations);
 		OperationContainer or = OperationContainer.or();
 		addContainer(or, operations);
 		return or;
@@ -181,12 +198,14 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	 * @see br.jus.trt.lib.qbe.Filter#addAnd(br.jus.trt.lib.qbe.Operation)
 	 */
 	public OperationContainer addAnd(Operation...operations) {
+                log.entry(operations);
 		OperationContainer or = OperationContainer.and();
 		addContainer(or, operations);
 		return or;
 	}
 
 	private Filter<TIPO> addContainer(OperationContainer container, Operation... operations) {
+                log.entry(container, operations);
 		container.addOperation(operations);
 		addContainerOperation(container);
 		return this;
@@ -196,6 +215,7 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	 * @see br.jus.trt.lib.qbe.Filter#addFetch(br.jus.trt.lib.qbe.FetchMode)
 	 */
 	public Filter<TIPO> addFetch(FetchMode...fetches) {
+                log.entry(fetches);
 		if (fetches != null) {
 			for (FetchMode fetch : fetches) {
 				this.fetches.add(fetch);
@@ -208,6 +228,7 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	 * @see br.jus.trt.lib.qbe.Filter#addFetch(java.lang.String)
 	 */
 	public Filter<TIPO> addFetch(String...properties) {
+                log.entry(properties);
 		if (properties != null) {
 			for (String prop : properties) {
 				addFetch(new FetchMode(prop));
@@ -220,6 +241,7 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	 * @see br.jus.trt.lib.qbe.Filter#incrementNivel()
 	 */
 	public Filter<TIPO> incrementProspectionLevel() {
+                log.entry();
 		this.nivel++;
 		return this;
 	}
@@ -228,6 +250,7 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	 * @see br.jus.trt.lib.qbe.Filter#setRootContainerType(br.jus.trt.lib.qbe.OperationContainer.ContainerType)
 	 */
 	public Filter<TIPO> setRootContainerType(ContainerType tipo) {
+                log.entry(tipo);
 		this.getRootContainer().setType(tipo);
 		return this;
 	}

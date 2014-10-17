@@ -1,13 +1,12 @@
 package br.jus.trt.lib.common_tests.dataloader;
 
-import java.util.logging.Logger;
-
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import org.hibernate.Session;
 
 import br.jus.trt.lib.common_tests.cdi.ForTest;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Data loader que utiliza o EntityManager para carregamento dos dados.

@@ -63,10 +63,33 @@
 	 		<version>1.2.0.Beta1</version> 
 		</dependency>
 		
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-		</dependency>
+                <dependency>
+                    <groupId>commons-beanutils</groupId>
+                    <artifactId>commons-beanutils</artifactId>
+                </dependency>
+                
+                <!-- Log4j2 -->
+                <dependency>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-api</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-core</artifactId>
+                </dependency>
+                        
+                <!-- Log4j2 bridges -->
+                <!-- Log4j-->
+                <dependency>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-1.2-api</artifactId>
+                </dependency>
+                        
+                <!-- Commons-logging -->
+                <dependency>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-jcl</artifactId>
+                </dependency>
 	</dependencies>
 
 </project>

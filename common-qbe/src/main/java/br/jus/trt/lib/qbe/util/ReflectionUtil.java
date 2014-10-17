@@ -4,7 +4,6 @@ import java.beans.PropertyDescriptor;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
-import java.util.logging.Logger;
 
 import javax.persistence.Id;
 
@@ -15,13 +14,15 @@ import org.hibernate.proxy.HibernateProxy;
 
 import br.jus.trt.lib.qbe.api.Identifiable;
 import br.jus.trt.lib.qbe.api.exception.QbeException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Classe utilitária com operacoes baseadas em reflection.
  */
 public class ReflectionUtil {
 	
-	protected final static Logger log = Logger.getLogger(ReflectionUtil.class.getName());
+	protected final static Logger log = LogManager.getLogger(ReflectionUtil.class);
 	
 	/**
 	 * Verifica se este objeto é um proxy, devolvendo a respectiva instância concreta.

@@ -18,6 +18,8 @@ import br.jus.trt.lib.qbe.api.exception.QbeException;
 import br.jus.trt.lib.qbe.api.operator.Operators;
 import br.jus.trt.lib.qbe.repository.criteria.FetchesManualProcessor.PropertyGroup;
 import br.jus.trt.lib.qbe.util.ReflectionUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -34,7 +36,7 @@ import br.jus.trt.lib.qbe.util.ReflectionUtil;
  */
 public class CollectionMappedByFetcher extends CollectionFetcher {
 
-	
+	private static final Logger log = LogManager.getLogger();
 
 	public CollectionMappedByFetcher(
 			OperatorProcessorRepository operatorProcessorRepository, 
@@ -50,7 +52,7 @@ public class CollectionMappedByFetcher extends CollectionFetcher {
 
 	@Override
 	public void fetch() {
-		
+		log.entry();
 		// Nome da propriedade no relacionamento inverso, configurada em mappedBy
 		String mappedByProperty = findMapedByProperty(getFilter(), getGroupToFetch().getPrimaryProperty().getProperty());
 		
@@ -84,7 +86,8 @@ public class CollectionMappedByFetcher extends CollectionFetcher {
 	 * @return Nome da propriedade do atributo simples no relacionamento.
 	 */
 	private static String findMapedByProperty(Filter<?> qbeFilter, String colProperty) {
-		
+		log.entry(qbeFilter, colProperty);
+                
 		String mappedBy = null;
 		/*
 		 * Relacionamentos com collections são implementados, geralmente, com OneToMany
@@ -93,19 +96,22 @@ public class CollectionMappedByFetcher extends CollectionFetcher {
 			Field colField = ReflectionUtil.getField(qbeFilter.getEntityClass(), colProperty);
 			
 			if (colField.isAnnotationPresent(OneToMany.class)) {
+                                log.debug("colField possui anotação OneToMany");
 				OneToMany oneToMany = colField.getAnnotation(OneToMany.class);
 				mappedBy = oneToMany.mappedBy();
 				
 			} else {
-				throw new QbeException("Não foi encontrado a anotação @OneToMany na relação ." + colProperty);
+				throw log.throwing(new QbeException(
+                                        "Não foi encontrado a anotação @OneToMany na relação ." + 
+                                        colProperty));
 			}
 			
 		} catch (Exception e) {
-			throw new QbeException("Não foi possível encontrar informações sobre a coleção " 
-					+ qbeFilter.getEntityClass().getSimpleName() + "." + colProperty, e);
+			throw log.throwing(new QbeException("Não foi possível encontrar informações sobre a coleção " 
+					+ qbeFilter.getEntityClass().getSimpleName() + "." + colProperty, e));
 		}
 		
-		return mappedBy;
+		return log.exit(mappedBy);
 	}
 	
 }

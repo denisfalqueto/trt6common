@@ -52,10 +52,17 @@
 			<artifactId>hibernate-core</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-		</dependency>
+                <dependency>
+                    <groupId>commons-beanutils</groupId>
+                    <artifactId>commons-beanutils</artifactId>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>commons-logging</groupId>
+                            <artifactId>commons-logging</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                
 		<dependency>
 			<groupId>br.jus.trt.lib</groupId>
 			<artifactId>common-qbe</artifactId>

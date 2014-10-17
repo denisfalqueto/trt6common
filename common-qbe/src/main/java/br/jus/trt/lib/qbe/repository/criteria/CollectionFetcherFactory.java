@@ -17,6 +17,8 @@ import br.jus.trt.lib.qbe.api.exception.QbeException;
 import br.jus.trt.lib.qbe.repository.criteria.FetchesManualProcessor.PropertyGroup;
 import br.jus.trt.lib.qbe.util.ReflectionUtil;
 import br.jus.trt.lib.qbe.util.StringUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Fábrica de Fetchers, criando uma instância de acordo com as características
@@ -24,6 +26,8 @@ import br.jus.trt.lib.qbe.util.StringUtil;
  * @author augusto
  */
 public class CollectionFetcherFactory {
+    
+        private static final Logger log = LogManager.getLogger();
 
 	public static CollectionFetcher create(OperatorProcessorRepository operatorProcessorRepository, 
 			Session session, 
@@ -44,6 +48,7 @@ public class CollectionFetcherFactory {
 	}
 	
 	private static boolean isMappedByCollection(Filter<?> filter, PropertyGroup groupToFetch) {
+                log.entry(filter, groupToFetch);
 		/*
 		 * Relacionamentos com collections são implementados, geralmente, com OneToMany
 		 */
@@ -52,31 +57,35 @@ public class CollectionFetcherFactory {
 			Field colField = ReflectionUtil.getField(filter.getEntityClass(), colProperty);
 			
 			if (colField.isAnnotationPresent(OneToMany.class)) {
+                                log.debug("Possui anotação OneToMany");
 				OneToMany oneToMany = colField.getAnnotation(OneToMany.class);
-				return !StringUtil.isStringEmpty(oneToMany.mappedBy());
+				return log.exit(!StringUtil.isStringEmpty(oneToMany.mappedBy()));
 				
 			} else {
-				throw new QbeException("Não foi encontrado a anotação @OneToMany na relação ." + colProperty);
+                                throw log.throwing(new QbeException(
+                                        "Não foi encontrado a anotação @OneToMany na relação ."
+                                        + colProperty));
 			}
 			
 		} catch (QbeException e) {
-			throw e;
+			throw log.throwing(e);
 			
 		} catch (Exception e) {
-			throw new QbeException("Não foi possível encontrar informações sobre a coleção " 
-					+ filter.getEntityClass().getSimpleName() + "." + colProperty, e);
+			throw log.throwing(new QbeException("Não foi possível encontrar informações sobre a coleção " 
+					+ filter.getEntityClass().getSimpleName() + "." + colProperty, e));
 		}
 	}
 
 	private static boolean isJoinTableCollection(Filter<?> filter, PropertyGroup groupToFetch) {
+                log.entry(filter, groupToFetch);
 		
 		String colProperty = groupToFetch.getPrimaryProperty().getProperty();
 		try {
 			Field colField = ReflectionUtil.getField(filter.getEntityClass(), colProperty);
-			return colField.isAnnotationPresent(JoinTable.class);
+			return log.exit(colField.isAnnotationPresent(JoinTable.class));
 		} catch (Exception e) {
-			throw new QbeException("Não foi possível encontrar informações sobre a coleção " 
-					+ filter.getEntityClass().getSimpleName() + "." + colProperty, e);
+			throw log.throwing(new QbeException("Não foi possível encontrar informações sobre a coleção " 
+					+ filter.getEntityClass().getSimpleName() + "." + colProperty, e));
 		}		
 	}
 
