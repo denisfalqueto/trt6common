@@ -21,24 +21,24 @@ public class LoggerProducer {
 
     @Produces
     @ForTest
-    protected org.apache.logging.log4j.Logger createLog4j2Logger(InjectionPoint caller) {
+    public org.apache.logging.log4j.Logger createLog4j2Logger(InjectionPoint caller) {
         return org.apache.logging.log4j.LogManager.getLogger(getInjectionClass(caller));
     }
 
     @Produces
     @ForTest
-    protected org.apache.log4j.Logger createLog4jLogger(InjectionPoint caller) {
+    public org.apache.log4j.Logger createLog4jLogger(InjectionPoint caller) {
         return org.apache.log4j.Logger.getLogger(getInjectionClass(caller));
     }
     
     @Produces
     @ForTest
-    protected org.slf4j.Logger createSlf4jLogger(InjectionPoint caller) {
+    public org.slf4j.Logger createSlf4jLogger(InjectionPoint caller) {
         return org.slf4j.LoggerFactory.getLogger(getInjectionClass(caller));
     }
 
     @Produces
-    protected org.apache.commons.logging.Log createCommonsLogger(InjectionPoint caller) {
+    public org.apache.commons.logging.Log createCommonsLogger(InjectionPoint caller) {
         return org.apache.commons.logging.LogFactory.getLog(getInjectionClass(caller));
     }
 
