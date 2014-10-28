@@ -3,6 +3,8 @@ package br.jus.trt.lib.common_tests.cdi.producer;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import br.jus.trt.lib.common_tests.cdi.ForTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Producer de um {@link Logger} para utilização em ambiente de testes.
@@ -21,25 +23,8 @@ public class LoggerProducer {
 
     @Produces
     @ForTest
-    public org.apache.logging.log4j.Logger createLog4j2Logger(InjectionPoint caller) {
-        return org.apache.logging.log4j.LogManager.getLogger(getInjectionClass(caller));
-    }
-
-    @Produces
-    @ForTest
-    public org.apache.log4j.Logger createLog4jLogger(InjectionPoint caller) {
-        return org.apache.log4j.Logger.getLogger(getInjectionClass(caller));
-    }
-    
-    @Produces
-    @ForTest
-    public org.slf4j.Logger createSlf4jLogger(InjectionPoint caller) {
-        return org.slf4j.LoggerFactory.getLogger(getInjectionClass(caller));
-    }
-
-    @Produces
-    public org.apache.commons.logging.Log createCommonsLogger(InjectionPoint caller) {
-        return org.apache.commons.logging.LogFactory.getLog(getInjectionClass(caller));
+    public Logger createLog4j2Logger(InjectionPoint caller) {
+        return LogManager.getFormatterLogger(getInjectionClass(caller));
     }
 
 }

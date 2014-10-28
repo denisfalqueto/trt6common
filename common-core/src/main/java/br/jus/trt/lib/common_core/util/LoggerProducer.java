@@ -18,6 +18,6 @@ public class LoggerProducer {
 
     @Produces
     public Logger createLog4j2Logger(InjectionPoint caller) {
-        return LogManager.getLogger(getInjectionClass(caller));
+        return LogManager.getFormatterLogger(getInjectionClass(caller));
     }
 }
