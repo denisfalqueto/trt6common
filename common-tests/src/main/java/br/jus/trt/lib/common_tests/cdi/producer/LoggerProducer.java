@@ -1,22 +1,30 @@
 package br.jus.trt.lib.common_tests.cdi.producer;
 
-import java.util.logging.Logger;
-
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
-
 import br.jus.trt.lib.common_tests.cdi.ForTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Producer de um {@link Logger} para utilização em ambiente de testes.
+ *
+ * Serão produzidos vários tipos de loggers, mas todos são direcionados para o
+ * Log4j2.
+ *
  * @author augusto
  *
  */
 public class LoggerProducer {
 
-	@Produces @ForTest
-	protected Logger createLogger(InjectionPoint caller) {
-		return Logger.getLogger(caller.getBean().getClass().getName());
-	}
+    private Class<?> getInjectionClass(InjectionPoint ip) {
+        return ip.getBean().getClass();
+    }
+
+    @Produces
+    @ForTest
+    public Logger createLog4j2Logger(InjectionPoint caller) {
+        return LogManager.getFormatterLogger(getInjectionClass(caller));
+    }
 
 }

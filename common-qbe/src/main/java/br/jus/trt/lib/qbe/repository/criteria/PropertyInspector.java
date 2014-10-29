@@ -5,8 +5,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Id;
@@ -23,6 +21,8 @@ import br.jus.trt.lib.qbe.api.Filter;
 import br.jus.trt.lib.qbe.api.Identifiable;
 import br.jus.trt.lib.qbe.util.ReflectionUtil;
 import br.jus.trt.lib.qbe.util.StringUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Inspeciona as propriedades de uma entidade mapeada para descobrir quais
@@ -102,7 +102,7 @@ public class PropertyInspector {
 	
 	private static void logWarn(String msg) {
 		if (getLogger() != null) {
-			getLogger().log(Level.WARNING, msg);
+			getLogger().warn(msg);
 		}
 	}
 
@@ -111,7 +111,7 @@ public class PropertyInspector {
 	 */
 	private static Logger getLogger() {
 		if (log == null) {
-			log = Logger.getLogger(PropertyInspector.class.getSimpleName());
+			log = LogManager.getLogger(PropertyInspector.class);
 		}
 		return log;
 	}

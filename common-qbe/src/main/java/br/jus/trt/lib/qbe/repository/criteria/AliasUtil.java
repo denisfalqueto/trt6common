@@ -9,12 +9,16 @@ import org.hibernate.criterion.CriteriaSpecification;
 
 import br.jus.trt.lib.qbe.api.JoinType;
 import br.jus.trt.lib.qbe.util.StringUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Classe com alguns métodos utilitários para lidar com Alias do Hibernate Criteria.
  * @author augusto
  */
 public class AliasUtil {
+    
+        private static final Logger log = LogManager.getLogger();
 
 	/**
 	 * Cria alias específico para fetches.
@@ -25,6 +29,7 @@ public class AliasUtil {
 	 * @return Nome da propriedade atualizado com o alias criado.
 	 */
 	public static void createFetchAlias(Map<String, String> aliasCache, Criteria criteria, String property, org.hibernate.sql.JoinType joinType) {
+                log.entry(aliasCache, criteria, property, joinType);
 		
 		/*
 		 * A propriedadeFiltro por representar uma propriedade aninhada. Para o caso de fetch, não é possível configurar
@@ -36,19 +41,23 @@ public class AliasUtil {
 		 */
 		
 		if (aliasCache == null) {
+                        log.debug("Criando aliasCache");
 			aliasCache = new HashMap<String, String>();
 		}
 		
 		String alias = aliasCache.get(property); 
 		if (alias == null) {
+                        log.debug("Alias não encontrado: " + alias);
 			alias = property.replaceAll("\\.", "");
 			criteria.createAlias(property, alias, joinType);
 			criteria.setFetchMode(alias, FetchMode.JOIN); // determina que o modo de fetch será "JOIN" (equivalente a EAGER)
+                        log.debug("Adicionando alias no cache");
 			aliasCache.put(property, alias);
 		}
 		
 		// se a propriedade for aninhada, aplica o mesmo procedimento para as propriedades intermediárias
 		if (property.contains(".")) {
+                        log.debug("Propriedade possui caracter ponto");
 			int ultimoToken = property.lastIndexOf(".");
 			String propIntermediaria = property.substring(0, ultimoToken);
 			createFetchAlias(aliasCache, criteria, propIntermediaria, joinType);
@@ -64,7 +73,8 @@ public class AliasUtil {
 	 * @return Nome da propriedade atualizado com o alias criado.
 	 */
 	public static String createPropertyAlias(Map<String, String> aliasCache, Criteria criteria, String property) {
-		return createPropertyAlias(aliasCache, criteria, property, JoinType.LEFT);
+                log.entry(aliasCache, criteria, property);
+		return log.exit(createPropertyAlias(aliasCache, criteria, property, JoinType.LEFT));
 	}
 	
 	/**
@@ -78,25 +88,29 @@ public class AliasUtil {
 	 * @return Nome da propriedade atualizado com o alias criado.
 	 */
 	public static String createPropertyAlias(Map<String, String> aliasCache, Criteria criteria, String property, JoinType joinType) {
-		
+                log.entry(aliasCache, criteria, property, joinType);
+
 		// extraindo tokens. O último token representa propriedade, os primeiros representam a associação
 		String[] tokens = property.split("\\.");
 		
 		// identifica a associação
 		int indexUltimoToken = property.lastIndexOf(".");
 		String associacao = indexUltimoToken > 0 ? property.substring(0, indexUltimoToken) : property;
+                log.trace("associacao: " + associacao);
 		
 		// cadastra um alias para a associacao
 		String alias = associacao;
 		if (tokens.length > 1) {
+                        log.debug("Existe mais de uma token");
 			alias = createAlias(aliasCache, criteria, associacao, joinType);
 			
 			// se a propriedade for aninhada, ajusta o valor adaptando para utilizar o alias
 			String prop = tokens[tokens.length - 1];			
 			property = alias + "." + prop;
+                        log.trace("property: " + property);
 		}	
 		
-		return property;
+		return log.exit(property);
 	}
 	
 	/**
@@ -124,28 +138,33 @@ public class AliasUtil {
 	 * @return Nome da propriedade atualizado com o alias criado.
 	 */
 	private static String createAlias(Map<String, String> aliasCache, Criteria criteria, String property, JoinType joinType) {
+                log.entry(aliasCache, criteria, property, joinType);
 		String alias = null;
 		
 		if (!StringUtil.isStringEmpty(property)) {
+                        log.debug("property é string vazia");
 			
 			alias = aliasCache.get(property);
 			if (alias == null) {
+                                log.debug("alias não foi encontrado no cache");
 				
 				// cria o alias 
 				alias = property.replaceAll("\\.", "");
 				criteria.createAlias(property, alias, joinType == null ? getJoinFetch(JoinType.LEFT) : getJoinFetch(joinType));
+                                log.debug("Adicionando alias no cache");
 				aliasCache.put(property, alias);
 
 				// se a propriedade era aninhada, cria alias para os demais níveis
 				String[] tokens = property.split("\\.");
 				if (tokens.length > 1) {
+                                        log.debug("Propriedade aninhada");
 					createPropertyAlias(aliasCache, criteria, property, joinType);
 				}				
 				
 			}
 
 		}
-		return alias;
+		return log.exit(alias);
 	}	
 	
 	private static org.hibernate.sql.JoinType getJoinFetch(JoinType joinType) {

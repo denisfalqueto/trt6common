@@ -18,6 +18,7 @@ import br.jus.trt.lib.qbe.api.operator.Operators;
 import java.io.Serializable;
 import javax.inject.Inject;
 import org.apache.deltaspike.data.api.EntityRepository;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Querier Object para entidades de domínio. Expõe apenas operações para recuperação de 
@@ -28,14 +29,17 @@ import org.apache.deltaspike.data.api.EntityRepository;
 @SuppressWarnings("serial")
 public abstract class CrudRepositoryBase <ENTITY extends Entity<PK>, PK extends Serializable> 
 					implements CrudRepository<ENTITY, PK>, EntityRepository<ENTITY, PK> {
+    @Inject
+    protected Logger log;
 
     @Inject
-	private QBERepository qbeRepository;
+    private QBERepository qbeRepository;
 	
 	private Class<? extends ENTITY> entityClass;
 
 	@Override
 	public ENTITY findBy(PK id, String... fetch) {
+            log.entry(id, fetch);
 		
 		Field idField = getIdField(getEntityClass());
 		
@@ -51,7 +55,7 @@ public abstract class CrudRepositoryBase <ENTITY extends Entity<PK>, PK extends 
 			}
 		}
 	
-		return findBy(filtro);
+		return log.exit(findBy(filtro));
 	}
 	
 	/**
@@ -59,15 +63,16 @@ public abstract class CrudRepositoryBase <ENTITY extends Entity<PK>, PK extends 
 	 */
 	@Override
 	public ENTITY findBy(Filter<? extends ENTITY> filter) throws NonUniqueEntityException {
+            log.entry(filter);
 		
 		List<ENTITY> list = findAllBy(filter);
 		
 		if (list == null || list.isEmpty()) {
-			return null;
+			return log.exit(null);
 		} else if (list.size() > 1) {
 			throw new NonUniqueEntityException();
 		}
-		return list.get(0);
+		return log.exit(list.get(0));
 	}
 	
 	/**
@@ -75,16 +80,18 @@ public abstract class CrudRepositoryBase <ENTITY extends Entity<PK>, PK extends 
 	 */
 	@Override
 	public List<ENTITY> findAll(boolean ascedant, String... orderBy) {
+            log.entry(ascedant, orderBy);
 		SortConfig.SortType tipoOrdenacao = ascedant ? SortType.ASCENDANT : SortType.DESCENDANT;
 		
 		QBEFilter<ENTITY> filtro = new QBEFilter<ENTITY>(getEntityClass());
 		if (orderBy != null) {
+                    log.debug("Ordenar o resultado");
 			for (String prop : orderBy) {
 				filtro.sortBy(new SortConfig(prop, tipoOrdenacao));
 			}
 		}
 		
-		return getQbeRepository().search(filtro);
+		return log.exit(getQbeRepository().search(filtro));
 	}
 	
 	/**
@@ -101,8 +108,7 @@ public abstract class CrudRepositoryBase <ENTITY extends Entity<PK>, PK extends 
 	 */
 	@Override
 	public List<ENTITY> findAllBy(Filter<? extends ENTITY> filter) {
-		List<ENTITY> search = getQbeRepository().search(filter);
-		return search;
+		return getQbeRepository().search(filter);
 	}
 	
 	/**

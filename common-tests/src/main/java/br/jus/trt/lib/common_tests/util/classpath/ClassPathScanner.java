@@ -12,7 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -22,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class ClassPathScanner {
 
-	private static final Logger logger = Logger.getLogger(ClassPathScanner.class.getName());
+	private static final Logger logger = LogManager.getLogger(ClassPathScanner.class);
 	
 	/** cache para as buscas do scanner */
 	private static Map<String, Object> scannerCache = new HashMap<String, Object>();

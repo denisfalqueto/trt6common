@@ -3,6 +3,8 @@ package br.jus.trt.lib.qbe;
 import java.lang.reflect.Field;
 
 import br.jus.trt.lib.qbe.util.StringUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Classe auxiliar para representar as propriedades a serem consideradas durante a construção de uma consulta baseada
@@ -10,6 +12,7 @@ import br.jus.trt.lib.qbe.util.StringUtil;
  */
 public class Property {
 
+        private Logger log = LogManager.getLogger();
 	private Field name;
 	private Object value;
 	private Property nestedName;
@@ -32,13 +35,16 @@ public class Property {
 	 * @return notacao.
 	 */
 	public String generateDotNotation() {
+                log.entry();
 		if (StringUtil.isStringEmpty(dotNotationCache)) {
+                        log.debug("Gerar dotNotationCache");
 			dotNotationCache = generate(name, nestedName);
-		}	
-		return dotNotationCache;
+		}
+		return log.exit(dotNotationCache);
 	}
 	
 	private String generate(Field prop, Property nested) {
+                log.entry(prop, nested);
 		String s = "";
 		if (nested != null) {
 			s += generate(nested.getName(), nested.getNestedName());
@@ -46,7 +52,7 @@ public class Property {
 		}
 		s += prop.getName();
 		
-		return s;
+		return log.exit(s);
 	}
 
 	public Field getName() {

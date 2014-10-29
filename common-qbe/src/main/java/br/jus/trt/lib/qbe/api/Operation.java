@@ -3,6 +3,8 @@ package br.jus.trt.lib.qbe.api;
 import java.io.Serializable;
 
 import br.jus.trt.lib.qbe.api.exception.CloneException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Classe que representa uma operação de restrição a ser aplicação em uma consulta QBE.
@@ -11,7 +13,9 @@ import br.jus.trt.lib.qbe.api.exception.CloneException;
  */
 @SuppressWarnings({"serial"})
 public class Operation implements Serializable, Cloneable {
-	
+
+        private Logger log = LogManager.getLogger();
+        
 	/** Propriedade onde deverá ser utilizada na operação */
 	private String property;
 
@@ -34,6 +38,7 @@ public class Operation implements Serializable, Cloneable {
 	 */
 	public Operation(String property, Operator<?> operator, Object...values) {
 		super();
+                log.entry(property, operator, values);
 		this.property = property;
 		this.operator = operator;
 		this.values = values;
@@ -46,6 +51,7 @@ public class Operation implements Serializable, Cloneable {
 	 */
 	public Operation(String property, Operator<?> operator) {
 		super();
+                log.entry(property, operator);
 		this.property = property;
 		this.operator = operator;
 	}
@@ -56,28 +62,32 @@ public class Operation implements Serializable, Cloneable {
 	 * @return true se for válida.
 	 */
 	public boolean isValid() {
+                log.entry();
 		boolean valid = true;
 		
 		// se a operação não permite valores nulos, verifica se os  valores informados são válidos
+                log.debug("Analisando validade dos operadores");
 		if (this.getOperator() != null
 				&& !this.getOperator().isNullValueAllowed() 
 				&& this.getValues() != null) {
 			
 			// se o valor representar um array vazio, é inválida
 			if (this.getValues().length == 0) {
+                                log.debug("Array vazio");
 				valid = false;
 			} else {
 				// se algum dos valores do array for null ou String vazia, é inválida	
 				for (Object valor : this.getValues()) {
 					if (valor == null 
 							|| ((valor instanceof String) && valor.toString().trim().equals(""))) {
+                                                log.debug("Um dos valores é vazio");
 						valid = false;
 						break;
 					}
 				}
 			}	
 		}
-		return valid;
+		return log.exit(valid);
 	}
 	
 	public String getProperty() {

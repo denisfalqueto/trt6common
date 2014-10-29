@@ -1,19 +1,16 @@
 package br.jus.trt6.lib.common_web.action;
 
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
-
 import br.jus.trt.lib.common_core.exception.AppException;
 import br.jus.trt.lib.common_core.exception.BusinessException;
 import br.jus.trt.lib.common_core.exception.ExceptionMessage;
 import br.jus.trt.lib.common_core.util.StringUtil;
 import br.jus.trt6.lib.common_web.util.MessageUtil;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Responsável pela interceptação das exceções e realização de tratamentos genéricos. Qualquer exceção capturada
@@ -62,10 +59,10 @@ public class ActionExceptionInterceptor implements Serializable {
 				return result;
 				
 			} catch (AppException e) {
-				log.log(Level.FINE, e.getMessage());
+                                log.error(e);
 				throw e;
 			} catch (Throwable ne) {
-				log.log(Level.SEVERE, "Erro não esperado pela aplicação.", ne); 
+				log.error("Erro não esperado pela aplicação.", ne); 
 				throw new Exception(ne);
 				
 			} finally {
@@ -91,7 +88,7 @@ public class ActionExceptionInterceptor implements Serializable {
 			if (!StringUtil.isStringEmpty(em.getMessage())) {
 				String mensagem = em.getShowCode() ? em.getCode()  + " - " + em.getMessage() : em.getMessage(); 
 				messageUtil.showError(mensagem, em.getParameters());
-				log.log(Level.FINE, "Adicionando mensagem para o usuário da validação de negócio : " + mensagem);
+				log.debug("Adicionando mensagem para o usuário da validação de negócio : " + mensagem);
 			}
 		}
 	}

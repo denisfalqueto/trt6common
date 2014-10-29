@@ -17,6 +17,8 @@ import br.jus.trt.lib.qbe.api.operator.Operators;
 import br.jus.trt.lib.qbe.repository.criteria.FetchesManualProcessor.PropertyGroup;
 import br.jus.trt.lib.qbe.util.EntityUtil;
 import br.jus.trt.lib.qbe.util.ReflectionUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -35,8 +37,7 @@ import br.jus.trt.lib.qbe.util.ReflectionUtil;
  */
 public class CollectionJoinTableFetcher extends CollectionFetcher {
 
-
-
+        private Logger log = LogManager.getLogger();
 	
 	public CollectionJoinTableFetcher(
 			OperatorProcessorRepository operatorProcessorRepository, 
@@ -57,6 +58,7 @@ public class CollectionJoinTableFetcher extends CollectionFetcher {
 	 */
 	@Override
 	public void fetch() {
+                log.entry();
 		
 		/*
 		 * Identifica qual será a entidade principal para a consulta que realizará o fetch manual.
@@ -78,6 +80,7 @@ public class CollectionJoinTableFetcher extends CollectionFetcher {
 		
 		PropertyGroup groupToFetch = getGroupToFetch();
 		if (!entityType.equals(getFilter().getEntityClass())) {
+                        log.debug("Entidade diferente da entidade do filtro");
 			// ajusta o caminho relativo
 			groupToFetch = groupToFetch.clone();
 			
@@ -126,6 +129,7 @@ public class CollectionJoinTableFetcher extends CollectionFetcher {
 	}
 
 	private void adjustRelativeProperty(FetchMode primaryProperty, String tofixRelativeProperty) {
+                log.entry(primaryProperty, tofixRelativeProperty);
 		String newRelativeProperty = primaryProperty.getProperty().replaceFirst(tofixRelativeProperty, "");
 		primaryProperty.setProperty(newRelativeProperty);
 	}
@@ -137,15 +141,18 @@ public class CollectionJoinTableFetcher extends CollectionFetcher {
 	 * @return tipo da entidade que é dona imadiata do relacionamento para fetch de coleção.
 	 */
 	private Class<?> findBaseEntityTypeForFetch() {
+                log.entry();
 		
 		FetchMode primaryProperty = getGroupToFetch().getPrimaryProperty();
 		
 		Class<?> baseEntityType;
 		if (!primaryProperty.getProperty().contains(".")) {
+                        log.debug("primaryProperty não contém ponto");
 			// é uma associação primária (não aninhada), a entidade base é a entidade associada ao QbeFitler
 			baseEntityType = getFilter().getEntityClass();
 			
 		} else {
+                        log.debug("primaryProperty possui ponto");
 			/* é uma associação aninhada, é preciso descobrir o tipo de um dos atributos da entidade associada ao QBEFilter */
 			
 			// a coleção para fetch é identifica pelo último token da propriedade primária, removendo-a temos

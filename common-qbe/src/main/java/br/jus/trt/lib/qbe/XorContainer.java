@@ -2,6 +2,8 @@ package br.jus.trt.lib.qbe;
 
 import br.jus.trt.lib.qbe.api.Operation;
 import br.jus.trt.lib.qbe.api.OperationContainer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 
@@ -14,12 +16,15 @@ import br.jus.trt.lib.qbe.api.OperationContainer;
 @SuppressWarnings("serial")
 public class XorContainer extends OperationContainer {
 
+        private Logger log = LogManager.getLogger();
+        
 	/**
 	 * Implementa uma variação do container aplicando uma operação XOR sobre
 	 * as operações (não considerando subcontainers, por enquanto).
 	 */
 	@Override
 	public OperationContainer transform() {
+                log.entry();
 		OperationContainer xor = new OperationContainer(ContainerType.OR);
 		
 		/*
@@ -30,7 +35,9 @@ public class XorContainer extends OperationContainer {
 		 * (A and not (B or C)) OR (B and not (A or C)) OR (C and not (B or A))
 		 */
 		if (getOperations() != null && !getOperations().isEmpty()) {
+                        log.debug("Possui operacoes");
 			for (Operation operacao : getOperations()) {
+                                log.trace("Operacao: " + operacao);
 				OperationContainer and = xor.addAnd(operacao);
 				
 				OperationContainer or = and.addOr().negate();
@@ -42,7 +49,7 @@ public class XorContainer extends OperationContainer {
 			}
 		}	
 		
-		return xor;
+		return log.exit(xor);
 	}
 	
 }

@@ -1,278 +1,327 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>br.jus.trt.lib</groupId>
-	<artifactId>common</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<modules>
-		<module>common-core</module>
-		<module>common-web</module>
-		<module>common-qbe</module>
-		<module>common-tests</module>
-	</modules>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>br.jus.trt.lib</groupId>
+    <artifactId>common</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>common-core</module>
+        <module>common-web</module>
+        <module>common-qbe</module>
+        <module>common-tests</module>
+    </modules>
 
 
-	<dependencyManagement>
-		<dependencies>
+    <dependencyManagement>
+        <dependencies>
 
-			<!-- DeltaSpike - extensions for CDI -->
-			<dependency>
-				<groupId>org.apache.deltaspike.core</groupId>
-				<artifactId>deltaspike-core-api</artifactId>
-				<version>${deltaspike.version}</version>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.deltaspike.core</groupId>
-				<artifactId>deltaspike-core-impl</artifactId>
-				<version>${deltaspike.version}</version>
-				<scope>runtime</scope>
-			</dependency>
+            <!-- DeltaSpike - extensions for CDI -->
+            <dependency>
+                <groupId>org.apache.deltaspike.core</groupId>
+                <artifactId>deltaspike-core-api</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.deltaspike.core</groupId>
+                <artifactId>deltaspike-core-impl</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>runtime</scope>
+            </dependency>
 
-			<!-- ! Deltaspike modules ! Cada módulo deve ser descomentado se necessário -->
+            <!-- ! Deltaspike modules ! Cada módulo deve ser descomentado se necessário -->
 
-			<!-- Deltaspike Security Module ! Para usar este módulo, é necessário 
-				ativar o interceptador ! org.apache.deltaspike.security.impl.extension.SecurityInterceptor 
-				! no arquivo beans.xml -->
-			<dependency>
-				<groupId>org.apache.deltaspike.modules</groupId>
-				<artifactId>deltaspike-security-module-api</artifactId>
-				<version>${deltaspike.version}</version>
-				<scope>compile</scope>
-			</dependency>
+            <!-- Deltaspike Security Module ! Para usar este módulo, é necessário 
+            ativar o interceptador ! org.apache.deltaspike.security.impl.extension.SecurityInterceptor 
+            ! no arquivo beans.xml -->
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-security-module-api</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
 
-			<dependency>
-				<groupId>org.apache.deltaspike.modules</groupId>
-				<artifactId>deltaspike-security-module-impl</artifactId>
-				<version>${deltaspike.version}</version>
-				<scope>runtime</scope>
-			</dependency>
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-security-module-impl</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>runtime</scope>
+            </dependency>
 
-			<!-- Deltaspike JPA Module ! Para usar este módulo, é necessário ativar 
-				o interceptador ! org.apache.deltaspike.jpa.impl.transaction.TransactionalInterceptor 
-				! no arquivo beans.xml. ! Também é necessário implementar um producer que 
-				forneca instâncias ! de EntityManager. -->
-			<dependency>
-				<groupId>org.apache.deltaspike.modules</groupId>
-				<artifactId>deltaspike-jpa-module-api</artifactId>
-				<version>${deltaspike.version}</version>
-				<scope>compile</scope>
-			</dependency>
+            <!-- Deltaspike JPA Module ! Para usar este módulo, é necessário ativar 
+            o interceptador ! org.apache.deltaspike.jpa.impl.transaction.TransactionalInterceptor 
+            ! no arquivo beans.xml. ! Também é necessário implementar um producer que 
+            forneca instâncias ! de EntityManager. -->
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-jpa-module-api</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
 
-			<dependency>
-				<groupId>org.apache.deltaspike.modules</groupId>
-				<artifactId>deltaspike-jpa-module-impl</artifactId>
-				<version>${deltaspike.version}</version>
-				<scope>runtime</scope>
-			</dependency>
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-jpa-module-impl</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>runtime</scope>
+            </dependency>
 
-			<!-- Deltaspike JSF Module -->
-			<dependency>
-				<groupId>org.apache.deltaspike.modules</groupId>
-				<artifactId>deltaspike-jsf-module-api</artifactId>
-				<version>${deltaspike.version}</version>
-				<scope>compile</scope>
-			</dependency>
+            <!-- Deltaspike JSF Module -->
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-jsf-module-api</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
 
-			<dependency>
-				<groupId>org.apache.deltaspike.modules</groupId>
-				<artifactId>deltaspike-jsf-module-impl-ee6</artifactId>
-				<version>${deltaspike.version}</version>
-				<scope>runtime</scope>
-			</dependency>
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-jsf-module-impl-ee6</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>runtime</scope>
+            </dependency>
 
-			<!-- Deltaspike BeanValidation Module -->
-			<dependency>
-				<groupId>org.apache.deltaspike.modules</groupId>
-				<artifactId>deltaspike-bean-validation-module-impl</artifactId>
-				<version>${deltaspike.version}</version>
-				<scope>runtime</scope>
-			</dependency>
+            <!-- Deltaspike BeanValidation Module -->
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-bean-validation-module-impl</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>runtime</scope>
+            </dependency>
 
-			<!-- Deltaspike Data Module ! Para usar este módulo, é necessário configurar 
-				uma alternativa ! org.apache.deltaspike.jpa.impl.transaction.BeanManagedUserTransactionStrategy 
-				! no arquivo beans.xml -->
-			<dependency>
-				<groupId>org.apache.deltaspike.modules</groupId>
-				<artifactId>deltaspike-data-module-api</artifactId>
-				<version>${deltaspike.version}</version>
-				<scope>compile</scope>
-			</dependency>
+            <!-- Deltaspike Data Module ! Para usar este módulo, é necessário configurar 
+            uma alternativa ! org.apache.deltaspike.jpa.impl.transaction.BeanManagedUserTransactionStrategy 
+            ! no arquivo beans.xml -->
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-data-module-api</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
 
-			<dependency>
-				<groupId>org.apache.deltaspike.modules</groupId>
-				<artifactId>deltaspike-data-module-impl</artifactId>
-				<version>${deltaspike.version}</version>
-				<scope>runtime</scope>
-			</dependency>
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-data-module-impl</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>runtime</scope>
+            </dependency>
 
-			<!-- Deltaspike Test Control Module -->
-			<dependency>
-				<groupId>org.apache.deltaspike.modules</groupId>
-				<artifactId>deltaspike-test-control-module-api</artifactId>
-				<version>${deltaspike.version}</version>
-				<scope>compile</scope>
-			</dependency>
+            <!-- Deltaspike Test Control Module -->
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-test-control-module-api</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
 
-			<dependency>
-				<groupId>org.apache.deltaspike.modules</groupId>
-				<artifactId>deltaspike-test-control-module-impl</artifactId>
-				<version>${deltaspike.version}</version>
-				<scope>runtime</scope>
-			</dependency>
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-test-control-module-impl</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>runtime</scope>
+            </dependency>
 
-			<dependency>
-				<groupId>br.jus.trt.lib</groupId>
-				<artifactId>common-core</artifactId>
-				<version>${common.version}</version>
-				<type>jar</type>
-			</dependency>
+            <dependency>
+                <groupId>br.jus.trt.lib</groupId>
+                <artifactId>common-core</artifactId>
+                <version>${common.version}</version>
+                <type>jar</type>
+            </dependency>
 
-			<dependency>
-				<groupId>br.jus.trt.lib</groupId>
-				<artifactId>common-web</artifactId>
-				<version>${common.version}</version>
-				<type>jar</type>
-			</dependency>
+            <dependency>
+                <groupId>br.jus.trt.lib</groupId>
+                <artifactId>common-web</artifactId>
+                <version>${common.version}</version>
+                <type>jar</type>
+            </dependency>
 
-			<dependency>
-				<groupId>br.jus.trt.lib</groupId>
-				<artifactId>common-qbe</artifactId>
-				<version>${common.version}</version>
-				<type>jar</type>
-			</dependency>
+            <dependency>
+                <groupId>br.jus.trt.lib</groupId>
+                <artifactId>common-qbe</artifactId>
+                <version>${common.version}</version>
+                <type>jar</type>
+            </dependency>
 
-			<dependency>
-				<groupId>br.jus.trt.lib</groupId>
-				<artifactId>common-tests</artifactId>
-				<version>${common.version}</version>
-				<type>jar</type>
-				<scope>test</scope>
-			</dependency>
+            <dependency>
+                <groupId>br.jus.trt.lib</groupId>
+                <artifactId>common-tests</artifactId>
+                <version>${common.version}</version>
+                <type>jar</type>
+                <scope>test</scope>
+            </dependency>
 
-			<!-- Define the version of JBoss' Java EE 6 APIs we want to import. Any 
-				dependencies from org.jboss.spec will have their version defined by this 
-				BOM -->
-			<!-- JBoss distributes a complete set of Java EE 6 APIs including a Bill 
-				of Materials (BOM). A BOM specifies the versions of a "stack" (or a collection) 
-				of artifacts. We use this here so that we always get the correct versions 
-				of artifacts. Here we use the jboss-javaee-web-6.0 stack (you can read this 
-				as the JBoss stack of the Java EE Web Profile 6 APIs), and we use version 
-				2.0.0.Beta1 which is the latest release of the stack. You can actually use 
-				this stack with any version of JBoss AS that implements Java EE 6, not just 
-				JBoss AS 7! -->
-			<dependency>
-				<groupId>org.jboss.spec</groupId>
-				<artifactId>jboss-javaee-web-6.0</artifactId>
-				<version>2.0.0.Final</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
+            <!-- Define the version of JBoss' Java EE 6 APIs we want to import. Any 
+            dependencies from org.jboss.spec will have their version defined by this 
+            BOM -->
+            <!-- JBoss distributes a complete set of Java EE 6 APIs including a Bill 
+            of Materials (BOM). A BOM specifies the versions of a "stack" (or a collection) 
+            of artifacts. We use this here so that we always get the correct versions 
+            of artifacts. Here we use the jboss-javaee-web-6.0 stack (you can read this 
+            as the JBoss stack of the Java EE Web Profile 6 APIs), and we use version 
+            2.0.0.Beta1 which is the latest release of the stack. You can actually use 
+            this stack with any version of JBoss AS that implements Java EE 6, not just 
+            JBoss AS 7! -->
+            <dependency>
+                <groupId>org.jboss.spec</groupId>
+                <artifactId>jboss-javaee-web-6.0</artifactId>
+                <version>2.0.0.Final</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
-			<!-- JSR-303 (Bean Validation) Implementation -->
-			<!-- Provides portable constraints such as @Email -->
-			<!-- Hibernate Validator is shipped in JBoss AS 7 -->
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-validator</artifactId>
-				<version>4.1.0.Final</version>
-				<scope>provided</scope>
-				<exclusions>
-					<exclusion>
-						<groupId>org.slf4j</groupId>
-						<artifactId>slf4j-api</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
+            <!-- JSR-303 (Bean Validation) Implementation -->
+            <!-- Provides portable constraints such as @Email -->
+            <!-- Hibernate Validator is shipped in JBoss AS 7 -->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>4.1.0.Final</version>
+                <scope>provided</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
 
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-core</artifactId>
-				<version>4.1.0.Final</version>
-			</dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>4.1.0.Final</version>
+            </dependency>
 
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-entitymanager</artifactId>
-				<version>4.1.0.Final</version>
-			</dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>4.1.0.Final</version>
+            </dependency>
 
-			<dependency>
-				<groupId>org.apache.derby</groupId>
-				<artifactId>derby</artifactId>
-				<version>10.10.2.0</version>
-				<scope>test</scope>
-			</dependency>
+            <dependency>
+                <groupId>org.apache.derby</groupId>
+                <artifactId>derby</artifactId>
+                <version>10.10.2.0</version>
+                <scope>test</scope>
+            </dependency>
 
-			<dependency>
-				<groupId>commons-beanutils</groupId>
-				<artifactId>commons-beanutils</artifactId>
-				<version>1.8.0</version>
-			</dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>1.8.0</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
 
-			<dependency>
-				<groupId>javax.enterprise</groupId>
-				<artifactId>cdi-api</artifactId>
-				<version>1.0-SP4</version>
-				<scope>provided</scope>
-			</dependency>
+            <dependency>
+                <groupId>javax.enterprise</groupId>
+                <artifactId>cdi-api</artifactId>
+                <version>1.0-SP4</version>
+                <scope>provided</scope>
+            </dependency>
 
-			<dependency>
-				<groupId>com.sun.faces</groupId>
-				<artifactId>jsf-impl</artifactId>
-				<version>2.2.0</version>
-			</dependency>
+            <dependency>
+                <groupId>com.sun.faces</groupId>
+                <artifactId>jsf-impl</artifactId>
+                <version>2.2.0</version>
+            </dependency>
 
-			<dependency>
-				<groupId>com.sun.faces</groupId>
-				<artifactId>jsf-api</artifactId>
-				<version>2.2.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.primefaces</groupId>
-				<artifactId>primefaces</artifactId>
-				<version>5.0</version>
-				<scope>compile</scope>
-			</dependency>
-			<!-- Test dependencies -->
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.10</version>
-				<type>jar</type>
-				<scope>test</scope>
-			</dependency>
+            <dependency>
+                <groupId>com.sun.faces</groupId>
+                <artifactId>jsf-api</artifactId>
+                <version>2.2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.primefaces</groupId>
+                <artifactId>primefaces</artifactId>
+                <version>5.0</version>
+                <scope>compile</scope>
+            </dependency>
+            <!-- Test dependencies -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.10</version>
+                <type>jar</type>
+                <scope>test</scope>
+            </dependency>
+                        
+            <!-- Log4j2 -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+                        
+            <!-- Log4j2 bridges -->
+            <!-- Log4j-->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-1.2-api</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+                        
+            <!-- Commons-logging -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-jcl</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+                        
+            <!-- slfj -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j-impl</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+                        
+            <!-- Web servlet support -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-web</artifactId>
+                <version>${log4j2.version}</version>
+                <scope>runtime</scope>
+            </dependency>
 
-		</dependencies>
-	</dependencyManagement>
+        </dependencies>
+    </dependencyManagement>
 
-	<build>
-		<plugins>
+    <build>
+        <plugins>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.1</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.4.3</version>
-				<configuration>
-					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-	<properties>
-		<common.version>0.0.1-SNAPSHOT</common.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<deltaspike.version>1.0.1</deltaspike.version>
-	</properties>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4.3</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <properties>
+        <common.version>0.0.1-SNAPSHOT</common.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <deltaspike.version>1.0.1</deltaspike.version>
+        <log4j2.version>2.0.2</log4j2.version>
+    </properties>
 </project>

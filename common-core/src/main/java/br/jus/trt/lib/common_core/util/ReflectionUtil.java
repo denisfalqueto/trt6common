@@ -8,7 +8,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -16,13 +15,15 @@ import org.hibernate.Hibernate;
 import org.hibernate.proxy.HibernateProxy;
 
 import br.jus.trt.lib.common_core.exception.AppException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Classe utilitária com operacoes baseadas em reflection.
  */
 public class ReflectionUtil {
 	
-	protected final static Logger log = Logger.getLogger(ReflectionUtil.class.getName());
+	protected final static Logger log = LogManager.getLogger(ReflectionUtil.class);
 	
 	/**
 	 * Verifica se este objeto é um proxy, devolvendo a respectiva instância concreta.

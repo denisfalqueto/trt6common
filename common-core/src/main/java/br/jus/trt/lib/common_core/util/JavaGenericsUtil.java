@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * <p>Classe que implementa operações para extrair informações de tipos genéricos
@@ -21,6 +23,8 @@ import java.util.Map;
  * 
  */
 public class JavaGenericsUtil {
+    
+    private static Logger log = LogManager.getLogger();
 
 	/**
 	 * Recupera o primeiro tipo genérico de uma classe. Faz uso do método 
@@ -37,6 +41,7 @@ public class JavaGenericsUtil {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <TIPO> Class<?> getFirstGenericTypedArgument(Class<TIPO> classeBase, Class<? extends TIPO> tipoConcreto) {
+            log.entry(classeBase, tipoConcreto);
 		Class<?> retorno = null;
 		try {
 			List<Class<?>> typeArguments = JavaGenericsUtil.getGenericTypedArguments(classeBase, tipoConcreto);
@@ -44,7 +49,7 @@ public class JavaGenericsUtil {
 		} catch (Exception e) {
 			// se houver problemas, descarta a tentativa de descobrir genérics automaticamente
 		}
-		return retorno;
+		return log.exit(retorno);
 	}
 	
 	/**
@@ -63,6 +68,7 @@ public class JavaGenericsUtil {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static List<Class<?>> getGenericTypedArguments(Class classeBase, Class tipoConcreto) {
+            log.entry(classeBase, tipoConcreto);
 		
 		// TODO o algoritmo abaixo considera apenas superclasses genéricas. Deve-se acrescentar tambémas as superinterfaces genéricas. Ex: IEntity
 		
@@ -70,14 +76,18 @@ public class JavaGenericsUtil {
 		Type type = tipoConcreto;
 		
 		/* ascende na hierarquia de classes até encontrar a classe base informada */
+                log.debug("Subir na hierarquia de classes");
 		while (type != null				 
 				&& !getClass(type).equals(classeBase)) {
+                        log.trace("type = " + type);
 			
 			if (type instanceof Class) {
-				
+				log.debug("type é instância de Class");
 				/* Não há informações úteis em nem genérics... continua a busca */
 				type = ((Class) type).getGenericSuperclass();
 			} else {
+                                log.debug("type não é instância de Class");
+                                
 				/* encontrou um tipo parametrizado */
 				ParameterizedType parameterizedType = (ParameterizedType) type;
 				Class<?> rawType = (Class) parameterizedType.getRawType();
@@ -89,6 +99,7 @@ public class JavaGenericsUtil {
 				}
 
 				if (!rawType.equals(classeBase)) {
+                                        log.debug("Encontrou a classe");
 					type = rawType.getGenericSuperclass();
 				}
 			}
@@ -104,6 +115,7 @@ public class JavaGenericsUtil {
 		} else {
 			actualTypeArguments = ((ParameterizedType) type).getActualTypeArguments();
 		}
+                log.trace("actualTypeArguments = " + actualTypeArguments);
 		
 		// resolvendo tipos
 		List<Class<?>> typeArgumentsAsClasses = new ArrayList<Class<?>>();
@@ -113,7 +125,7 @@ public class JavaGenericsUtil {
 			}
 			typeArgumentsAsClasses.add(getClass(baseType));
 		}
-		return typeArgumentsAsClasses;
+		return log.exit(typeArgumentsAsClasses);
 	}
 
 	/**

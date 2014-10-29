@@ -4,7 +4,6 @@ import java.beans.PropertyDescriptor;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
-import java.util.logging.Logger;
 
 import javax.persistence.Id;
 
@@ -15,13 +14,15 @@ import org.hibernate.proxy.HibernateProxy;
 
 import br.jus.trt.lib.qbe.api.Identifiable;
 import br.jus.trt.lib.qbe.api.exception.QbeException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Classe utilitária com operacoes baseadas em reflection.
  */
 public class ReflectionUtil {
 	
-	protected final static Logger log = Logger.getLogger(ReflectionUtil.class.getName());
+	protected final static Logger log = LogManager.getLogger(ReflectionUtil.class);
 	
 	/**
 	 * Verifica se este objeto é um proxy, devolvendo a respectiva instância concreta.
@@ -31,6 +32,7 @@ public class ReflectionUtil {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <TYPE extends Object> TYPE unProxy(TYPE entity) {
+            log.entry(entity);
 		if (entity instanceof HibernateProxy) {
 			if (!Hibernate.isInitialized(entity)) {
 				throw new QbeException("Objeto " + entity + " não inicializado. Não é possível realizar o unproxy.");
@@ -38,7 +40,7 @@ public class ReflectionUtil {
 			HibernateProxy proxy = (HibernateProxy) entity;
 			entity = (TYPE) proxy.writeReplace();
 		}
-		return entity;
+		return log.exit(entity);
 	}
 
 	/**
@@ -48,12 +50,13 @@ public class ReflectionUtil {
 	 * @return Valor da propriedade.
 	 */
 	public static Object getValue(Object entidade, Field propriedade) {
+            log.entry(entidade, propriedade);
 		try {
 			boolean accessible = propriedade.isAccessible();
 			propriedade.setAccessible(true);
 			Object valor = propriedade.get(entidade);
 			propriedade.setAccessible(accessible);
-			return valor;
+			return log.exit(valor);
 		} catch (Exception e) {
 			throw new QbeException("Falha ao recuperar valor da propriedade: " + entidade + " " + propriedade, e);
 		}
@@ -66,10 +69,12 @@ public class ReflectionUtil {
 	 * @return Valor da propriedade ou  null.
 	 */
 	public static Object getValue(Object object, String propertyName) {
+            log.entry(object, propertyName);
 		boolean done = false;
 		
 		Object valor = null;
 		if (object != null) {
+                    log.debug("Object is not null");
 
 			// primeiro tenta pelas vias normais: get
 			try {
@@ -83,6 +88,7 @@ public class ReflectionUtil {
 			}
 			
 			if (!done) {
+                            log.debug("Not done");
 				// tenta recuperar o valor diretamente do field			
 				Field field = getField(object.getClass(), propertyName);
 				
@@ -92,9 +98,11 @@ public class ReflectionUtil {
 		
 				Object fieldOwner;
 				if (!propertyName.contains(".")) {
+                                    log.debug("propertyName não contém ponto");
 					// se a propriedade for primária, quem contém o field é o próprio objeto
 					fieldOwner = object;
 				} else {
+                                    log.debug("propertyName contém ponto");
 					// se a propriedade for aninhada, quem contém o field é o atributo imediatamente anterior à propriedade
 					fieldOwner = getValue(object, propertyName.substring(0, propertyName.lastIndexOf(".")));
 				}
@@ -104,7 +112,7 @@ public class ReflectionUtil {
 			
 		}	
 		
-		return valor; 
+		return log.exit(valor);
 	}
 
 	/**
@@ -113,6 +121,7 @@ public class ReflectionUtil {
 	 * @param nomePropriedade Nome da propriedade a ser alterada.
 	 */	
 	public static void setValue(Object object, Field attribute, Object value) {
+            log.entry(object, attribute, value);
 		try {
 			boolean accessible = attribute.isAccessible();
 			attribute.setAccessible(true);
@@ -121,6 +130,7 @@ public class ReflectionUtil {
 		} catch (Exception e) {
 			new QbeException("Não foi possível alterar o valor do atributo: " + attribute, e);
 		}
+                log.exit();
 	}
 	
 	/**
@@ -130,6 +140,7 @@ public class ReflectionUtil {
 	 * @param propertyName Nome da propriedade a ser alterada.
 	 */	
 	public static void setValue(Object object, String propertyName, Object value)  {
+            log.entry();
 		boolean done = false;
 		// primeiro tenta pelas vias normais: setter
 		try {
@@ -145,6 +156,7 @@ public class ReflectionUtil {
 		}
 		
 		if (!done) {
+                    log.debug("not done");
 			// tenta atualizar o valor do field			
 			Field field = getField(object.getClass(), propertyName);
 			
@@ -154,13 +166,19 @@ public class ReflectionUtil {
 	
 			Object fieldOwner;
 			if (!propertyName.contains(".")) {
+                            log.debug("propertyName nnão contém ponto");
 				// se a propriedade for primária, quem contém o field é o próprio objeto
 				fieldOwner = object;
 			} else {
+                            log.debug("propertyName contém ponto");
 				// se a propriedade for aninhada, quem contém o field é o atributo imediatamente anterior à propriedade
 				fieldOwner = getValue(object, propertyName.substring(0, propertyName.lastIndexOf(".")));
 			}
-			
+
+                        log.debug("Setar o valor da propriedade");
+                        log.trace("fieldOwner = " + fieldOwner);
+                        log.trace("field = " + field);
+                        log.trace("value = " + value);
 			setValue(fieldOwner, field, value);
 		}	
 	}
@@ -172,6 +190,7 @@ public class ReflectionUtil {
 	 * @return Field extraído, ou null se o atributo não existe na classe
 	 */
 	public static Field getField(Class<?> type, String propertyName) {
+            log.entry(type, propertyName);
 		
 		if (type == null)
 			throw new IllegalArgumentException("type não deve ser null.");
@@ -184,26 +203,30 @@ public class ReflectionUtil {
 		int i = 0;
 		
 		do {
+                    log.trace("i = " + i);
 			String property = path[i];
 			attribute = getClassField(attHost, property);
 			attHost = attribute != null ? attribute.getType() : null;
 			i++;
 		} while (i < path.length && attribute != null);
 			
-		return attribute;
+		return log.exit(attribute);
 	}
 	
 	/**
 	 * Retorna a referência de um field dentro de uma classe especifica.
 	 */
 	private static Field getClassField(Class<?> type, String propertyName) {
+            log.entry(type, propertyName);
 		
 		Field atributo = null;
 		
 		// iterando sobre a estrutura da classe e das superclasses
 		for (Class<?> clazz = type; clazz != Object.class; clazz = clazz.getSuperclass()) {
+                    log.trace("clazz = " + clazz);
 			try {
 				atributo = clazz.getDeclaredField(propertyName);
+                                log.trace("atributo = " + atributo);
 				break;
 			} catch (Exception e) {
 				// atributo nao encontrado
@@ -211,7 +234,7 @@ public class ReflectionUtil {
 			}
 		}
 
-		return atributo;
+		return log.exit(atributo);
 	}
 	
 	/**
@@ -224,24 +247,28 @@ public class ReflectionUtil {
 	 * @return Tipo do atributo.
 	 */
 	public static Class<?> getFieldType(Class<?> type, String propertyName) {
+            log.entry(type, propertyName);
 		if (type == null)
 			throw new IllegalArgumentException("type não deve ser null.");
 		if (propertyName == null)
 			throw new IllegalArgumentException("propertyName não deve ser null.");
 
 		String[] path = propertyName.split("\\.");
+                log.trace("path.length = " + path.length);
 		for (int i = 0; i < path.length; i++) {
 			propertyName = path[i];
 			PropertyDescriptor[] propDescs = PropertyUtils.getPropertyDescriptors(type);
+                        log.trace("propDescs.lenght = " + propDescs.length);
 			for (PropertyDescriptor propDesc : propDescs)
 				if (propDesc.getName().equals(propertyName)) {
+                                    log.debug("Nome da propriedade encontrado");
 					type = propDesc.getPropertyType();
 					if (i == path.length - 1)
-						return type;
+						return log.exit(type);
 				}
 		}
 
-		return null;
+		return log.exit(null);
 	}
 	
 	/**
@@ -250,7 +277,8 @@ public class ReflectionUtil {
 	 * @return true se for chave-simples (@Id), false caso contrário.
 	 */
 	public static boolean isSimpleKey(Class<? extends Identifiable> classe) {
-		return classe != null && getField(classe, "id").isAnnotationPresent(Id.class);
+            log.entry(classe);
+		return log.exit(classe != null && getField(classe, "id").isAnnotationPresent(Id.class));
 	}
 	
 	/**
@@ -259,6 +287,7 @@ public class ReflectionUtil {
 	 * @param destino Objeto de destino
 	 */
 	public static void copyProperties(Object origem, Object destino) throws Exception {
+            log.entry(origem, destino);
 	    Class<?> clazz = origem.getClass();
 	    for (Field field : clazz.getDeclaredFields()) {
 	        Object valor = getValue(origem, field);
