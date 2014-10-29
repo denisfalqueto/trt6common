@@ -39,7 +39,7 @@ public class Property {
 		if (StringUtil.isStringEmpty(dotNotationCache)) {
                         log.debug("Gerar dotNotationCache");
 			dotNotationCache = generate(name, nestedName);
-		}	
+		}
 		return log.exit(dotNotationCache);
 	}
 	

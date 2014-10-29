@@ -7,14 +7,19 @@ import br.jus.trt.lib.common_core.util.JavaGenericsUtil;
 import br.jus.trt.lib.qbe.api.Filter;
 import java.io.Serializable;
 import java.util.List;
+import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
+import org.apache.logging.log4j.Logger;
 
 @Transactional
 @BusinessExceptionHandler
 public abstract class CrudFacadeBase<CR extends CrudRepository<E, PK>, E extends Entity<PK>, PK extends Serializable>
         implements CrudFacade<E, PK> {
 
+    @Inject
+    protected Logger log;
+    
     private CR repository;
 
     protected CrudRepository<E, PK> getRepository() {
