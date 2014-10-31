@@ -9,7 +9,7 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class SortConfig implements Serializable {
 
-	public enum SortType {ASCENDANT, DESCENDANT}
+	public enum SortType {ASCENDING, DESCENDING}
 	
 	/**
 	 * Método de fábrica para obter uma configuração para ordenação ascendente.
@@ -17,7 +17,7 @@ public class SortConfig implements Serializable {
 	 * @return Configuração de ordenação ascendente.
 	 */
 	public static SortConfig ASC(String propriedade) {
-		return new SortConfig(propriedade, SortType.ASCENDANT);
+		return new SortConfig(propriedade, SortType.ASCENDING);
 	}
 	
 	/**
@@ -26,7 +26,7 @@ public class SortConfig implements Serializable {
 	 * @return Configuração de ordenação descendente.
 	 */
 	public static SortConfig DESC(String propriedade) {
-		return new SortConfig(propriedade, SortType.DESCENDANT);
+		return new SortConfig(propriedade, SortType.DESCENDING);
 	}
 	
 	/** Propriedade de referência para ordenação */
@@ -44,11 +44,11 @@ public class SortConfig implements Serializable {
 	}
 
 	/**
-	 * Utiliza tipo {@link SortType#ASCENDANT} como default.
+	 * Utiliza tipo {@link SortType#ASCENDING} como default.
 	 * @param propriedade Propriedade para ordenação.
 	 */
 	public SortConfig(String propriedade) {
-		this(propriedade, SortType.ASCENDANT);
+		this(propriedade, SortType.ASCENDING);
 	}
 
 	/**
@@ -75,14 +75,14 @@ public class SortConfig implements Serializable {
 	 * @return true se a ordenação está configurada como ascendente.
 	 */
 	public boolean isAscendant() {
-		return SortType.ASCENDANT.equals(this.type);
+		return SortType.ASCENDING.equals(this.type);
 	}
 	
 	/**
 	 * @return true se a ordenação está configurada como descendente.
 	 */
 	public boolean isDescendant() {
-		return SortType.DESCENDANT.equals(this.type);
+		return SortType.DESCENDING.equals(this.type);
 	}
 
 	public String getProperty() {

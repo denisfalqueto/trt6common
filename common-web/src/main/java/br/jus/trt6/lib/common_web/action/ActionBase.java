@@ -6,8 +6,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.inject.Inject;
 
-import br.jus.trt6.lib.common_web.util.MessageUtil;
 import org.apache.logging.log4j.Logger;
+
+import br.jus.trt6.lib.common_web.util.MessageUtil;
 
 /**
  * Classe base para controle da camada de apresentação.
@@ -19,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 public class ActionBase implements Serializable {
 	
     @Inject
-    private Logger log;
+    protected Logger log;
     
 	@Inject
 	private MessageUtil messageUtil; 
@@ -29,7 +30,6 @@ public class ActionBase implements Serializable {
 	 */
 	@PostConstruct
 	public void init() {
-            log.entry();
 	}	
 	
 	/**
