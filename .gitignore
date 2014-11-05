@@ -4,4 +4,4 @@ target/
 *.classpath
 *rebel.xml
 *.prefs
-.settings
+
