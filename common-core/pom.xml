@@ -12,18 +12,18 @@
 	<dependencies>
 
 		<!-- Declare the APIs we depend on and need for compilation. All of them 
-			are provided by JBoss AS 7 -->
+			are provided by JBoss  -->
 
 		<!-- Import the EJB API, we use provided scope as the API is included in 
-			JBoss AS 7 -->
+			JBoss  -->
 		<dependency>
 			<groupId>org.jboss.spec.javax.ejb</groupId>
-			<artifactId>jboss-ejb-api_3.1_spec</artifactId>
+			<artifactId>jboss-ejb-api_3.2_spec</artifactId>
 			<scope>provided</scope>
-		</dependency>
+		</dependency>			
 
 		<!-- Import the CDI API, we use provided scope as the API is included in 
-			JBoss AS 7 -->
+			JBoss  -->
 		<dependency>
 			<groupId>javax.enterprise</groupId>
 			<artifactId>cdi-api</artifactId>
@@ -31,16 +31,16 @@
 		</dependency>
 		
 		<!-- Import the JPA API, we use provided scope as the API is included in 
-			JBoss AS 7 -->
+			JBoss  -->
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.0-api</artifactId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
 
 		<!-- JSR-303 (Bean Validation) Implementation -->
 		<!-- Provides portable constraints such as @Email -->
-		<!-- Hibernate Validator is shipped in JBoss AS 7 -->
+		<!-- Hibernate Validator is shipped in JBoss  -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
@@ -105,6 +105,10 @@
 			<artifactId>derby</artifactId>
 		</dependency>
 
-
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>
