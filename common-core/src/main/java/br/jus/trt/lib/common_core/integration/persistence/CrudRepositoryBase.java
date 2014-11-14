@@ -29,6 +29,7 @@ import org.apache.logging.log4j.Logger;
 @SuppressWarnings("serial")
 public abstract class CrudRepositoryBase <ENTITY extends Entity<PK>, PK extends Serializable> 
 					implements CrudRepository<ENTITY, PK>, EntityRepository<ENTITY, PK> {
+
     @Inject
     protected Logger log;
 
