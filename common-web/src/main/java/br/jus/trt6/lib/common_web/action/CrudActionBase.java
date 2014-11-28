@@ -17,6 +17,7 @@ import br.jus.trt.lib.qbe.api.Filter;
 import br.jus.trt.lib.qbe.api.operator.Operators;
 import br.jus.trt6.lib.common_web.action.pagination.LazyEntityDataModel;
 import br.jus.trt6.lib.common_web.action.pagination.LazyEntityProvider;
+import javax.annotation.PostConstruct;
 
 /**
  * Classe base para Actions do tipo CRUD, associados a uma entidade de domínio
@@ -74,7 +75,8 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	private ENTITY entity;
 
 	@Override
-	public void init() {
+        @PostConstruct
+        public void init() {
 		log.entry();
 
 		super.init();

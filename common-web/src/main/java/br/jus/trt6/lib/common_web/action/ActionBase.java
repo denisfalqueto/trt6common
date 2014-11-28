@@ -30,6 +30,7 @@ public class ActionBase implements Serializable {
 	 */
 	@PostConstruct
 	public void init() {
+            log.entry();
 	}	
 	
 	/**

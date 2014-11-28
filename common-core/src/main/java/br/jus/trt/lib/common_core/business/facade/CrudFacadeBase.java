@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.metamodel.SingularAttribute;
-import org.apache.deltaspike.jpa.api.transaction.Transactional;
+import javax.transaction.Transactional;
 import org.apache.logging.log4j.Logger;
 
 @Transactional
