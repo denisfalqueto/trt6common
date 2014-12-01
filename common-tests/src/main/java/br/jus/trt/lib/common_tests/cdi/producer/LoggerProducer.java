@@ -18,7 +18,7 @@ import org.apache.logging.log4j.Logger;
 public class LoggerProducer {
 
     private Class<?> getInjectionClass(InjectionPoint ip) {
-        return ip.getBean().getClass();
+        return ip.getMember().getDeclaringClass();
     }
 
     @Produces
