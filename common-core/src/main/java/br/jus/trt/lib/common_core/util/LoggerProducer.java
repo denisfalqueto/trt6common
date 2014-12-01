@@ -13,12 +13,7 @@ public class LoggerProducer {
     private Logger log = LogManager.getLogger();
 
     private Class<?> getInjectionClass(InjectionPoint ip) {
-        log.entry(ip);
-        Class<?> result = null;
-        if (ip.getBean() != null) {
-            result = ip.getBean().getBeanClass();
-        }
-        return log.exit(result);
+        return ip.getMember().getDeclaringClass();
     }
 
     @Produces
