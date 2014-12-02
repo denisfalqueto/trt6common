@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import javax.persistence.Id;
 
 import org.apache.deltaspike.data.api.EntityRepository;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import br.jus.trt.lib.common_core.business.domain.Entity;
@@ -21,33 +20,55 @@ import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.api.SortConfig;
 import br.jus.trt.lib.qbe.api.SortConfig.SortType;
 import br.jus.trt.lib.qbe.api.operator.Operators;
+import javax.persistence.EntityManager;
 
 /**
- * Querier Object para entidades de domínio. Expõe apenas operações para
- * recuperação de dados.
- * 
+ * Querier Object para entidades de domínio. Expõe apenas operações para recuperação de 
+ * dados. 
  * @author augusto
- * 
+ *
  */
-public abstract class CrudRepositoryBase<ENTITY extends Entity<PK>, PK extends Serializable>
-		implements CrudRepository<ENTITY, PK>, EntityRepository<ENTITY, PK> {
+public abstract class CrudRepositoryBase<ENTITY extends Entity<PK>, PK extends Serializable> 
+        implements CrudRepository<ENTITY, PK>, EntityRepository<ENTITY, PK> {
 
-	protected Logger log = LogManager.getLogger();
+        @Inject
+	protected Logger log;
 
 	@Inject
 	private QBERepository qbeRepository;
+        
+        @Inject
+        private EntityManager em;
 
 	private Class<? extends ENTITY> entityClass;
 
+        @Override
+        public void remove(ENTITY entity) {
+            log.entry(entity);
+            if (!em.contains(entity)) {
+                log.debug("Reinserindo entidade no Entitymanager");
+                log.trace(entity);
+                entity = em.merge(entity);
+            }
+            em.remove(entity);
+        }
+
+        @Override
+        public void removeAndFlush(ENTITY entity) {
+            log.entry(entity);
+            this.remove(entity);
+            em.flush();
+        }
+
 	@Override
 	public ENTITY findBy(PK id, String... fetch) {
-		log.entry(id, fetch);
-
+            log.entry(id, fetch);
+		
 		Field idField = getIdField(getEntityClass());
-
+		
 		Filter<ENTITY> filtro = new QBEFilter<ENTITY>(getEntityClass());
 		filtro.filterBy(idField.getName(), Operators.equal(), id);
-
+		
 		// adicionando propriedades para fetch
 		if (fetch != null) {
 			for (String f : fetch) {

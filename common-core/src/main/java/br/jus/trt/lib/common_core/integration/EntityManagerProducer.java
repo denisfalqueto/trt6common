@@ -5,6 +5,8 @@ import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Producer para EntityManager, de forma possam ser injetadas em beans CDI
@@ -14,12 +16,15 @@ import javax.persistence.PersistenceUnit;
  * @author denisf
  */
 public class EntityManagerProducer {
+    private Logger log = LogManager.getLogger();
+    
     @PersistenceUnit
     private EntityManagerFactory emf;
     
     @Produces 
     public EntityManager produceEntityManager() {
-        return emf.createEntityManager();
+        log.entry();
+        return log.exit(emf.createEntityManager());
     }
     
     public void closeEntityManager(@Disposes EntityManager em) {
