@@ -1,5 +1,6 @@
 package br.jus.trt.lib.common_core.business.domain.type;
 
+import br.jus.trt.lib.qbe.util.ReflectionUtil;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
@@ -15,9 +16,6 @@ import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
 import org.hibernate.usertype.ParameterizedType;
 import org.hibernate.usertype.UserType;
-
-import br.jus.trt.lib.common_core.util.ReflectionUtil;
-
 
 /**
  * Classe que implementa um tipo customizado do Hibernate que permite o mapeamento de Java Enum de forma customizada. 

@@ -14,13 +14,13 @@ import org.apache.logging.log4j.Logger;
 import br.jus.trt.lib.common_core.business.domain.Entity;
 import br.jus.trt.lib.common_core.exception.AppException;
 import br.jus.trt.lib.common_core.util.JavaGenericsUtil;
-import br.jus.trt.lib.common_core.util.ReflectionUtil;
 import br.jus.trt.lib.qbe.QBEFilter;
 import br.jus.trt.lib.qbe.api.Filter;
 import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.api.SortConfig;
 import br.jus.trt.lib.qbe.api.SortConfig.SortType;
 import br.jus.trt.lib.qbe.api.operator.Operators;
+import br.jus.trt.lib.qbe.util.ReflectionUtil;
 
 /**
  * Querier Object para entidades de domínio. Expõe apenas operações para
