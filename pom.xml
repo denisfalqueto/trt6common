@@ -292,18 +292,18 @@
                 <scope>runtime</scope>
             </dependency>
 			
-			<!-- export dataTable data support -->
+            <!-- export dataTable data support -->
             <dependency>
-            	<groupId>com.lowagie</groupId>
-            	<artifactId>itext</artifactId>
-            	<version>2.1.7</version>
-            	<scope>runtime</scope>
+                <groupId>com.lowagie</groupId>
+                <artifactId>itext</artifactId>
+                <version>2.1.7</version>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
-            	<groupId>org.apache.poi</groupId>
-            	<artifactId>poi</artifactId>
-            	<version>3.7</version>
-            	<scope>runtime</scope>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>3.7</version>
+                <scope>runtime</scope>
             </dependency>			
 
         </dependencies>
@@ -311,14 +311,33 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.googlecode.maven-java-formatter-plugin</groupId>
+                <artifactId>maven-java-formatter-plugin</artifactId>
+                <version>0.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <compilerSource>${compiler.source}</compilerSource>
+                    <compilerTargetPlatform>${compiler.source}</compilerTargetPlatform>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <configFile>../formatter/trt-formatter.xml</configFile>
+                    <overrideConfigCompilerVersion>true</overrideConfigCompilerVersion>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.1</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>${compiler.source}</source>
+                    <target>${compiler.source}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
@@ -333,6 +352,7 @@
         </plugins>
     </build>
     <properties>
+        <compiler.source>1.6</compiler.source>
         <common.version>0.0.1-SNAPSHOT</common.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <deltaspike.version>1.0.1</deltaspike.version>
