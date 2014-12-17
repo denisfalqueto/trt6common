@@ -9,6 +9,15 @@
 	</parent>
 	<artifactId>common-core</artifactId>
 
+        <build>
+            <testResources>
+                <testResource>
+                    <directory>src/test/resources</directory>
+                    <filtering>true</filtering>
+                </testResource>
+            </testResources>
+        </build>
+
 	<dependencies>
 
 		<!-- Declare the APIs we depend on and need for compilation. All of them 

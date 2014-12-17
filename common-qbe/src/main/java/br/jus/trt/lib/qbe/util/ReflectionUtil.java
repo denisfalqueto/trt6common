@@ -14,6 +14,10 @@ import org.hibernate.proxy.HibernateProxy;
 
 import br.jus.trt.lib.qbe.api.Identifiable;
 import br.jus.trt.lib.qbe.api.exception.QbeException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -214,7 +218,37 @@ public class ReflectionUtil {
 	}
 	
 	/**
-	 * Retorna a referência de um field dentro de uma classe especifica.
+	 * Retorna uma referência para um método. O mpetodo pode ser da classe ou da superclasse, em qualquer nível.
+	 * @param type Class para extrair o atributo.
+	 * @param methodName Nome do atributo. Suporta atributos aninhados.
+	 * @return Method extraído, ou null se o atributo não existe na classe
+	 */
+        public static Method getMethod(Class<?> type, String methodName) {
+		log.entry(type, methodName);
+		if (type == null)
+			throw new IllegalArgumentException("type não deve ser null.");
+		if (methodName == null)
+			throw new IllegalArgumentException("methodName não deve ser null.");
+		
+                Method method = null;
+		
+		// iterando sobre a estrutura da classe e das superclasses
+		for (Class<?> clazz = type; clazz != Object.class; clazz = clazz.getSuperclass()) {
+			try {
+                                log.debug("Tentando encontrar o método na classe %s", clazz.getName());
+				method = clazz.getDeclaredMethod(methodName);
+                                log.info("Método %s encontrado na classe %s", methodName, clazz.getName());
+				break;
+			} catch (Exception e) {
+                            log.debug("O método %s não existe na classe %s", methodName, clazz.getName());
+			}
+		}
+
+		return method;
+	}
+
+	/**
+         * Retorna a referência de um field dentro de uma classe especifica.
 	 */
 	private static Field getClassField(Class<?> type, String propertyName) {
             log.entry(type, propertyName);
@@ -229,8 +263,7 @@ public class ReflectionUtil {
                                 log.trace("atributo = " + atributo);
 				break;
 			} catch (Exception e) {
-				// atributo nao encontrado
-				// FIXME AUDIT WARN está simplesmente abafando a exceção.
+				log.debug("O atributo %s não foi encontrado na classe %s", propertyName, clazz.getName());
 			}
 		}
 
@@ -272,6 +305,52 @@ public class ReflectionUtil {
 	}
 	
 	/**
+	 * Retorna uma lista de campos (atributos ou métodos) que possuem a anotação. O atributo pode ser da classe ou da superclasse, em qualquer nível.
+	 * @param classe Class para extrair o atributo.
+	 * @param annotation Annotation.
+	 * @return Lista de Fields extraídos
+	 */
+	@SuppressWarnings("rawtypes")
+	public static List<Field> getFields(Class<?> classe, Class<? extends Annotation> annotation) {
+		List<Field> resultFields = new ArrayList<Field>();
+		
+		// iterando sobre a estrutura da classe e das superclasses
+		for (Class clazz = classe; clazz != Object.class; clazz = clazz.getSuperclass()) {
+			try {
+				Field[] declaredFields = clazz.getDeclaredFields();
+				if (declaredFields != null) {
+					for (Field field : declaredFields) {
+						if (field.isAnnotationPresent(annotation)) {
+							resultFields.add(field);
+						}
+					}	
+				}
+			} catch (Exception e) {
+				log.debug("A anotação %s não foi encontrada na classe %s", annotation.getName(), clazz.getName());
+			}
+		}
+		
+		return resultFields;
+	}
+	
+	/**
+	 * Inicializa o respectivo atributo, com valor default (nova instância), no componente. 
+	 * @param componente Objeto para inicialização do atributo.
+	 * @param atributo Nome do atributo a ser inicializado com valor default. Utiliza o método "Set"
+	 * @return O valor do atributo inicializado
+	 */
+	public static Object initializeProperty(Object componente, String atributo) {
+		Field field = getField(componente.getClass(), atributo);
+		try {
+			Object valor = field.getType().newInstance();
+			setValue(componente, field, valor);
+			return valor;
+		} catch (Exception e) {
+                    throw new QbeException("Falha ao inicializar atributo", e);
+                }
+	}
+
+        /**
 	 * Verifica se uma entidade é chave-composta.
 	 * @param classe Tipo da entidade para verificação.
 	 * @return true se for chave-simples (@Id), false caso contrário.
@@ -281,6 +360,30 @@ public class ReflectionUtil {
 		return log.exit(classe != null && getField(classe, "id").isAnnotationPresent(Id.class));
 	}
 	
+	/**
+	 * Inicializa o respectivo atributo, com valor default (nova instância), no componente. 
+	 * @param componente Objeto para inicialização do atributo.
+	 * @param atributo Atributo a ser inicializado com valor default.
+	 * @return O valor do atributo inicializado
+	 */	
+	public static Object initializeProperty(Object componente, Field atributo) {
+		try {
+			Object valor = atributo.getType().newInstance();
+			setValue(componente, atributo, valor);
+			return valor;
+		} catch (Exception e) {
+                    throw new QbeException("Falha ao inicializar o atributo " + atributo.getName(), e);
+                }
+	}
+	
+	public static <TIPO extends Object> TIPO instantiate(Class<TIPO> clazz) {
+		try {
+			return clazz.newInstance();
+		} catch (Exception e) {
+                    throw new QbeException("Falha ao instanciar objeto: " + clazz, e);
+                }
+	}
+
 	/**
 	 * Copia os atributos de um objeto de origem para um de destino
 	 * @param origem Objeto de origem

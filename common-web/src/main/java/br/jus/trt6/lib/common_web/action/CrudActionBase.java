@@ -11,7 +11,7 @@ import br.jus.trt.lib.common_core.business.domain.Entity;
 import br.jus.trt.lib.common_core.business.facade.CrudFacade;
 import br.jus.trt.lib.common_core.util.DIContainerUtil;
 import br.jus.trt.lib.common_core.util.JavaGenericsUtil;
-import br.jus.trt.lib.common_core.util.ReflectionUtil;
+import br.jus.trt.lib.qbe.util.ReflectionUtil;
 import br.jus.trt.lib.qbe.QBEFilter;
 import br.jus.trt.lib.qbe.api.Filter;
 import br.jus.trt.lib.qbe.api.operator.Operators;
