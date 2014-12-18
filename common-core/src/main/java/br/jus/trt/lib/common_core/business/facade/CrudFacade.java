@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.metamodel.SingularAttribute;
 
-public interface CrudFacade<E extends Entity<PK>, PK extends Serializable> {
+public interface CrudFacade<E extends Entity<PK>, PK extends Serializable> extends Facade {
 
     /*
      * Redefinir métodos das interfaces herdadas. O objetivo é isolar a implementação real
