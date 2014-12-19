@@ -322,11 +322,18 @@
                         </goals>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>br.jus.trt.lib</groupId>
+                        <artifactId>common-formatter</artifactId>
+                        <version>0.0.1-SNAPSHOT</version>
+                    </dependency>
+                </dependencies>
                 <configuration>
                     <compilerSource>${compiler.source}</compilerSource>
                     <compilerTargetPlatform>${compiler.source}</compilerTargetPlatform>
                     <encoding>${project.build.sourceEncoding}</encoding>
-                    <configFile>../formatter/trt-formatter.xml</configFile>
+                    <configFile>/br/jus/trt/lib/formatter/trt.xml</configFile>
                     <overrideConfigCompilerVersion>true</overrideConfigCompilerVersion>
                 </configuration>
             </plugin>
