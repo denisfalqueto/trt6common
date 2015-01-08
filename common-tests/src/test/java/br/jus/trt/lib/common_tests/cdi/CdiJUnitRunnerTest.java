@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import br.jus.trt.lib.common_tests.util.EmptyBeanA;
+
 @RunWith(CdiJUnitRunner.class)
 public class CdiJUnitRunnerTest {
 

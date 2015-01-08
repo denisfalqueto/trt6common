@@ -18,6 +18,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import br.jus.trt.lib.common_tests.cdi.CDI;
+import br.jus.trt.lib.common_tests.util.EmptyBean;
+import br.jus.trt.lib.common_tests.util.EmptyBeanA;
+import br.jus.trt.lib.common_tests.util.EmptyBeanB;
+import br.jus.trt.lib.common_tests.util.QualifierB;
 
 
 /**

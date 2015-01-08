@@ -1,5 +1,4 @@
-package br.jus.trt.lib.common_tests.arquillian;
-
+package br.jus.trt.lib.common_tests.util;
 
 /**
  * Bean para teste de injeção de dependências em ambiente de teste.
