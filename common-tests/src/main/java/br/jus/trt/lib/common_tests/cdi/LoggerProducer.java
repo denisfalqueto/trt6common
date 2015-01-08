@@ -1,8 +1,8 @@
-package br.jus.trt.lib.common_tests.cdi.producer;
+package br.jus.trt.lib.common_tests.cdi;
 
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
-import br.jus.trt.lib.common_tests.cdi.ForTest;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

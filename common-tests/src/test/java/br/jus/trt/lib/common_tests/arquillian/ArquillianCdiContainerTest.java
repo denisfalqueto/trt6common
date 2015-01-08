@@ -29,7 +29,7 @@ import br.jus.trt.lib.common_tests.util.QualifierB;
  * @author augusto
  *
  */
-@RunWith(ArquillianCommonRunning.class)
+@RunWith(ArquillianCommonRunner.class)
 public class ArquillianCdiContainerTest {
 
 	@Inject
@@ -48,7 +48,7 @@ public class ArquillianCdiContainerTest {
         WebArchive war = ShrinkWrap.create(WebArchive.class, "test.war")
         		.addClasses(EmptyBean.class, EmptyBeanA.class, EmptyBeanB.class, CDI.class, 
         				QualifierB.class)
-        		.addClasses(ArquillianCommonRunning.class)		        		
+        		.addClasses(ArquillianCommonRunner.class)		        		
         	.addAsLibraries(libs)
             .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
             .addAsWebInfResource("test-beans.xml", "beans.xml");
@@ -61,7 +61,7 @@ public class ArquillianCdiContainerTest {
 	
 	/**
 	 * Verifica se a injeção de dependência está sendo habilitada para a classe de teste
-	 * que executa com {@link ArquillianCommonRunning}
+	 * que executa com {@link ArquillianCommonRunner}
 	 */
 	@Test
 	public void cdiBeanInjectionTest() {
@@ -70,7 +70,7 @@ public class ArquillianCdiContainerTest {
 	
 	/**
 	 * Verifica se a injeção de pripriedades aninhadas está funcionando para a classe de teste
-	 * que executa com {@link ArquillianCommonRunning}
+	 * que executa com {@link ArquillianCommonRunner}
 	 */
 	@Test
 	public void cdiBeanNestedInjectionTest() {

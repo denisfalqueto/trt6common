@@ -6,6 +6,6 @@
   <class>br.jus.trt.lib.common_tests.dataloader.LoadDataInterceptor</class>
  </interceptors>
  <alternatives>
-  <class>br.jus.trt.lib.common_tests.cdi.producer.AlternativeEntityManagerProducer</class>
+  <class>br.jus.trt.lib.common_tests.jpa.AlternativeEntityManagerProducer</class>
  </alternatives>
 </beans>

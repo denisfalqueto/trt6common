@@ -7,9 +7,9 @@ import org.junit.runners.model.InitializationError;
  * Brigde para o Junit Runner do Arquillian para garantir um ponto de customização comum.
  * @author augusto
  */
-public class ArquillianCommonRunning extends Arquillian {
+public class ArquillianCommonRunner extends Arquillian {
 
-	public ArquillianCommonRunning(Class<?> klass) throws InitializationError {
+	public ArquillianCommonRunner(Class<?> klass) throws InitializationError {
 		super(klass);
 	}
 

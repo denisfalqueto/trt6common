@@ -5,14 +5,14 @@ import javax.inject.Inject;
 import org.junit.Assert;
 import org.junit.Test;
 
-import br.jus.trt.lib.common_tests.jpa.TransactionTestBase;
+import br.jus.trt.lib.common_tests.LocalTransactionTestBase;
 
 /**
  * Teste para a classe {@link HibernateDataLoader}
  * @author augusto
  *
  */
-public class HibernateDataLoaderTest extends TransactionTestBase {
+public class HibernateDataLoaderTest extends LocalTransactionTestBase {
 
 	@Inject
 	private UF_aa_DataLoader ufDataLoader;

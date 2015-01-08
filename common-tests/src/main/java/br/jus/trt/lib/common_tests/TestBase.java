@@ -1,4 +1,4 @@
-package br.jus.trt.lib.common_tests.jpa;
+package br.jus.trt.lib.common_tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -14,8 +14,10 @@ import org.junit.runner.RunWith;
 import br.jus.trt.lib.common_tests.cdi.CdiJUnitRunner;
 
 /**
- * Classe base com comportamento comum para testes unitários que utilizam um
- * contexto transacional. Gerencia o ciclo de vida do JUnit, suporta CDI.
+ * Classe base com comportamento comum para testes unitários simples (pojo).
+ * Gerencia o ciclo de vida do JUnit, integrando a classe a um Container CDI (o
+ * que significa que Injeção de Dependências e todos os seus recursos são
+ * suportados desde a classe de testes).
  * 
  * @author Augusto
  * 
@@ -25,25 +27,29 @@ import br.jus.trt.lib.common_tests.cdi.CdiJUnitRunner;
 public abstract class TestBase {
 
 	/**
-	 * Executado antes de cada método de teste. 
+	 * Executado antes de cada método de teste.
 	 */
 	@Before
-	public void beforeEachTest() {};
+	public void beforeEachTest() {
+	};
 
 	/**
 	 * Executado após de cada método de teste.
 	 */
 	@After
-	public void afterEachTest() {};
+	public void afterEachTest() {
+	};
 
 	/**
 	 * Verifica se ambas as listas possuem os mesmos objetos. A ordem não é
 	 * verificada.
 	 */
 	public void assertContentEqual(List<?> list1, List<?> list2) {
-		assertTrue("A primeira lista não contem todos os objetos da segunda lista",
+		assertTrue(
+				"A primeira lista não contem todos os objetos da segunda lista",
 				list1.containsAll(list2));
-		assertTrue("A segunda lista não contem todos os objetos da primeira lista",
+		assertTrue(
+				"A segunda lista não contem todos os objetos da primeira lista",
 				list2.containsAll(list1));
 	}
 
@@ -66,6 +72,26 @@ public abstract class TestBase {
 	 */
 	protected void assertNotEmpty(Collection<?> collection) {
 		assertTrue(collection != null && !collection.isEmpty());
+	}
+
+	/**
+	 * Verifica se a coleção é diferente de null e vazia.
+	 * 
+	 * @param collection
+	 *            Para validação.
+	 */
+	protected void assertEmpty(Collection<?> collection) {
+		assertTrue(collection != null && collection.isEmpty());
+	}
+
+	/**
+	 * Verifica se a coleção é null ou vazia.
+	 * 
+	 * @param collection
+	 *            Para validação.
+	 */
+	protected void assertNullOrEmpty(Collection<?> collection) {
+		assertTrue(collection == null || collection.isEmpty());
 	}
 
 }

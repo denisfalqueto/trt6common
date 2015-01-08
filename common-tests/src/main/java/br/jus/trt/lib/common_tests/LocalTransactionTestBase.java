@@ -1,4 +1,4 @@
-package br.jus.trt.lib.common_tests.jpa;
+package br.jus.trt.lib.common_tests;
 
 import static org.junit.Assert.fail;
 
@@ -12,16 +12,21 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 
+import br.jus.trt.lib.common_tests.jpa.JPAStandalone;
+
 /**
  * Classe base com comportamento comum para testes unitários que utilizam um
  * contexto transacional. Gerencia o ciclo de vida do JUnit, JPA, suporta CDI, e
  * outros recursos necessários para testes.
  * 
+ * Cada método de teste é isolado em uma transação, não interferindo um no outro. Ao final de cada método,
+ * é realizado rollback na transação.
+ * 
  * @author Augusto
  * 
  */
 @Ignore
-public class TransactionTestBase extends TestBase {
+public class LocalTransactionTestBase extends TestBase {
 
 	/** para controle de transações e acesso à base de dados */
 	private JPAStandalone jpaInstance;

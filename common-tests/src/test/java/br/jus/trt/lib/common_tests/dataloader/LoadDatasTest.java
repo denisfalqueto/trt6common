@@ -3,8 +3,8 @@ package br.jus.trt.lib.common_tests.dataloader;
 import org.junit.Assert;
 import org.junit.Test;
 
+import br.jus.trt.lib.common_tests.LocalTransactionTestBase;
 import br.jus.trt.lib.common_tests.domain.UF;
-import br.jus.trt.lib.common_tests.jpa.TransactionTestBase;
 
 /**
  * Testa o uso da anotação {@link LoadDatas}, misturando as opções de script e Bean.
@@ -15,7 +15,7 @@ import br.jus.trt.lib.common_tests.jpa.TransactionTestBase;
 	@LoadData(sql="dataloader/uf_aa.sql"),
 	@LoadData(dataLoader=UF_bb_DataLoader.class, precedence=3)
 })	
-public class LoadDatasTest extends TransactionTestBase {
+public class LoadDatasTest extends LocalTransactionTestBase {
 
 	@Test
 	public void loadDatasInTypeTest() {

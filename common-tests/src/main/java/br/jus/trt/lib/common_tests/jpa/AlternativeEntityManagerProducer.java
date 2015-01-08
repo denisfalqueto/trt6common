@@ -1,10 +1,8 @@
-package br.jus.trt.lib.common_tests.cdi.producer;
+package br.jus.trt.lib.common_tests.jpa;
 
 import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
-
-import br.jus.trt.lib.common_tests.jpa.JPAStandalone;
 
 /**
  * Producer alternativo para injeção de dependência de um EntityManager em ambiente de testes.

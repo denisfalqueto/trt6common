@@ -12,13 +12,13 @@ import org.junit.runner.RunWith;
  * aplicação.
  * @author augusto
  */
-@RunWith(ArquillianCommonRunning.class)
+@RunWith(ArquillianCommonRunner.class)
 public class ArquillianContainerConnectionTest {
 
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
-        	.addClass(ArquillianCommonRunning.class)	
+        	.addClass(ArquillianCommonRunner.class)	
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 	

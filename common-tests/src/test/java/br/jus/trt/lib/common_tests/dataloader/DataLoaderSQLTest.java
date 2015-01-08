@@ -5,14 +5,14 @@ import javax.inject.Inject;
 import org.junit.Assert;
 import org.junit.Test;
 
-import br.jus.trt.lib.common_tests.jpa.TransactionTestBase;
+import br.jus.trt.lib.common_tests.LocalTransactionTestBase;
 
 
 /**
  * Testes da classe {@link DataLoaderSQL}
  * @author augusto
  */
-public class DataLoaderSQLTest extends TransactionTestBase {
+public class DataLoaderSQLTest extends LocalTransactionTestBase {
 
 	@Inject
 	private DataLoaderSQL loaderSQL;
