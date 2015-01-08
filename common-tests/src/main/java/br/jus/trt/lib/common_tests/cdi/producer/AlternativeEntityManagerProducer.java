@@ -18,7 +18,7 @@ public class AlternativeEntityManagerProducer {
 	 * @param jpaStandalone Instância em utilização pelo teste unitário.
 	 * @return {@link EntityManager} devidamente configurado e pronto para uso.
 	 */
-	@Produces 
+	@Produces @Alternative
     public EntityManager createEntityManager(JPAStandalone jpaStandalone) {
 		jpaStandalone.startSession(); // garante um EM disponível
         return jpaStandalone.getEm();
