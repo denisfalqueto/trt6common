@@ -5,3 +5,8 @@ target/
 *rebel.xml
 *.prefs
 
+.settings
+/common-core/.settings
+/common-qbe/.settings
+/common-tests/.settings
+/common-web/.settings
