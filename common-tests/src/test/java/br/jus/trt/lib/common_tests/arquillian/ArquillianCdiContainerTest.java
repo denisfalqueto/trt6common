@@ -10,96 +10,96 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
-import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
+import br.jus.trt.lib.common_tests.DeployableTestBase;
+import br.jus.trt.lib.common_tests.TestBase;
 import br.jus.trt.lib.common_tests.cdi.CDI;
 import br.jus.trt.lib.common_tests.util.EmptyBean;
 import br.jus.trt.lib.common_tests.util.EmptyBeanA;
 import br.jus.trt.lib.common_tests.util.EmptyBeanB;
 import br.jus.trt.lib.common_tests.util.QualifierB;
 
-
 /**
- * Tenta garantir que o container de injeção de dependências via CDI está devidamente funcional.
+ * Tenta garantir que o container de injeção de dependências via CDI está
+ * devidamente funcional.
+ * 
  * @author augusto
  *
  */
-@RunWith(ArquillianCommonRunner.class)
-public class ArquillianCdiContainerTest {
+public class ArquillianCdiContainerTest extends DeployableTestBase {
 
 	@Inject
 	private EmptyBeanA emptyBeanA;
-	
-    @Deployment
-    public static Archive<?> createDeployment() {
-    	
-    	
-    	// carregando configuração de dependências do pom
-    	PomEquippedResolveStage pom = Maven.resolver().loadPomFromFile("pom.xml");
-    	
-    	// seleciona as dependências do projeto
-        File[] libs = pom.importDependencies(ScopeType.COMPILE).resolve().withTransitivity().asFile();
-    	
-        WebArchive war = ShrinkWrap.create(WebArchive.class, "test.war")
-        		.addClasses(EmptyBean.class, EmptyBeanA.class, EmptyBeanB.class, CDI.class, 
-        				QualifierB.class)
-        		.addClasses(ArquillianCommonRunner.class)		        		
-        	.addAsLibraries(libs)
-            .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
-            .addAsWebInfResource("test-beans.xml", "beans.xml");
-        
-        System.out.println(war.toString(true));
-        
+
+	@Deployment
+	public static Archive<?> createDeployment() {
+
+		File[] libs = loadLibsFromPom();
+
+		WebArchive war = ShrinkWrap
+				.create(WebArchive.class, "test.war")
+				.addClasses(EmptyBean.class, EmptyBeanA.class,
+						EmptyBeanB.class, CDI.class, QualifierB.class)
+				.addClasses(ArquillianCommonRunner.class,
+						DeployableTestBase.class, TestBase.class)
+				.addAsLibraries(libs)
+				.addAsResource("test-persistence.xml",
+						"META-INF/persistence.xml")
+				.addAsWebInfResource("test-beans.xml", "beans.xml");
+
+		System.out.println(war.toString(true));
+
 		return war;
-    }
-	
-	
+	}
+
 	/**
-	 * Verifica se a injeção de dependência está sendo habilitada para a classe de teste
-	 * que executa com {@link ArquillianCommonRunner}
+	 * Verifica se a injeção de dependência está sendo habilitada para a classe
+	 * de teste que executa com {@link ArquillianCommonRunner}
 	 */
 	@Test
 	public void cdiBeanInjectionTest() {
 		Assert.assertNotNull(emptyBeanA);
 	}
-	
+
 	/**
-	 * Verifica se a injeção de pripriedades aninhadas está funcionando para a classe de teste
-	 * que executa com {@link ArquillianCommonRunner}
+	 * Verifica se a injeção de pripriedades aninhadas está funcionando para a
+	 * classe de teste que executa com {@link ArquillianCommonRunner}
 	 */
 	@Test
 	public void cdiBeanNestedInjectionTest() {
 		Assert.assertNotNull(emptyBeanA.getEmptyBeanB());
 	}
-	
+
 	/**
 	 * Teste de lookup de bean sem qualifiers
 	 */
 	@Test
 	public void simpleLookupTest() {
-		EmptyBeanA emptyBeanA = BeanProvider.getContextualReference(EmptyBeanA.class);
+		EmptyBeanA emptyBeanA = BeanProvider
+				.getContextualReference(EmptyBeanA.class);
 		Assert.assertNotNull(emptyBeanA);
 	}
-	
+
 	/**
 	 * Teste de lookup de bean com qualifiers.
 	 */
 	@Test
 	public void withQualifierLookupTest() {
-		
+
 		/*
-		 * Busca um bean pela interface + um qualifier que especifica o tipo concreto.
+		 * Busca um bean pela interface + um qualifier que especifica o tipo
+		 * concreto.
 		 */
-		
+
 		@SuppressWarnings("serial")
-		EmptyBean emptyBean = BeanProvider.getContextualReference(EmptyBean.class,  new AnnotationLiteral<QualifierB>() {});
+		EmptyBean emptyBean = BeanProvider.getContextualReference(
+				EmptyBean.class, new AnnotationLiteral<QualifierB>() {
+				});
 		Assert.assertNotNull(emptyBean);
-		Assert.assertTrue(EmptyBeanB.class.equals(emptyBean.getClass()));;
+		Assert.assertTrue(EmptyBeanB.class.equals(emptyBean.getClass()));
+		;
 	}
-	
+
 }

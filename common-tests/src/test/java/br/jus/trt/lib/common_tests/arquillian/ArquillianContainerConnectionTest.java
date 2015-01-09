@@ -5,14 +5,12 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * Verifica se o arquillian está devidamente configurado para se conectar ao servidor de 
  * aplicação.
  * @author augusto
  */
-@RunWith(ArquillianCommonRunner.class)
 public class ArquillianContainerConnectionTest {
 
     @Deployment
