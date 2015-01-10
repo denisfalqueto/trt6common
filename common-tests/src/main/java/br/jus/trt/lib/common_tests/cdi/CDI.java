@@ -2,6 +2,7 @@ package br.jus.trt.lib.common_tests.cdi;
 
 import java.lang.annotation.Annotation;
 
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 
@@ -52,7 +53,7 @@ public class CDI {
     * 
     */
    public <T> T lookup(Class<T> subtype, Annotation... qualifiers) {
-	   return getContainer().instance().select(subtype, qualifiers).get();
+	   return BeanProvider.getContextualReference(subtype, qualifiers);
    }
    
    /**
@@ -65,7 +66,7 @@ public class CDI {
     * 
     */
    public <T> T lookup(Class<T> subtype) {
-	   return getContainer().instance().select(subtype).get();
+	   return BeanProvider.getContextualReference(subtype);
    }
     
 }

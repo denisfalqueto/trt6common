@@ -1,9 +1,11 @@
-package br.jus.trt.lib.common_tests.dataloader;
+package br.jus.trt.lib.common_tests.dataloader.cdi;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import br.jus.trt.lib.common_tests.LocalTransactionTestBase;
+import br.jus.trt.lib.common_tests.dataloader.DataLoader;
+import br.jus.trt.lib.common_tests.dataloader.LoadData;
 import br.jus.trt.lib.common_tests.domain.UF;
 
 /**
@@ -20,11 +22,11 @@ public class LoadDataSQLTest extends LocalTransactionTestBase {
 	@Test
 	public void loadSQLDataInTypeTest() {
 		// garantindo que há apenas 1 registro na base de dados
-		long count = executeCountQuery("select count(uf) from UF uf");
+		long count = getQuerier().executeCountQuery("select count(uf) from UF uf");
 		Assert.assertEquals(1, count);
 		
 		// buscando o registro para confirmação
-		count = executeCountQuery("select count(uf) from UF uf where uf.sigla=?", "aa");
+		count = getQuerier().executeCountQuery("select count(uf) from UF uf where uf.sigla=?", "aa");
 		Assert.assertEquals(1, count);		
 	}
 	
@@ -36,14 +38,14 @@ public class LoadDataSQLTest extends LocalTransactionTestBase {
 	@Test
 	public void loadSQLDataInMethodTest() {
 		// garantindo que há apenas 2 registro na base de dados
-		long count = executeCountQuery("select count(uf) from UF uf");
+		long count = getQuerier().executeCountQuery("select count(uf) from UF uf");
 		Assert.assertEquals(2, count);
 		
 		// buscando o registro para confirmação
-		count = executeCountQuery("select count(uf) from UF uf where uf.sigla=?", "aa");
+		count = getQuerier().executeCountQuery("select count(uf) from UF uf where uf.sigla=?", "aa");
 		Assert.assertEquals(1, count);
 		
-		count = executeCountQuery("select count(uf) from UF uf where uf.sigla=?", "bb");
+		count = getQuerier().executeCountQuery("select count(uf) from UF uf where uf.sigla=?", "bb");
 		Assert.assertEquals(1, count);		
 	}
 	
@@ -60,8 +62,8 @@ public class LoadDataSQLTest extends LocalTransactionTestBase {
 		 * A verificação será realizada pela comparação dos ID's, visto que são provenientes de sequences.
 		 */
 		// buscando o registro para confirmação
-		UF uf_aa = (UF) executeQuery("select uf from UF uf where uf.sigla=?", "aa").get(0);
-		UF uf_bb = (UF) executeQuery("select uf from UF uf where uf.sigla=?", "bb").get(0);
+		UF uf_aa = (UF) getQuerier().executeQuery("select uf from UF uf where uf.sigla=?", "aa").get(0);
+		UF uf_bb = (UF) getQuerier().executeQuery("select uf from UF uf where uf.sigla=?", "bb").get(0);
 		Assert.assertTrue(uf_aa.getId() > uf_bb.getId());		
 		
 	}

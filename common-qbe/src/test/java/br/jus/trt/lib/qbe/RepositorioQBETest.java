@@ -21,7 +21,7 @@ public class RepositorioQBETest extends QbeTestBase {
 	public void testNaoPriorizacaoID() {
 		
 		// cria uma cidade qualquer
-		UF ufBD = getAny(UF.class);
+		UF ufBD = findAny(UF.class);
 		
 		Cidade cid1 = new Cidade("cid1", ufBD);
 		getJpa().save(cid1);
@@ -53,7 +53,7 @@ public class RepositorioQBETest extends QbeTestBase {
 	public void testPriorizacaoID() {
 		
 		// cria uma cidade qualquer
-		UF ufBD = getAny(UF.class);
+		UF ufBD = findAny(UF.class);
 		
 		Cidade cid1 = new Cidade("cid1", ufBD);
 		getJpa().save(cid1);

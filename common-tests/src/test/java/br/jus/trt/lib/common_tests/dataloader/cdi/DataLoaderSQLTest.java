@@ -1,4 +1,4 @@
-package br.jus.trt.lib.common_tests.dataloader;
+package br.jus.trt.lib.common_tests.dataloader.cdi;
 
 import javax.inject.Inject;
 
@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import br.jus.trt.lib.common_tests.LocalTransactionTestBase;
+import br.jus.trt.lib.common_tests.dataloader.DataLoaderSQL;
 
 
 /**
@@ -23,14 +24,14 @@ public class DataLoaderSQLTest extends LocalTransactionTestBase {
 	@Test
 	public void loadScriptTest() throws Exception {
 		// garante que não há nenhuma uf com sigla "aa"
-		long count = executeCountQuery("select count(uf) from UF uf where uf.sigla=?", "aa");
+		long count = getQuerier().executeCountQuery("select count(uf) from UF uf where uf.sigla=?", "aa");
 		Assert.assertEquals(0, count);
 		
 		loaderSQL.setScriptPath("dataloader/uf_aa.sql");
 		loaderSQL.load();
 		
 		// buscando o registro para confirmação
-		count = executeCountQuery("select count(uf) from UF uf where uf.sigla=?", "aa");
+		count = getQuerier().executeCountQuery("select count(uf) from UF uf where uf.sigla=?", "aa");
 		Assert.assertEquals(1, count);
 	}
 	

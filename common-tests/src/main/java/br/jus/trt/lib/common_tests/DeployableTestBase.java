@@ -2,7 +2,7 @@ package br.jus.trt.lib.common_tests;
 
 import java.io.File;
 
-import javax.ejb.TransactionAttribute;
+import javax.inject.Inject;
 
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
@@ -12,6 +12,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.junit.runner.RunWith;
 
 import br.jus.trt.lib.common_tests.arquillian.ArquillianCommonRunner;
+import br.jus.trt.lib.common_tests.util.QuerierUtil;
 
 /**
  * Teste executado em um ambiente JEE real, com todos os recursos disponíveis.
@@ -23,6 +24,9 @@ import br.jus.trt.lib.common_tests.arquillian.ArquillianCommonRunner;
 @Transactional(value=TransactionMode.ROLLBACK)
 public abstract class DeployableTestBase extends TestBase {
 
+	@Inject
+	private QuerierUtil querier;
+	
 	/**
 	 * Carrega todas as dependências de escopo "compile" a partir do arquivo "pom.xml"  na raiz do projeto.
 	 * @return Array com as dependências configuradas no arquivo "pom.xml"
@@ -45,6 +49,14 @@ public abstract class DeployableTestBase extends TestBase {
     	// seleciona as dependências do projeto
         File[] libs = pom.importDependencies(scopes).resolve().withTransitivity().asFile();
 		return libs;
+	}
+
+	public QuerierUtil getQuerier() {
+		return querier;
+	}
+
+	public void setQuerier(QuerierUtil querier) {
+		this.querier = querier;
 	}
 	
 	

@@ -43,7 +43,7 @@ public class ArquillianCdiContainerTest extends DeployableTestBase {
 				.addClasses(EmptyBean.class, EmptyBeanA.class,
 						EmptyBeanB.class, CDI.class, QualifierB.class)
 				.addClasses(ArquillianCommonRunner.class,
-						DeployableTestBase.class, TestBase.class)
+						DeployableTestBase.class, TestBase.class, ArquillianDataLoaderExtension.class)
 				.addAsLibraries(libs)
 				.addAsResource("test-persistence.xml",
 						"META-INF/persistence.xml")

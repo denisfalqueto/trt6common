@@ -120,12 +120,11 @@ public class DataLoaderSQL extends HibernateDataLoader {
 	}		
 	
 	// getter and setters
-	
-	protected String getScriptPath() {
+	public String getScriptPath() {
 		return scriptPath;
 	}
 
-	protected void setScriptPath(String script) {
+	public void setScriptPath(String script) {
 		this.scriptPath = script;
 	}
 	

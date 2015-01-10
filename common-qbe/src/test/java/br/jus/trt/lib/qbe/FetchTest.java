@@ -185,7 +185,7 @@ public class FetchTest extends QbeTestBase {
 
 		// criando um servidor sem projeto para garantir que existe este caso
 		Servidor servidor = new Servidor();
-		servidor.setCidade(getAny(Cidade.class));
+		servidor.setCidade(findAny(Cidade.class));
 		servidor.setCpf("12554789631");
 		servidor.setDataNascimento(new Date());
 		servidor.setEmail("serv@serv.com");
