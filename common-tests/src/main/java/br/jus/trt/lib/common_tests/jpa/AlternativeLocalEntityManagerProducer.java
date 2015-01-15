@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
  * @author Augusto
  */
 @Alternative
-public class AlternativeEntityManagerProducer {
+public class AlternativeLocalEntityManagerProducer {
 
 	/**
 	 * Retorna uma instancia de {@link EntityManager} baseado no {@link JPAStandalone} default informado.

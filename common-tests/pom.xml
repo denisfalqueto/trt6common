@@ -131,7 +131,7 @@
 		<dependency>
 			<groupId>org.jboss.arquillian.extension</groupId>
 			<artifactId>arquillian-transaction-jta</artifactId>
-			<scope>teste</scope>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -143,12 +143,10 @@
 			<groupId>org.jboss</groupId>
 			<artifactId>jandex</artifactId>
 		</dependency>
-		
-
 		<dependency>
 			<groupId>org.eu.ingwar.tools</groupId>
 			<artifactId>arquillian-suite-extension</artifactId>
-		</dependency>		
+		</dependency>
 	</dependencies>
 
 </project>

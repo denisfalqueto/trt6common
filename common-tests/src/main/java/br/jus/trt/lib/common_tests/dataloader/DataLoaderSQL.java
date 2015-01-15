@@ -1,14 +1,12 @@
 package br.jus.trt.lib.common_tests.dataloader;
 
-import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Paths;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.apache.deltaspike.core.util.StringUtils;
 import org.hibernate.jdbc.Work;
@@ -21,10 +19,6 @@ import org.hibernate.jdbc.Work;
  *
  */
 public class DataLoaderSQL extends HibernateDataLoader {
-
-	/** Caminho para o diretório src/test/resources*/
-	public static final String TEST_RESOURCES_PATH = "src" + File.separator + "test" + File.separator + "resources"; 
-	
 	/** Caminho para o Script SQL para execução */
 	private String scriptPath;
 
@@ -46,6 +40,7 @@ public class DataLoaderSQL extends HibernateDataLoader {
 			getLogger().info("Executando script de carga de dados: " + getScriptPath());
 			executeDMLScript(getScriptPath());
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new Exception("Não foi possível executar scripts de carga para testes: " + getScriptPath(), e);
 		}	
 	}
@@ -100,25 +95,37 @@ public class DataLoaderSQL extends HibernateDataLoader {
 	}
 
 	private static List<String> readScriptComands(String scriptPath) throws Exception {
-		String resolvedScriptPath = resolveScriptPath(scriptPath);
-
 		try {
-			return Files.readAllLines(Paths.get(resolvedScriptPath), StandardCharsets.UTF_8);
-		} catch (NoSuchFileException e) {
-			throw new Exception("Script para carga de dados não encontrado: " + scriptPath);
+			InputStream scriptInput = null;
+			Scanner scanner = null;
+			
+			try {
+				scriptInput = Thread.currentThread().getContextClassLoader().getResourceAsStream(scriptPath);
+				scanner = new Scanner(scriptInput, "UTF8");
+				
+				List<String> comandos = new ArrayList<>();
+				while (scanner.hasNext()) {
+					String linha = scanner.nextLine();
+					comandos.add(linha);
+				}
+				
+				return comandos;
+			} finally {
+				if (scanner != null) {
+					scanner.close();
+				}
+				if (scriptInput != null) {
+					scriptInput.close();
+				}	
+			}
+			
+		} catch (Exception e) {
+			throw new Exception("Não foi possível ler o Script para carga de dados: " + scriptPath, e);
 		}
 				
 		
 	}
 
-	private static String resolveScriptPath(String scriptPath) {
-		File file = new File(scriptPath);
-		if (!file.exists()) {
-			file = new File(TEST_RESOURCES_PATH, scriptPath);
-		}
-		return file.getAbsolutePath(); 
-	}		
-	
 	// getter and setters
 	public String getScriptPath() {
 		return scriptPath;
@@ -132,4 +139,5 @@ public class DataLoaderSQL extends HibernateDataLoader {
 	public String toString() {
 		return "Script to load:" + getScriptPath();
 	}
+
 }

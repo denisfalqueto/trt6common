@@ -19,7 +19,7 @@ public class OrderTest extends QbeTestBase {
 		// executa a consulta com HQL correto equivalente
 		String hql = "from " + Cidade.class.getSimpleName() + " order by nome asc";
 		@SuppressWarnings("unchecked")
-		List<Cidade> cidadesHQL = executeQuery(getEntityManager(), hql, 0, 50, (Object[]) null);
+		List<Cidade> cidadesHQL = getQuerier().executeQuery(getEntityManager(), hql, 0, 50, (Object[]) null);
 		
 		// deve haver pelo menos uma cidade cadastrada
 		if (cidadesHQL == null || cidadesHQL.isEmpty()) {
@@ -51,7 +51,7 @@ public class OrderTest extends QbeTestBase {
 		// executa a consulta com HQL correto equivalente
 		String hql = "from " + Cidade.class.getSimpleName() + " order by nome desc";
 		@SuppressWarnings("unchecked")
-		List<Cidade> cidadesHQL = executeQuery(getEntityManager(), hql, 0, 50, (Object[]) null);
+		List<Cidade> cidadesHQL = getQuerier().executeQuery(getEntityManager(), hql, 0, 50, (Object[]) null);
 		
 		// deve haver pelo menos uma cidade cadastrada
 		if (cidadesHQL == null || cidadesHQL.isEmpty()) {
@@ -83,7 +83,7 @@ public class OrderTest extends QbeTestBase {
 		// executa a consulta com HQL correto equivalente
 		String hql = "from " + Cidade.class.getSimpleName() + " order by uf.sigla asc, nome asc";
 		@SuppressWarnings("unchecked")
-		List<Cidade> cidadesHQL = executeQuery(getEntityManager(), hql, 0, 50, (Object[]) null);
+		List<Cidade> cidadesHQL = getQuerier().executeQuery(getEntityManager(), hql, 0, 50, (Object[]) null);
 		
 		// deve haver pelo menos uma cidade cadastrada
 		if (cidadesHQL == null || cidadesHQL.isEmpty()) {

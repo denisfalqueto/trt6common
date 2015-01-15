@@ -4,6 +4,7 @@ import java.io.File;
 
 import javax.inject.Inject;
 
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
@@ -11,7 +12,6 @@ import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
 import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.junit.runner.RunWith;
 
-import br.jus.trt.lib.common_tests.arquillian.ArquillianCommonRunner;
 import br.jus.trt.lib.common_tests.util.QuerierUtil;
 
 /**
@@ -20,7 +20,7 @@ import br.jus.trt.lib.common_tests.util.QuerierUtil;
  * @author augusto
  *
  */
-@RunWith(ArquillianCommonRunner.class)
+@RunWith(Arquillian.class)
 @Transactional(value=TransactionMode.ROLLBACK)
 public abstract class DeployableTestBase extends TestBase {
 
@@ -31,7 +31,7 @@ public abstract class DeployableTestBase extends TestBase {
 	 * Carrega todas as dependências de escopo "compile" a partir do arquivo "pom.xml"  na raiz do projeto.
 	 * @return Array com as dependências configuradas no arquivo "pom.xml"
 	 */
-	protected static File[] loadLibsFromPom() {
+	public static File[] loadLibsFromPom() {
 		return loadLibsFromPom("pom.xml", ScopeType.COMPILE);
 	}
 	
@@ -42,7 +42,7 @@ public abstract class DeployableTestBase extends TestBase {
 	 * @param scopes Escopos que deverão ser considerados (importados) no arquivo POM.
 	 * @return Array com as dependências configuradas no arquivo "pom.xml".
 	 */
-	protected static File[] loadLibsFromPom(String pomPath, ScopeType...scopes) {
+	public static File[] loadLibsFromPom(String pomPath, ScopeType...scopes) {
 		// carregando configuração de dependências do pom
     	PomEquippedResolveStage pom = Maven.resolver().loadPomFromFile(pomPath);
     	

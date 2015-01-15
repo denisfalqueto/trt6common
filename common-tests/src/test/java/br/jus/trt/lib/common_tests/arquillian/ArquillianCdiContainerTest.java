@@ -9,6 +9,7 @@ import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,6 +21,7 @@ import br.jus.trt.lib.common_tests.util.EmptyBean;
 import br.jus.trt.lib.common_tests.util.EmptyBeanA;
 import br.jus.trt.lib.common_tests.util.EmptyBeanB;
 import br.jus.trt.lib.common_tests.util.QualifierB;
+import br.jus.trt.lib.common_tests.util.QuerierUtil;
 
 /**
  * Tenta garantir que o container de injeção de dependências via CDI está
@@ -43,7 +45,9 @@ public class ArquillianCdiContainerTest extends DeployableTestBase {
 				.addClasses(EmptyBean.class, EmptyBeanA.class,
 						EmptyBeanB.class, CDI.class, QualifierB.class)
 				.addClasses(ArquillianCommonRunner.class,
-						DeployableTestBase.class, TestBase.class, ArquillianDataLoaderExtension.class)
+						DeployableTestBase.class, TestBase.class,
+						ArquillianDataLoaderExtension.class, QuerierUtil.class,
+						AlternativeEntityManagerProducer.class)
 				.addAsLibraries(libs)
 				.addAsResource("test-persistence.xml",
 						"META-INF/persistence.xml")

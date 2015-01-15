@@ -7,8 +7,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Test;
-
 import br.jus.trt.lib.common_tests.cdi.CDI;
 
 /**
@@ -92,7 +90,7 @@ public class LoadDataExecutor {
 		// carregando scripts
 		String[] scripts = loadData.sql();
 		for (String script : scripts) {
-			DataLoaderSQL scriptDataLoader = CDI.getInstance().lookup(DataLoaderSQL.class);
+			DataLoaderSQL scriptDataLoader = CDI.lookup(DataLoaderSQL.class);
 			scriptDataLoader.setScriptPath(script);
 			
 			DataLoaderPrecedence dataLoader = new DataLoaderPrecedence(loadData.precedence(), scriptDataLoader);
@@ -102,7 +100,7 @@ public class LoadDataExecutor {
 		// carregando beans
 		Class<? extends DataLoader>[] beans = loadData.dataLoader();
 		for (Class<? extends DataLoader> dataLoaderType : beans) {
-			DataLoader beanDataLoader = CDI.getInstance().lookup(dataLoaderType);
+			DataLoader beanDataLoader = CDI.lookup(dataLoaderType);
 			
 			DataLoaderPrecedence dataLoader = new DataLoaderPrecedence(loadData.precedence(), beanDataLoader);
 			loaders.add(dataLoader);
@@ -110,21 +108,16 @@ public class LoadDataExecutor {
 	}
 	
 	/**
-	 * Quando o interceptador está colocado sobre uma classe todos os métodos são interceptados. Nestes casos,
-	 * apenas o métodos de teste devem disparar o carregamento de dados (quando há a presença da anotação @{@link Test} . 
-	 * Por outro lado, se o interceptador é colocado diretamente sobre um método, este deve provocar o carregamente 
-	 * de dados sempre.
+	 * Determina se o método que está sendo executado possui alguma DataLoader configurado, seja diretamente
+	 * ou na classe que o declara.
 	 * @param method Método que está sendo interceptado.
-	 * @return true caso o método está dentro das condições para disparar o carregamento de dados.
+	 * @return true caso o método esteja dentro das condições para disparar o carregamento de dados.
 	 */
 	protected boolean mustLoadData(Method method) {
-		/*
-		 * É necessário apenas verificar a existência da anotação no método diretamente, visto que,
-		 * já que o interceptador foi invocado, no mínimo a classe já foi anotada.
-		 */
-		return method.isAnnotationPresent(LoadData.class)
+		return method.isAnnotationPresent(LoadData.class) 
+				|| method.getDeclaringClass().isAnnotationPresent(LoadData.class)
 				|| method.isAnnotationPresent(LoadDatas.class)	
-				|| method.isAnnotationPresent(Test.class); 
+				|| method.getDeclaringClass().isAnnotationPresent(LoadDatas.class); 
 	}
 
 	/**
