@@ -90,7 +90,7 @@ public class LoadDataExecutor {
 		// carregando scripts
 		String[] scripts = loadData.sql();
 		for (String script : scripts) {
-			DataLoaderSQL scriptDataLoader = CDI.lookup(DataLoaderSQL.class);
+			SqlDataLoader scriptDataLoader = CDI.lookup(SqlDataLoader.class);
 			scriptDataLoader.setScriptPath(script);
 			
 			DataLoaderPrecedence dataLoader = new DataLoaderPrecedence(loadData.precedence(), scriptDataLoader);

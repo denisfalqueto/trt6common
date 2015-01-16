@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import org.junit.Test;
 
-import br.jus.trt.lib.common_tests.CommonTestsArquillianTestBase;
+import br.jus.trt.lib.common_tests.arquillian.ArquillianTestBase;
 
 /**
  * Testa o uso da anotação {@link LoadDatas}, misturando as opções de script e Bean.
@@ -15,7 +15,7 @@ import br.jus.trt.lib.common_tests.CommonTestsArquillianTestBase;
 	@LoadData(sql="dataloader/uf_aa.sql"),
 	@LoadData(dataLoader=UF_bb_DataLoader.class, precedence=3)
 })	
-public class LoadDatasMixArquillianTest extends CommonTestsArquillianTestBase implements LoadDatasMixTestDef {
+public class LoadDatasMixArquillianTest extends ArquillianTestBase implements LoadDatasMixTestDef {
 
 	@Inject
 	private LoadDatasMixTestImpl tester;

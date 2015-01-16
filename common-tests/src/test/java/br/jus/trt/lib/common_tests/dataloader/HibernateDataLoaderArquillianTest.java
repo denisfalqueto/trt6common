@@ -4,14 +4,14 @@ import javax.inject.Inject;
 
 import org.junit.Test;
 
-import br.jus.trt.lib.common_tests.CommonTestsArquillianTestBase;
+import br.jus.trt.lib.common_tests.arquillian.ArquillianTestBase;
 
 /**
  * Teste para a classe {@link HibernateDataLoader}
  * @author augusto
  *
  */
-public class HibernateDataLoaderArquillianTest extends CommonTestsArquillianTestBase implements HibernateDataLoaderTestDef {
+public class HibernateDataLoaderArquillianTest extends ArquillianTestBase implements HibernateDataLoaderTestDef {
 
 	@Inject
 	private HibernateDataLoaderTestImpl tester;

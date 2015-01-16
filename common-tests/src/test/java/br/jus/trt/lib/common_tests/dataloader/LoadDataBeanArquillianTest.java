@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import org.junit.Test;
 
-import br.jus.trt.lib.common_tests.CommonTestsArquillianTestBase;
+import br.jus.trt.lib.common_tests.arquillian.ArquillianTestBase;
 
 /**
  * Testa o uso da anotação {@link LoadData} em classes de teste para carregamento de scripts SQL.
@@ -12,7 +12,7 @@ import br.jus.trt.lib.common_tests.CommonTestsArquillianTestBase;
  *
  */
 @LoadData(dataLoader=UF_aa_DataLoader.class)
-public class LoadDataBeanArquillianTest extends CommonTestsArquillianTestBase implements LoadDataBeanTestDef {
+public class LoadDataBeanArquillianTest extends ArquillianTestBase implements LoadDataBeanTestDef {
 
 	@Inject
 	private LoadDataBeanTestImpl tester;

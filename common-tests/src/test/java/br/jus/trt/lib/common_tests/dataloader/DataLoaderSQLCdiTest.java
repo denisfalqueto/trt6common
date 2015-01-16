@@ -8,7 +8,7 @@ import br.jus.trt.lib.common_tests.LocalTransactionTestBase;
 
 
 /**
- * Testes da classe {@link DataLoaderSQL}
+ * Testes da classe {@link SqlDataLoader}
  * @author augusto
  */
 public class DataLoaderSQLCdiTest extends LocalTransactionTestBase implements DataLoaderSQLTestDef {

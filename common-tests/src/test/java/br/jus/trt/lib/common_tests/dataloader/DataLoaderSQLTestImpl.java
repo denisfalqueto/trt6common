@@ -7,14 +7,14 @@ import org.junit.Assert;
 import br.jus.trt.lib.common_tests.util.QuerierUtil;
 
 /**
- * Testes da classe {@link DataLoaderSQL}
+ * Testes da classe {@link SqlDataLoader}
  * 
  * @author augusto
  */
 public class DataLoaderSQLTestImpl implements DataLoaderSQLTestDef {
 
 	@Inject
-	private DataLoaderSQL loaderSQL;
+	private SqlDataLoader loaderSQL;
 
 	@Inject
 	private QuerierUtil querierUtil;
