@@ -36,8 +36,8 @@ public abstract class ArquillianTestBase extends DeployableTestBase {
 				.addAsResource("dataloader/uf_aa.sql")
 				.addAsResource("dataloader/uf_bb.sql")
 				.addAsResource("dataloader/uf_cc.sql")
-				.addAsResource("test-persistence.xml", "META-INF/persistence.xml")
-				.addAsWebInfResource("test-beans.xml", "beans.xml");
+				.addAsResource("test-arquillian-persistence.xml", "META-INF/persistence.xml")
+				.addAsWebInfResource("test-arquillian-beans.xml", "beans.xml");
 
 		addLibsFromPom(war);
 		installDataLoaderExtension(war);

@@ -11,6 +11,8 @@ import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.container.LibraryContainer;
 import org.jboss.shrinkwrap.api.container.ManifestContainer;
+import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
@@ -42,7 +44,10 @@ public abstract class DeployableTestBase extends TestBase {
 	/**
 	 * Adiciona o arquivo de configuração de módulos do JBoss/Wildfly ao
 	 * aterfato "deployable"
-	 * @param archive "deployable" que receberá o arquivo de configuração de módulos.
+	 * 
+	 * @param archive
+	 *            "deployable" que receberá o arquivo de configuração de
+	 *            módulos.
 	 */
 	protected static void addDefaultJbossDeploymentStructure(WebArchive archive) {
 
@@ -55,15 +60,35 @@ public abstract class DeployableTestBase extends TestBase {
 	}
 
 	/**
-	 * Adiciona ao artefato as bibliotecas configuradas no arquivo pom.xml encontrado
-	 * na raíz do projeto.
-	 * @param container Artefato que receberá as bibliotecas.
+	 * Adiciona o arquivo de configuração de módulos do JBoss/Wildfly ao
+	 * aterfato "deployable"
+	 * 
+	 * @param archive
+	 *            "deployable" que receberá o arquivo de configuração de
+	 *            módulos.
+	 */
+	protected static void addDefaultJbossDeploymentStructure(
+			EnterpriseArchive archive) {
+
+		// buscando o arquivo baseado no classloader
+		URL resource = Thread.currentThread().getContextClassLoader()
+				.getResource("test-jboss-deployment-structure.xml");
+
+		archive.addAsResource(resource, "jboss-deployment-structure.xml");
+	}
+
+	/**
+	 * Adiciona ao artefato as bibliotecas configuradas no arquivo pom.xml
+	 * encontrado na raíz do projeto.
+	 * 
+	 * @param container
+	 *            Artefato que receberá as bibliotecas.
 	 */
 	protected static void addLibsFromPom(LibraryContainer<?> container) {
 		File[] libs = loadLibsFromPom();
 		container.addAsLibraries(libs);
 	}
-	
+
 	/**
 	 * Instala a extensão do Arquillian que permite o funcionamento das soluções
 	 * de DataLoader.
@@ -89,7 +114,7 @@ public abstract class DeployableTestBase extends TestBase {
 	 * @return Array com as dependências configuradas no arquivo "pom.xml"
 	 */
 	public static File[] loadLibsFromPom() {
-		return loadLibsFromPom("pom.xml", ScopeType.COMPILE);
+		return loadLibsFromPom("pom.xml", ScopeType.COMPILE, ScopeType.TEST);
 	}
 
 	/**

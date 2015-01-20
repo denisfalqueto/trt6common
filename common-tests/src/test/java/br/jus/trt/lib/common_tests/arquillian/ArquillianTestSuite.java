@@ -1,12 +1,12 @@
 package br.jus.trt.lib.common_tests.arquillian;
 
-import br.jus.trt.lib.common_tests.suite.BaseSuite;
+import br.jus.trt.lib.common_tests.suite.SuiteBase;
 
 /**
  * Acomoda automaticamente todos os testes do package arquillian.
  * @author Augusto
  *
  */
-public class ArquillianTestSuite extends BaseSuite {
+public class ArquillianTestSuite extends SuiteBase {
 
 }

@@ -406,6 +406,6 @@
 		<common.version>0.0.1-SNAPSHOT</common.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<deltaspike.version>1.1.0</deltaspike.version>
-		<log4j2.version>2.0.2</log4j2.version>
+		<log4j2.version>2.1</log4j2.version>
 	</properties>
 </project>

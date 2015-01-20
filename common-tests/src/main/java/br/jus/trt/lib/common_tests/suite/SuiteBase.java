@@ -10,6 +10,6 @@ import org.junit.runner.Runner;
  * @author augusto
  */
 @RunWith(DynamicSuiteRunner.class)
-public abstract class BaseSuite {
+public abstract class SuiteBase {
 
 }
