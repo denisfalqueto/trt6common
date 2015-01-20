@@ -119,7 +119,7 @@
 		<dependency>
 			<groupId>org.jboss.arquillian.junit</groupId>
 			<artifactId>arquillian-junit-container</artifactId>
-			<scope>test</scope>
+                        <scope>compile</scope>
 		</dependency>
 
 		<dependency>
@@ -131,12 +131,13 @@
 		<dependency>
 			<groupId>org.jboss.arquillian.extension</groupId>
 			<artifactId>arquillian-transaction-jta</artifactId>
-			<scope>test</scope>
+                        <scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.jboss.weld.se</groupId>
 			<artifactId>weld-se</artifactId>
+                        <scope>compile</scope>
 		</dependency>
 
 		<dependency>
@@ -146,6 +147,7 @@
 		<dependency>
 			<groupId>org.eu.ingwar.tools</groupId>
 			<artifactId>arquillian-suite-extension</artifactId>
+                        <scope>compile</scope>
 		</dependency>
 	</dependencies>
 
