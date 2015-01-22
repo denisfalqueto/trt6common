@@ -23,7 +23,7 @@ public class CountTest extends QbeTestBase {
 		
 		// executa a consulta com HQL correto equivalente
 		String hql = "select count(f.id) from " + UF.class.getSimpleName() + " f";
-		Long UfsHQL = executeCountQuery(getEntityManager(), hql);
+		Long UfsHQL = getQuerier().executeCountQuery(getEntityManager(), hql);
 		
 		// deve haver pelo menos uma Uf encontrada
 		if (UfsHQL <= 0) {
@@ -44,7 +44,7 @@ public class CountTest extends QbeTestBase {
 		
 		// executa a consulta com HQL correto equivalente
 		String hql = "select count(f.id) from " + UF.class.getSimpleName() + " f"; // hql n�o aceitar count + order by
-		Long UfsHQL = executeCountQuery(getEntityManager(), hql);
+		Long UfsHQL = getQuerier().executeCountQuery(getEntityManager(), hql);
 		
 		// deve haver pelo menos uma Uf encontrada
 		if (UfsHQL <= 0) {
@@ -68,7 +68,7 @@ public class CountTest extends QbeTestBase {
 		
 		// executa a consulta com HQL correto equivalente
 		String hql = "select count(f.id) from " + UF.class.getSimpleName() + " f";
-		Query query = createQuery(getEntityManager(), hql); // hql nao permite paginacao com count
+		Query query = getQuerier().createQuery(getEntityManager(), hql); // hql nao permite paginacao com count
 		Long UfsHQL = (Long) query.getSingleResult();
 		
 		// deve haver pelo menos uma Uf encontrada
@@ -93,7 +93,7 @@ public class CountTest extends QbeTestBase {
 		
 		// executa a consulta com HQL correto equivalente
 		String hql = "select count(f.id) from " + UF.class.getSimpleName() + " f";
-		Query query = createQuery(getEntityManager(), hql); // hql n�o permite pagina��o com count
+		Query query = getQuerier().createQuery(getEntityManager(), hql); // hql n�o permite pagina��o com count
 		Long UfsHQL = (Long) query.getSingleResult();
 		
 		// deve haver pelo menos uma Uf encontrada
@@ -127,7 +127,7 @@ public class CountTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "select count(p.id) from Pessoa p where p.email=? and ( p.cpf=? or (p.dataNascimento is null  or p.dataNascimento > ?) ) ";
-		Long pessoasHQL = executeCountQuery(getEntityManager(), hql, p2.getEmail(), p1.getCpf(), p1.getDataNascimento());
+		Long pessoasHQL = getQuerier().executeCountQuery(getEntityManager(), hql, p2.getEmail(), p1.getCpf(), p1.getDataNascimento());
 		
 		// Configura o filtro
 		Pessoa exemplo = new Pessoa(null, null, p2.getDataNascimento(), p2.getCpf(), p2.getEmail());

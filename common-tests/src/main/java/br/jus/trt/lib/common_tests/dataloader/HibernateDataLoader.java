@@ -3,10 +3,10 @@ package br.jus.trt.lib.common_tests.dataloader;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import br.jus.trt.lib.common_tests.cdi.ForTest;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Data loader que utiliza o EntityManager para carregamento dos dados.

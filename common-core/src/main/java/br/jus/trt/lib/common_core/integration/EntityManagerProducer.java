@@ -2,9 +2,11 @@ package br.jus.trt.lib.common_core.integration;
 
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,7 +18,9 @@ import org.apache.logging.log4j.Logger;
  * @author denisf
  */
 public class EntityManagerProducer {
-    private Logger log = LogManager.getLogger();
+	
+	@Inject
+    private Logger log;
     
     @PersistenceUnit
     private EntityManagerFactory emf;

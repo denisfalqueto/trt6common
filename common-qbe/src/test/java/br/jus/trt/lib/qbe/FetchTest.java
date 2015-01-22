@@ -185,7 +185,7 @@ public class FetchTest extends QbeTestBase {
 
 		// criando um servidor sem projeto para garantir que existe este caso
 		Servidor servidor = new Servidor();
-		servidor.setCidade(getAny(Cidade.class));
+		servidor.setCidade(getQuerier().findAny(Cidade.class));
 		servidor.setCpf("12554789631");
 		servidor.setDataNascimento(new Date());
 		servidor.setEmail("serv@serv.com");
@@ -198,7 +198,7 @@ public class FetchTest extends QbeTestBase {
 		
 		// criando hql com fetch que faz inner join: apenas de servidores com projeto
 		String hql = "from Servidor s inner join fetch s.projetos";
-		List<Servidor> servidoresHQL = executeQuery(getEntityManager(), hql);
+		List<Servidor> servidoresHQL = getQuerier().executeQuery(getEntityManager(), hql);
 		
 		assertFalse("Não foram encontrados Servidores.", servidoresHQL.isEmpty());
 		assertFalse("O servidor criado nao deveria estar na lista", servidoresHQL.contains(servidor));

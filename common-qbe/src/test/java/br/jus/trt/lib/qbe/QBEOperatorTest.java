@@ -27,7 +27,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	@Test
 	public void consultarEntidadeOperadorDefault() {
 		// busca a primeira cidade na base de dados
-		Cidade cidadeBD = getAny(Cidade.class);
+		Cidade cidadeBD = getQuerier().findAny(Cidade.class);
 		assertNotNull("Não foi encontrada nenhuma cidade para prosseguir com o teste", cidadeBD);
 		
 		// cria um exemplo com par�metros compat�veis com a cidade encontrada
@@ -36,7 +36,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		
 		// executa uma consulta com HQL filtrando pelo nome do exemplo
 		String hql = "from " + Cidade.class.getSimpleName() + " cid where cid.nome = ?";
-		List<Cidade> cidadesHQL = searchAndValidate(hql, exemplo.getNome());		
+		List<Cidade> cidadesHQL = getQuerier().searchAndValidateNotEmpty(hql, exemplo.getNome());		
 		
 		// executa a consulta utilizando QBE
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
@@ -51,7 +51,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorEqual() {
 		
 		// busca a primeira cidade na base de dados
-		Cidade cidadeBD = getAny(Cidade.class);
+		Cidade cidadeBD = getQuerier().findAny(Cidade.class);
 		assertNotNull("Não foi encontrada nenhuma cidade para prosseguir com o teste", cidadeBD);
 		
 		// cria um exemplo com par�metros compat�veis com a cidade encontrada
@@ -60,7 +60,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		
 		// executa uma consulta com HQL filtrando pelo nome do exemplo
 		String hql = "from " + Cidade.class.getSimpleName() + " cid where cid.nome = ?";
-		List<Cidade> cidadesHQL = searchAndValidate(hql, exemplo.getNome());		
+		List<Cidade> cidadesHQL = getQuerier().searchAndValidateNotEmpty(hql, exemplo.getNome());		
 		
 		// executa a consulta utilizando QBE
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
@@ -80,7 +80,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorNotEqual() {
 		
 		// busca a primeira UF na base de dados
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		assertNotNull("Não foi encontrada nenhuma UF para prosseguir com o teste", ufBD);
 		
 		// cria um exemplo com par�metros compat�veis com a cidade encontrada
@@ -89,7 +89,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		
 		// executa uma consulta com HQL filtrando pelo nome do exemplo
 		String hql = "from " + UF.class.getSimpleName() + " uf where uf.sigla != ?";
-		List<UF> ufHQL = searchAndValidate(hql, exemplo.getSigla());		
+		List<UF> ufHQL = getQuerier().searchAndValidateNotEmpty(hql, exemplo.getSigla());		
 		
 		// executa a consulta utilizando QBE
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
@@ -110,7 +110,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorMaior() {
 		
 		// busca a primeira UF na base de dados
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		assertNotNull("Não foi encontrada nenhuma UF para prosseguir com o teste", ufBD);
 		
 		// cria algumas cidades para teste
@@ -148,7 +148,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorMaiorIgual() {
 		
 		// busca a primeira UF na base de dados
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		assertNotNull("Não foi encontrada nenhuma UF para prosseguir com o teste", ufBD);
 		
 		// cria algumas cidades para teste
@@ -265,7 +265,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorLike() {
 		
 		// busca a primeira UF na base de dados
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		assertNotNull("Não foi encontrada nenhuma UF para prosseguir com o teste", ufBD);
 		
 		// cria cidades com parte do nome comum para busca
@@ -310,7 +310,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	@Test
 	public void consultarOperadorLikeInicio() {
 		// busca a primeira UF na base de dados
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		assertNotNull("Não foi encontrada nenhuma UF para prosseguir com o teste", ufBD);
 		
 		// cria cidades com parte do nome comum para busca
@@ -358,7 +358,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorLikeFinal() {
 		
 		// busca a primeira UF na base de dados
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		assertNotNull("Não foi encontrada nenhuma UF para prosseguir com o teste", ufBD);
 		
 		// cria cidades com parte do nome comum para busca
@@ -406,7 +406,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorIn() {
 		
 		// busca a primeira UF na base de dados
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		assertNotNull("Não foi encontrada nenhuma UF para prosseguir com o teste", ufBD);
 		
 		// cria algumas cidades
@@ -446,7 +446,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorNotIn() {
 		
 		// busca a primeira UF na base de dados
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		assertNotNull("Não foi encontrada nenhuma UF para prosseguir com o teste", ufBD);
 		
 		// cria algumas cidades
@@ -487,7 +487,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorBetween() throws Exception {
 		
 		// busca a primeira UF na base de dados
-		Cidade cidadeBD = getAny(Cidade.class);
+		Cidade cidadeBD = getQuerier().findAny(Cidade.class);
 		assertNotNull("Não foi encontrada nenhuma Cidade para prosseguir com o teste", cidadeBD);
 		
 		// cria algumas pessoas

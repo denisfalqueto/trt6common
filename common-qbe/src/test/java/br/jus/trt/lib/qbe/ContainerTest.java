@@ -40,7 +40,7 @@ public class ContainerTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where p.nome = ? and p.cpf = ?";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p2.getNome(), p2.getCpf());
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p2.getNome(), p2.getCpf());
 		
 		// o filtro utiliza o container ra�z AND como default
 		Pessoa exemplo = new Pessoa(p2.getNome(), null, null, p2.getCpf(), null);
@@ -71,7 +71,7 @@ public class ContainerTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where p.nome = ? or p.cpf = ? or p.email=?";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p2.getNome(), p2.getCpf(), p2.getEmail());
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p2.getNome(), p2.getCpf(), p2.getEmail());
 		
 		// o filtro utiliza o container ra�z configurado com OR
 		Pessoa exemplo = new Pessoa(p2.getNome(), null, null, p2.getCpf(), p2.getEmail());
@@ -100,7 +100,7 @@ public class ContainerTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where p.email=? and (p.nome = ? or p.cpf = ?) ";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p2.getEmail(), p2.getNome(), p2.getCpf());
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p2.getEmail(), p2.getNome(), p2.getCpf());
 		
 		// Configura o filtro
 		Pessoa exemplo = new Pessoa(p2.getNome(), null, null, p2.getCpf(), p2.getEmail());
@@ -132,7 +132,7 @@ public class ContainerTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where not (p.cpf = ? or p.email = ?) ";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p1.getCpf(), p3.getEmail());
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p1.getCpf(), p3.getEmail());
 		
 		// Configura o filtro
 		Pessoa exemplo = new Pessoa(null, null, null, p1.getCpf(), p3.getEmail());
@@ -166,7 +166,7 @@ public class ContainerTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where p.cpf=? or (p.nome = ? and p.email = ?) ";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p2.getCpf(), p2.getNome(), p2.getEmail());
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p2.getCpf(), p2.getNome(), p2.getEmail());
 		
 		// Configura o filtro
 		Pessoa exemplo = new Pessoa(p2.getNome(), null, null, p2.getCpf(), p2.getEmail());
@@ -199,7 +199,7 @@ public class ContainerTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where (p.cpf=? and p.email=?) or (p.nome = ? and p.email = ?) ";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p2.getCpf(), p2.getEmail(), p1.getNome(), p2.getEmail());
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p2.getCpf(), p2.getEmail(), p1.getNome(), p2.getEmail());
 		
 		// Configura o filtro
 		Pessoa exemplo = new Pessoa(p1.getNome(), null, null, p2.getCpf(), p2.getEmail());
@@ -235,7 +235,7 @@ public class ContainerTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where (p.cpf=? or p.nome=?) and (p.cpf = ? or p.email = ?) ";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p2.getCpf(), p1.getNome(), p2.getCpf(), p1.getEmail());
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p2.getCpf(), p1.getNome(), p2.getCpf(), p1.getEmail());
 		
 		// Configura o filtro
 		Pessoa exemplo = new Pessoa(p1.getNome(), null, null, p2.getCpf(), p2.getEmail());
@@ -270,7 +270,7 @@ public class ContainerTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where p.email=? and ( p.cpf=? or (p.dataNascimento is null  or p.dataNascimento > ?) ) ";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p2.getEmail(), p1.getCpf(), p1.getDataNascimento());
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p2.getEmail(), p1.getCpf(), p1.getDataNascimento());
 		
 		// Configura o filtro
 		Pessoa exemplo = new Pessoa(null, null, p2.getDataNascimento(), p2.getCpf(), p2.getEmail());
@@ -305,7 +305,7 @@ public class ContainerTest extends QbeTestBase {
 	
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where (p.nome=? and not p.cpf=?) or (not p.nome=? and p.cpf=?) ";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p1.getNome(), p2.getCpf(), p1.getNome(), p2.getCpf());		
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p1.getNome(), p2.getCpf(), p1.getNome(), p2.getCpf());		
 
 		Pessoa exemplo = new Pessoa(p1.getNome(), null, null , p2.getCpf(), null); // p1 e p3
 		
@@ -342,7 +342,7 @@ public class ContainerTest extends QbeTestBase {
 		
 		String nome = p1.getNome(); // "p1"
 		String cpf = p2.getCpf();   // "22222222222"
-		List<Pessoa> hqlLista = searchAndValidate(hql, nome, cpf, cpf, nome, cpf, nome); // p1, p3		
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, nome, cpf, cpf, nome, cpf, nome); // p1, p3		
 
 		Pessoa exemplo = new Pessoa(p1.getNome(), null, null , p2.getCpf(), null); 
 		
