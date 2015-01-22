@@ -1,9 +1,5 @@
 package br.jus.trt.lib.common_tests.dataloader;
 
-import org.junit.Test;
-
-import br.jus.trt.lib.common_tests.dataloader.DataLoader;
-import br.jus.trt.lib.common_tests.dataloader.LoadData;
 
 public interface LoadDataBeanTestDef {
 

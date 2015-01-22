@@ -4,7 +4,6 @@ import javax.inject.Inject;
 
 import org.junit.Assert;
 
-import br.jus.trt.lib.common_tests.dataloader.HibernateDataLoader;
 import br.jus.trt.lib.common_tests.util.QuerierUtil;
 
 /**

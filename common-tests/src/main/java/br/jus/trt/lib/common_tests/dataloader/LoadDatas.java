@@ -6,8 +6,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import javax.interceptor.InterceptorBinding;
 import javax.enterprise.util.Nonbinding;
+import javax.interceptor.InterceptorBinding;
 
 /**
  * Esta anotação permite a configuração de múltiplos DataLoaders para serem executados em um determinado
