@@ -1,7 +1,11 @@
 package br.jus.trt.lib.common_tests;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.inject.Inject;
 
@@ -12,7 +16,6 @@ import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.container.LibraryContainer;
 import org.jboss.shrinkwrap.api.container.ManifestContainer;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
@@ -78,6 +81,31 @@ public abstract class DeployableTestBase extends TestBase {
 	}
 
 	/**
+	 * Pelo fato de o arquillian não conseguir importar pom.xml com o 
+	 * packaging 'ejb', é necessário mudar para packaging 'jar' em runtime.
+	 * 
+	 * @param path 
+	 * 			caminho para o pom ejb original
+	 */
+	protected static String createTempEJBPomWithJarPackaging(String path) {
+		try {
+			String pom = new String(Files.readAllBytes(Paths.get(path)));
+			pom = pom.replaceAll("<packaging>ejb</packaging>", "<packaging>jar</packaging>");
+			
+			String fileName = path + "-tmp.xml";
+			
+			PrintWriter out = new PrintWriter(fileName);
+			out.print(pom);
+			out.close();
+			
+			return fileName;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+	
+	/**
 	 * Adiciona ao artefato as bibliotecas configuradas no arquivo pom.xml
 	 * encontrado na raíz do projeto.
 	 * 
@@ -86,6 +114,18 @@ public abstract class DeployableTestBase extends TestBase {
 	 */
 	protected static void addLibsFromPom(LibraryContainer<?> container) {
 		File[] libs = loadLibsFromPom();
+		container.addAsLibraries(libs);
+	}
+	
+	/**
+	 * Adiciona ao artefato as bibliotecas configuradas no arquivo pom.xml
+	 * encontrado no diretório informado.
+	 * 
+	 * @param container
+	 *            Artefato que receberá as bibliotecas.
+	 */
+	protected static void addLibsFromPom(LibraryContainer<?> container, String path) {
+		File[] libs = loadLibsFromPom(path, ScopeType.COMPILE, ScopeType.TEST);
 		container.addAsLibraries(libs);
 	}
 
@@ -130,6 +170,7 @@ public abstract class DeployableTestBase extends TestBase {
 	 */
 	public static File[] loadLibsFromPom(String pomPath, ScopeType... scopes) {
 		// carregando configuração de dependências do pom
+		Maven.configureResolver().workOffline();
 		PomEquippedResolveStage pom = Maven.resolver().loadPomFromFile(pomPath);
 
 		// seleciona as dependências do projeto
@@ -137,7 +178,7 @@ public abstract class DeployableTestBase extends TestBase {
 				.withTransitivity().asFile();
 		return libs;
 	}
-
+	
 	public QuerierUtil getQuerier() {
 		return querier;
 	}
