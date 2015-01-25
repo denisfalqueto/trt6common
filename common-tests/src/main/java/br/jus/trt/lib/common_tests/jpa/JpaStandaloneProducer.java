@@ -1,7 +1,5 @@
 package br.jus.trt.lib.common_tests.jpa;
 
-import br.jus.trt.lib.common_tests.cdi.ForTest;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +9,8 @@ import javax.inject.Inject;
 
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.logging.log4j.Logger;
+
+import br.jus.trt.lib.common_tests.cdi.ForTest;
 
 /**
  * Producer para o bean {@link JPAStandalone}

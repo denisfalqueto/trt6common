@@ -2,14 +2,9 @@ package br.jus.trt.lib.common_tests.dataloader;
 
 import javax.inject.Inject;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import br.jus.trt.lib.common_tests.LocalTransactionTestBase;
-import br.jus.trt.lib.common_tests.dataloader.DataLoader;
-import br.jus.trt.lib.common_tests.dataloader.LoadData;
-import br.jus.trt.lib.common_tests.dataloader.LoadDatas;
-import br.jus.trt.lib.common_tests.domain.UF;
 
 /**
  * Testa o uso da anotação {@link LoadDatas}, misturando as opções de script e Bean.

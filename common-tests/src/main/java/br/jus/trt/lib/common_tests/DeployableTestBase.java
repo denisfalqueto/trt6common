@@ -116,7 +116,7 @@ public abstract class DeployableTestBase extends TestBase {
 		File[] libs = loadLibsFromPom();
 		container.addAsLibraries(libs);
 	}
-	
+
 	/**
 	 * Adiciona ao artefato as bibliotecas configuradas no arquivo pom.xml
 	 * encontrado no diretório informado.
@@ -178,7 +178,7 @@ public abstract class DeployableTestBase extends TestBase {
 				.withTransitivity().asFile();
 		return libs;
 	}
-	
+
 	public QuerierUtil getQuerier() {
 		return querier;
 	}
