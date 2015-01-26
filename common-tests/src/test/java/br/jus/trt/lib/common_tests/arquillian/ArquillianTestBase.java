@@ -2,6 +2,7 @@ package br.jus.trt.lib.common_tests.arquillian;
 
 import org.eu.ingwar.tools.arquillian.extension.suite.annotations.ArquillianSuiteDeployment;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.OverProtocol;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -26,6 +27,7 @@ public abstract class ArquillianTestBase extends DeployableTestBase {
 	 *         no servidor de aplicação.
 	 */
 	@Deployment
+	@OverProtocol("Servlet 3.0")
 	public static Archive<?> createDeployment() {
 
 		
@@ -36,6 +38,7 @@ public abstract class ArquillianTestBase extends DeployableTestBase {
 				.addAsResource("dataloader/uf_aa.sql")
 				.addAsResource("dataloader/uf_bb.sql")
 				.addAsResource("dataloader/uf_cc.sql")
+				.addAsResource("test-arquillian-log4j2.xml", "log4j2.xml")
 				.addAsResource("test-arquillian-persistence.xml", "META-INF/persistence.xml")
 				.addAsWebInfResource("test-arquillian-beans.xml", "beans.xml");
 
