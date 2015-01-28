@@ -1,4 +1,4 @@
-package br.jus.trt.lib.common_core;
+package br.jus.trt.lib.common_tests;
 
 import br.jus.trt.lib.common_tests.suite.SuiteBase;
 
@@ -7,6 +7,6 @@ import br.jus.trt.lib.common_tests.suite.SuiteBase;
  * @author Augusto
  *
  */
-public class CoreTestSuite extends SuiteBase {
+public class CommonTestsAllTestsSuite extends SuiteBase {
 
 }
