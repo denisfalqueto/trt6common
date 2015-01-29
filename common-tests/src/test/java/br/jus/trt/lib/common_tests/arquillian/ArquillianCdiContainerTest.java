@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import br.jus.trt.lib.common_tests.DeployableTestBase;
 import br.jus.trt.lib.common_tests.TestBase;
+import br.jus.trt.lib.common_tests.alternatives.AlternativeContainerEntityManagerProducer;
 import br.jus.trt.lib.common_tests.cdi.CDI;
 import br.jus.trt.lib.common_tests.util.EmptyBean;
 import br.jus.trt.lib.common_tests.util.EmptyBeanA;
@@ -46,12 +47,13 @@ public class ArquillianCdiContainerTest extends DeployableTestBase {
 				.addClasses(ArquillianCommonRunner.class,
 						DeployableTestBase.class, TestBase.class,
 						ArquillianDataLoaderExtension.class, QuerierUtil.class,
-						AlternativeEntityManagerProducer.class)
+						AlternativeContainerEntityManagerProducer.class)
 				.addAsLibraries(libs)
 				.addAsResource("test-persistence.xml",
 						"META-INF/persistence.xml")
 				.addAsWebInfResource("test-beans.xml", "beans.xml");
 
+		System.out.println("YES");
 		System.out.println(war.toString(true));
 
 		return war;
