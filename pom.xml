@@ -122,7 +122,7 @@
 				<scope>runtime</scope>
 			</dependency>
 
-			<dependency>
+                        <dependency>
                             <groupId>org.apache.deltaspike.modules</groupId>
                             <artifactId>deltaspike-partial-bean-module-api</artifactId>
 				<version>${deltaspike.version}</version>
@@ -331,9 +331,7 @@
 			<dependency>
 				<groupId>org.jboss.weld.se</groupId>
 				<artifactId>weld-se</artifactId>
-				<version>1.2.0.Beta1</version>
-				<!-- <version>2.2.6.Final</version> Esta seria a versão compatível, mas 
-					os testes não passam -->
+				<version>2.2.9.Final</version>
 				<scope>test</scope>
 			</dependency>
 
@@ -375,7 +373,7 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-			
+
             <!-- Arquillian Warp -->
             <dependency>
 			  <groupId>org.jboss.arquillian.extension</groupId>
