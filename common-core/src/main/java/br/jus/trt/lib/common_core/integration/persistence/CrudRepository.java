@@ -1,11 +1,14 @@
 package br.jus.trt.lib.common_core.integration.persistence;
 
+import java.io.Serializable;
 import java.util.List;
+
+import org.apache.deltaspike.data.api.EntityRepository;
 
 import br.jus.trt.lib.common_core.business.domain.Entity;
 import br.jus.trt.lib.qbe.api.Filter;
-import java.io.Serializable;
-import org.apache.deltaspike.data.api.EntityRepository;
+
+import com.mysema.query.types.Path;
 
 /**
  * Interface para operações de consulta de dados orientado à uma entidade de domínio.
@@ -22,7 +25,7 @@ public interface CrudRepository<ENTITY extends Entity<PK>, PK extends Serializab
 	 * @param fetch Lista de atributos para pré-carregamento.
 	 * @return A entidade identificada pelo id informado, ou null caso não seja encontrada.
 	 */
-	public ENTITY findBy(PK id, String... fetch);
+	public ENTITY findBy(PK id, Path... fetch);
 
 	/**
 	 * Realiza uma consulta com filtro, retornando apenas um elemento. O filtro utilizado deverá garantir que
@@ -43,7 +46,7 @@ public interface CrudRepository<ENTITY extends Entity<PK>, PK extends Serializab
 	 * 
 	 * @return Lista de registros ordenados.
 	 */
-	public abstract List<ENTITY> findAll(boolean ascedant, String... orderBy);
+	public abstract List<ENTITY> findAll(boolean ascedant, Path... orderBy);
 	
 	/**
 	 * Conta a quantidade de registros da entidade.

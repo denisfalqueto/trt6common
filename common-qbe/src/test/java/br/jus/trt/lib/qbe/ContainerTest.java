@@ -7,10 +7,11 @@ import org.junit.Test;
 
 import br.jus.trt.lib.qbe.api.Operation;
 import br.jus.trt.lib.qbe.api.OperationContainer;
-import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.api.OperationContainer.ContainerType;
+import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.api.operator.Operators;
 import br.jus.trt.lib.qbe.domain.Pessoa;
+import br.jus.trt.lib.qbe.domain.QPessoa;
 import br.jus.trt.lib.qbe.repository.criteria.CriteriaQbeRepository;
 import br.jus.trt.lib.qbe.repository.criteria.OperatorProcessorRepositoryFactory;
 
@@ -106,8 +107,9 @@ public class ContainerTest extends QbeTestBase {
 		Pessoa exemplo = new Pessoa(p2.getNome(), null, null, p2.getCpf(), p2.getEmail());
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(exemplo);
 		
-		filtro.addOr(new Operation("nome", Operators.equal()),
-					 new Operation("cpf", Operators.equal()));
+		QPessoa pessoa = QPessoa.pessoa;
+		filtro.addOr(new Operation(pessoa.nome, Operators.equal()),
+					 new Operation(pessoa.cpf, Operators.equal()));
 		
 		// realiza a mesma consulta com qbe
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());;
@@ -141,8 +143,9 @@ public class ContainerTest extends QbeTestBase {
 		filtro.setRootContainerType(ContainerType.OR);
 		filtro.getRootContainer().negate();
 		
-		filtro.filterBy(new Operation("cpf", Operators.equal()),
-					  	   new Operation("email", Operators.equal()));
+		QPessoa pessoa = QPessoa.pessoa;
+		filtro.filterBy(new Operation(pessoa.cpf, Operators.equal()),
+					  	   new Operation(pessoa.email, Operators.equal()));
 		
 		// realiza a mesma consulta com qbe
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());;
@@ -174,8 +177,9 @@ public class ContainerTest extends QbeTestBase {
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(exemplo);
 		filtro.setRootContainerType(ContainerType.OR);
 		
-		filtro.addAnd(new Operation("nome", Operators.equal()),
-					  new Operation("email", Operators.equal()));
+		QPessoa pessoa = QPessoa.pessoa;
+		filtro.addAnd(new Operation(pessoa.nome, Operators.equal()),
+					  new Operation(pessoa.email, Operators.equal()));
 		
 		// realiza a mesma consulta com qbe
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());;
@@ -207,11 +211,12 @@ public class ContainerTest extends QbeTestBase {
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(exemplo);
 		filtro.setRootContainerType(ContainerType.OR);
 		
-		filtro.addAnd(new Operation("cpf", Operators.equal()),
-	  				  new Operation("email", Operators.equal()));
+		QPessoa pessoa = QPessoa.pessoa;
+		filtro.addAnd(new Operation(pessoa.cpf, Operators.equal()),
+	  				  new Operation(pessoa.email, Operators.equal()));
 		
-		filtro.addAnd(new Operation("nome", Operators.equal()),
-				 	  new Operation("email", Operators.equal()));
+		filtro.addAnd(new Operation(pessoa.nome, Operators.equal()),
+				 	  new Operation(pessoa.email, Operators.equal()));
 		
 		// realiza a mesma consulta com qbe
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());;
@@ -242,11 +247,12 @@ public class ContainerTest extends QbeTestBase {
 		
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(exemplo);
 		
-		filtro.addOr(new Operation("cpf", Operators.equal()),
-	  				 new Operation("nome", Operators.equal()));
+		QPessoa pessoa = QPessoa.pessoa;
+		filtro.addOr(new Operation(pessoa.cpf, Operators.equal()),
+	  				 new Operation(pessoa.nome, Operators.equal()));
 		
-		filtro.addOr(new Operation("cpf", Operators.equal()),
-				 	 new Operation("email", Operators.equal()));
+		filtro.addOr(new Operation(pessoa.cpf, Operators.equal()),
+				 	 new Operation(pessoa.email, Operators.equal()));
 		
 		// realiza a mesma consulta com qbe
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());;
@@ -274,14 +280,15 @@ public class ContainerTest extends QbeTestBase {
 		
 		// Configura o filtro
 		Pessoa exemplo = new Pessoa(null, null, p2.getDataNascimento(), p2.getCpf(), p2.getEmail());
+
+		QPessoa pessoa = QPessoa.pessoa;
 		
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(exemplo);
+		filtro.filterBy(pessoa.email, Operators.equal());
 		
-		filtro.filterBy("email", Operators.equal());
-		
-		OperationContainer containerOR = filtro.addOr(new Operation("cpf", Operators.equal()));
-		containerOR.addOr(new Operation("dataNascimento", Operators.isNotNull()),
-				 	      new Operation("dataNascimento", Operators.greater()));
+		OperationContainer containerOR = filtro.addOr(new Operation(pessoa.cpf, Operators.equal()));
+		containerOR.addOr(new Operation(pessoa.dataNascimento, Operators.isNotNull()),
+				 	      new Operation(pessoa.dataNascimento, Operators.greater()));
 		
 		// realiza a mesma consulta com qbe
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());;
@@ -311,8 +318,10 @@ public class ContainerTest extends QbeTestBase {
 		
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(exemplo);
 		
+		QPessoa pessoa = QPessoa.pessoa;
+		
 		XorContainer xor = new XorContainer();
-		xor.addOperation(new Operation("nome", Operators.equal()), new Operation("cpf", Operators.equal()));
+		xor.addOperation(new Operation(pessoa.nome, Operators.equal()), new Operation(pessoa.cpf, Operators.equal()));
 		filtro.addContainerOperation(xor);
 		
 		// realiza a mesma consulta com qbe
@@ -349,9 +358,9 @@ public class ContainerTest extends QbeTestBase {
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(exemplo);
 		
 		XorContainer xor = new XorContainer();
-		xor.addOperation(new Operation("nome", Operators.equal()), 
-						new Operation("cpf", Operators.equal()),
-						new Operation("dataNascimento", Operators.isNotNull()));
+		xor.addOperation(new Operation(QPessoa.pessoa.nome, Operators.equal()), 
+						new Operation(QPessoa.pessoa.cpf, Operators.equal()),
+						new Operation(QPessoa.pessoa.dataNascimento, Operators.isNotNull()));
 		filtro.addContainerOperation(xor);
 		
 		// realiza a mesma consulta com qbe

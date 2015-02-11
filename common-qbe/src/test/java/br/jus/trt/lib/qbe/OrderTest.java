@@ -5,9 +5,9 @@ import java.util.List;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-
 import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.domain.Cidade;
+import br.jus.trt.lib.qbe.domain.QCidade;
 import br.jus.trt.lib.qbe.repository.criteria.CriteriaQbeRepository;
 import br.jus.trt.lib.qbe.repository.criteria.OperatorProcessorRepositoryFactory;
 
@@ -28,7 +28,7 @@ public class OrderTest extends QbeTestBase {
 		
 		// executa a consulta utilizando QBE
 		QBEFilter<Cidade> consulta = new QBEFilter<Cidade>(Cidade.class);
-		consulta.sortAscBy("nome");
+		consulta.sortAscBy(QCidade.cidade.nome);
 		consulta.paginate(0, 50);
 		
 		
@@ -60,7 +60,7 @@ public class OrderTest extends QbeTestBase {
 		
 		// executa a consulta utilizando QBE
 		QBEFilter<Cidade> consulta = new QBEFilter<Cidade>(Cidade.class);
-		consulta.sortDescBy("nome");
+		consulta.sortDescBy(QCidade.cidade.nome);
 		consulta.paginate(0, 50);
 		
 		
@@ -92,7 +92,7 @@ public class OrderTest extends QbeTestBase {
 		
 		// executa a consulta utilizando QBE
 		QBEFilter<Cidade> consulta = new QBEFilter<Cidade>(Cidade.class);
-		consulta.sortAscBy("uf.sigla", "nome");
+		consulta.sortAscBy(QCidade.cidade.uf().sigla, QCidade.cidade.nome);
 		consulta.paginate(0, 50);
 		
 		

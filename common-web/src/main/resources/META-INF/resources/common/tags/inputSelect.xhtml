@@ -11,12 +11,12 @@
 
 	<ui:define name="content">
 	
-		<p:selectOneMenu id="#{p_id}" value="#{value}" converter="entityConverter">
+		<h:selectOneMenu id="#{p_id}" value="#{value}" converter="entityConverter">
 			<f:selectItems value="#{items}" var="item" 
 						itemLabel="#{empty itemLabel ? item : item[itemLabel]}" itemValue="#{item}"/>
 			
 			<ui:insert/>
-		</p:selectOneMenu> 	
+		</h:selectOneMenu> 	
 
 	</ui:define>
 		

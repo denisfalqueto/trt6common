@@ -1,17 +1,20 @@
 package br.jus.trt.lib.qbe;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
 
-import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.api.OperationContainer.ContainerType;
+import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.api.operator.Operators;
 import br.jus.trt.lib.qbe.domain.Cidade;
 import br.jus.trt.lib.qbe.domain.Dependente;
 import br.jus.trt.lib.qbe.domain.Pessoa;
+import br.jus.trt.lib.qbe.domain.QCidade;
 import br.jus.trt.lib.qbe.domain.Servidor;
 import br.jus.trt.lib.qbe.domain.Servidor.SITUACAO;
 import br.jus.trt.lib.qbe.domain.UF;
@@ -76,8 +79,9 @@ public class QBEFilterTest extends QbeTestBase {
 		QBEFilter<Cidade> filtro = new QBEFilter<Cidade>(Cidade.class);
 		
 		filtro.setRootContainerType(ContainerType.OR);
-		filtro.filterBy("uf.sigla", Operators.equal(), "PE");
-		filtro.filterBy("uf.sigla", Operators.equal(), "PB");
+		QCidade cidade = QCidade.cidade;
+		filtro.filterBy(cidade.uf().sigla, Operators.equal(), "PE");
+		filtro.filterBy(cidade.uf().sigla, Operators.equal(), "PB");
 		
 		List<Cidade> cidadesQbe = qbe.search(filtro);
 		

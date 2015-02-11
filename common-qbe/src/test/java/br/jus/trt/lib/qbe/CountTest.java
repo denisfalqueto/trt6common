@@ -1,6 +1,7 @@
 package br.jus.trt.lib.qbe;
 
 import static org.junit.Assert.*;
+
 import java.text.ParseException;
 
 import javax.persistence.Query;
@@ -12,6 +13,8 @@ import br.jus.trt.lib.qbe.api.OperationContainer;
 import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.api.operator.Operators;
 import br.jus.trt.lib.qbe.domain.Pessoa;
+import br.jus.trt.lib.qbe.domain.QPessoa;
+import br.jus.trt.lib.qbe.domain.QUF;
 import br.jus.trt.lib.qbe.domain.UF;
 import br.jus.trt.lib.qbe.repository.criteria.CriteriaQbeRepository;
 import br.jus.trt.lib.qbe.repository.criteria.OperatorProcessorRepositoryFactory;
@@ -54,7 +57,7 @@ public class CountTest extends QbeTestBase {
 		// executa a consulta utilizando QBE
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());;
 		QBEFilter<UF> filtro = new QBEFilter<UF>(UF.class);
-		filtro.sortAscBy("sigla"); 
+		filtro.sortAscBy(QUF.uF.sigla); 
 		
 		Long UfsQbe = qbe.count(filtro); // espera-se que a ordenacao seja desconsiderada
 		
@@ -136,8 +139,8 @@ public class CountTest extends QbeTestBase {
 		filtro.setStringDefaultOperator(Operators.equal());
 		
 		OperationContainer containerOR = filtro.addOr(new Operation("cpf", Operators.equal()));
-		containerOR.addOr(new Operation("dataNascimento", Operators.isNotNull()),
-				 	      new Operation("dataNascimento", Operators.greater()));
+		containerOR.addOr(new Operation(QPessoa.pessoa.dataNascimento, Operators.isNotNull()),
+				 	      new Operation(QPessoa.pessoa.dataNascimento, Operators.greater()));
 		
 		// realiza a mesma consulta com qbe
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());

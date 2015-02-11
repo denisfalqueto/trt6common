@@ -3,6 +3,7 @@ package br.jus.trt6.lib.common_web.action;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.model.DataModel;
 
 import org.primefaces.model.LazyDataModel;
@@ -11,13 +12,13 @@ import br.jus.trt.lib.common_core.business.domain.Entity;
 import br.jus.trt.lib.common_core.business.facade.CrudFacade;
 import br.jus.trt.lib.common_core.util.DIContainerUtil;
 import br.jus.trt.lib.common_core.util.JavaGenericsUtil;
-import br.jus.trt.lib.qbe.util.ReflectionUtil;
 import br.jus.trt.lib.qbe.QBEFilter;
 import br.jus.trt.lib.qbe.api.Filter;
 import br.jus.trt.lib.qbe.api.operator.Operators;
+import br.jus.trt.lib.qbe.util.ReflectionUtil;
+import br.jus.trt.lib.qbe.util.StringUtil;
 import br.jus.trt6.lib.common_web.action.pagination.LazyEntityDataModel;
 import br.jus.trt6.lib.common_web.action.pagination.LazyEntityProvider;
-import javax.annotation.PostConstruct;
 
 /**
  * Classe base para Actions do tipo CRUD, associados a uma entidade de domínio
@@ -545,7 +546,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	protected void configLoad(ENTITY entidade, Filter<ENTITY> loadFilter) {
 		log.entry();
 
-		loadFilter.filterBy("id", Operators.equal(), entidade.getId());
+		loadFilter.filterBy(StringUtil.getFakePath("id"), Operators.equal(), entidade.getId());
 		
 		log.exit();
 	}
