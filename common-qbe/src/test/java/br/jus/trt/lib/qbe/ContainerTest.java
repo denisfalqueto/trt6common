@@ -7,10 +7,11 @@ import org.junit.Test;
 
 import br.jus.trt.lib.qbe.api.Operation;
 import br.jus.trt.lib.qbe.api.OperationContainer;
-import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.api.OperationContainer.ContainerType;
+import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.api.operator.Operators;
 import br.jus.trt.lib.qbe.domain.Pessoa;
+import br.jus.trt.lib.qbe.domain.QPessoa;
 import br.jus.trt.lib.qbe.repository.criteria.CriteriaQbeRepository;
 import br.jus.trt.lib.qbe.repository.criteria.OperatorProcessorRepositoryFactory;
 
@@ -40,7 +41,7 @@ public class ContainerTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where p.nome = ? and p.cpf = ?";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p2.getNome(), p2.getCpf());
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p2.getNome(), p2.getCpf());
 		
 		// o filtro utiliza o container ra�z AND como default
 		Pessoa exemplo = new Pessoa(p2.getNome(), null, null, p2.getCpf(), null);
@@ -71,7 +72,7 @@ public class ContainerTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where p.nome = ? or p.cpf = ? or p.email=?";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p2.getNome(), p2.getCpf(), p2.getEmail());
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p2.getNome(), p2.getCpf(), p2.getEmail());
 		
 		// o filtro utiliza o container ra�z configurado com OR
 		Pessoa exemplo = new Pessoa(p2.getNome(), null, null, p2.getCpf(), p2.getEmail());
@@ -100,14 +101,15 @@ public class ContainerTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where p.email=? and (p.nome = ? or p.cpf = ?) ";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p2.getEmail(), p2.getNome(), p2.getCpf());
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p2.getEmail(), p2.getNome(), p2.getCpf());
 		
 		// Configura o filtro
 		Pessoa exemplo = new Pessoa(p2.getNome(), null, null, p2.getCpf(), p2.getEmail());
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(exemplo);
 		
-		filtro.addOr(new Operation("nome", Operators.equal()),
-					 new Operation("cpf", Operators.equal()));
+		QPessoa pessoa = QPessoa.pessoa;
+		filtro.addOr(new Operation(pessoa.nome, Operators.equal()),
+					 new Operation(pessoa.cpf, Operators.equal()));
 		
 		// realiza a mesma consulta com qbe
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());;
@@ -132,7 +134,7 @@ public class ContainerTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where not (p.cpf = ? or p.email = ?) ";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p1.getCpf(), p3.getEmail());
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p1.getCpf(), p3.getEmail());
 		
 		// Configura o filtro
 		Pessoa exemplo = new Pessoa(null, null, null, p1.getCpf(), p3.getEmail());
@@ -141,8 +143,9 @@ public class ContainerTest extends QbeTestBase {
 		filtro.setRootContainerType(ContainerType.OR);
 		filtro.getRootContainer().negate();
 		
-		filtro.filterBy(new Operation("cpf", Operators.equal()),
-					  	   new Operation("email", Operators.equal()));
+		QPessoa pessoa = QPessoa.pessoa;
+		filtro.filterBy(new Operation(pessoa.cpf, Operators.equal()),
+					  	   new Operation(pessoa.email, Operators.equal()));
 		
 		// realiza a mesma consulta com qbe
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());;
@@ -166,7 +169,7 @@ public class ContainerTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where p.cpf=? or (p.nome = ? and p.email = ?) ";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p2.getCpf(), p2.getNome(), p2.getEmail());
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p2.getCpf(), p2.getNome(), p2.getEmail());
 		
 		// Configura o filtro
 		Pessoa exemplo = new Pessoa(p2.getNome(), null, null, p2.getCpf(), p2.getEmail());
@@ -174,8 +177,9 @@ public class ContainerTest extends QbeTestBase {
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(exemplo);
 		filtro.setRootContainerType(ContainerType.OR);
 		
-		filtro.addAnd(new Operation("nome", Operators.equal()),
-					  new Operation("email", Operators.equal()));
+		QPessoa pessoa = QPessoa.pessoa;
+		filtro.addAnd(new Operation(pessoa.nome, Operators.equal()),
+					  new Operation(pessoa.email, Operators.equal()));
 		
 		// realiza a mesma consulta com qbe
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());;
@@ -199,7 +203,7 @@ public class ContainerTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where (p.cpf=? and p.email=?) or (p.nome = ? and p.email = ?) ";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p2.getCpf(), p2.getEmail(), p1.getNome(), p2.getEmail());
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p2.getCpf(), p2.getEmail(), p1.getNome(), p2.getEmail());
 		
 		// Configura o filtro
 		Pessoa exemplo = new Pessoa(p1.getNome(), null, null, p2.getCpf(), p2.getEmail());
@@ -207,11 +211,12 @@ public class ContainerTest extends QbeTestBase {
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(exemplo);
 		filtro.setRootContainerType(ContainerType.OR);
 		
-		filtro.addAnd(new Operation("cpf", Operators.equal()),
-	  				  new Operation("email", Operators.equal()));
+		QPessoa pessoa = QPessoa.pessoa;
+		filtro.addAnd(new Operation(pessoa.cpf, Operators.equal()),
+	  				  new Operation(pessoa.email, Operators.equal()));
 		
-		filtro.addAnd(new Operation("nome", Operators.equal()),
-				 	  new Operation("email", Operators.equal()));
+		filtro.addAnd(new Operation(pessoa.nome, Operators.equal()),
+				 	  new Operation(pessoa.email, Operators.equal()));
 		
 		// realiza a mesma consulta com qbe
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());;
@@ -235,18 +240,19 @@ public class ContainerTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where (p.cpf=? or p.nome=?) and (p.cpf = ? or p.email = ?) ";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p2.getCpf(), p1.getNome(), p2.getCpf(), p1.getEmail());
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p2.getCpf(), p1.getNome(), p2.getCpf(), p1.getEmail());
 		
 		// Configura o filtro
 		Pessoa exemplo = new Pessoa(p1.getNome(), null, null, p2.getCpf(), p2.getEmail());
 		
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(exemplo);
 		
-		filtro.addOr(new Operation("cpf", Operators.equal()),
-	  				 new Operation("nome", Operators.equal()));
+		QPessoa pessoa = QPessoa.pessoa;
+		filtro.addOr(new Operation(pessoa.cpf, Operators.equal()),
+	  				 new Operation(pessoa.nome, Operators.equal()));
 		
-		filtro.addOr(new Operation("cpf", Operators.equal()),
-				 	 new Operation("email", Operators.equal()));
+		filtro.addOr(new Operation(pessoa.cpf, Operators.equal()),
+				 	 new Operation(pessoa.email, Operators.equal()));
 		
 		// realiza a mesma consulta com qbe
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());;
@@ -270,18 +276,19 @@ public class ContainerTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where p.email=? and ( p.cpf=? or (p.dataNascimento is null  or p.dataNascimento > ?) ) ";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p2.getEmail(), p1.getCpf(), p1.getDataNascimento());
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p2.getEmail(), p1.getCpf(), p1.getDataNascimento());
 		
 		// Configura o filtro
 		Pessoa exemplo = new Pessoa(null, null, p2.getDataNascimento(), p2.getCpf(), p2.getEmail());
+
+		QPessoa pessoa = QPessoa.pessoa;
 		
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(exemplo);
+		filtro.filterBy(pessoa.email, Operators.equal());
 		
-		filtro.filterBy("email", Operators.equal());
-		
-		OperationContainer containerOR = filtro.addOr(new Operation("cpf", Operators.equal()));
-		containerOR.addOr(new Operation("dataNascimento", Operators.isNotNull()),
-				 	      new Operation("dataNascimento", Operators.greater()));
+		OperationContainer containerOR = filtro.addOr(new Operation(pessoa.cpf, Operators.equal()));
+		containerOR.addOr(new Operation(pessoa.dataNascimento, Operators.isNotNull()),
+				 	      new Operation(pessoa.dataNascimento, Operators.greater()));
 		
 		// realiza a mesma consulta com qbe
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());;
@@ -305,14 +312,16 @@ public class ContainerTest extends QbeTestBase {
 	
 		// utiliza uma consulta hql para compara��o
 		String hql = "from Pessoa p where (p.nome=? and not p.cpf=?) or (not p.nome=? and p.cpf=?) ";
-		List<Pessoa> hqlLista = searchAndValidate(hql, p1.getNome(), p2.getCpf(), p1.getNome(), p2.getCpf());		
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, p1.getNome(), p2.getCpf(), p1.getNome(), p2.getCpf());		
 
 		Pessoa exemplo = new Pessoa(p1.getNome(), null, null , p2.getCpf(), null); // p1 e p3
 		
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(exemplo);
 		
+		QPessoa pessoa = QPessoa.pessoa;
+		
 		XorContainer xor = new XorContainer();
-		xor.addOperation(new Operation("nome", Operators.equal()), new Operation("cpf", Operators.equal()));
+		xor.addOperation(new Operation(pessoa.nome, Operators.equal()), new Operation(pessoa.cpf, Operators.equal()));
 		filtro.addContainerOperation(xor);
 		
 		// realiza a mesma consulta com qbe
@@ -342,16 +351,16 @@ public class ContainerTest extends QbeTestBase {
 		
 		String nome = p1.getNome(); // "p1"
 		String cpf = p2.getCpf();   // "22222222222"
-		List<Pessoa> hqlLista = searchAndValidate(hql, nome, cpf, cpf, nome, cpf, nome); // p1, p3		
+		List<Pessoa> hqlLista = getQuerier().searchAndValidateNotEmpty(hql, nome, cpf, cpf, nome, cpf, nome); // p1, p3		
 
 		Pessoa exemplo = new Pessoa(p1.getNome(), null, null , p2.getCpf(), null); 
 		
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(exemplo);
 		
 		XorContainer xor = new XorContainer();
-		xor.addOperation(new Operation("nome", Operators.equal()), 
-						new Operation("cpf", Operators.equal()),
-						new Operation("dataNascimento", Operators.isNotNull()));
+		xor.addOperation(new Operation(QPessoa.pessoa.nome, Operators.equal()), 
+						new Operation(QPessoa.pessoa.cpf, Operators.equal()),
+						new Operation(QPessoa.pessoa.dataNascimento, Operators.isNotNull()));
 		filtro.addContainerOperation(xor);
 		
 		// realiza a mesma consulta com qbe

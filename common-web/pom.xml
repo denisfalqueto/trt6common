@@ -56,5 +56,16 @@
 			<artifactId>poi</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+                
+                <!-- Deltaspike JSF Module -->
+                <dependency>
+                        <groupId>org.apache.deltaspike.modules</groupId>
+                        <artifactId>deltaspike-jsf-module-api</artifactId>
+                </dependency>
+
+                <dependency>
+                        <groupId>org.apache.deltaspike.modules</groupId>
+                        <artifactId>deltaspike-jsf-module-impl</artifactId>
+                </dependency>
 	</dependencies>
 </project>

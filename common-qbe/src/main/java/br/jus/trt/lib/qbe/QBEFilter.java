@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import br.jus.trt.lib.qbe.api.FetchMode;
 import br.jus.trt.lib.qbe.api.Filter;
 import br.jus.trt.lib.qbe.api.Identifiable;
@@ -14,8 +17,8 @@ import br.jus.trt.lib.qbe.api.Operator;
 import br.jus.trt.lib.qbe.api.Pagination;
 import br.jus.trt.lib.qbe.api.SortConfig;
 import br.jus.trt.lib.qbe.api.operator.Operators;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import com.mysema.query.types.Path;
 
 /**
  * Classe que encapsula as opções de configuração para consultas dinâmicas utilizando
@@ -107,10 +110,11 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	/* (non-Javadoc)
 	 * @see br.jus.trt.lib.qbe.Filter#addAscOrder(java.lang.String)
 	 */
-	public Filter<TIPO> sortAscBy(String...properties) {
+	@SuppressWarnings("rawtypes")
+	public Filter<TIPO> sortAscBy(Path...properties) {
                 log.entry(properties);
 		if (properties != null) {
-			for (String prop : properties) {
+			for (Path prop : properties) {
 				sortBy(SortConfig.ASC(prop));
 			}
 		}
@@ -120,10 +124,11 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	/* (non-Javadoc)
 	 * @see br.jus.trt.lib.qbe.Filter#addDescOrder(java.lang.String)
 	 */
-	public Filter<TIPO> sortDescBy(String...properties) {
+	@SuppressWarnings("rawtypes")
+	public Filter<TIPO> sortDescBy(Path...properties) {
                 log.entry(properties);
 		if (properties != null) {
-			for (String prop : properties) {
+			for (Path prop : properties) {
 				sortBy(SortConfig.DESC(prop));
 			}
 		}
@@ -133,7 +138,8 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	/* (non-Javadoc)
 	 * @see br.jus.trt.lib.qbe.Filter#removeOrder(java.lang.String)
 	 */
-	public Filter<TIPO> clearSortings(String... properties) {
+	@SuppressWarnings("rawtypes")
+	public Filter<TIPO> clearSortings(Path... properties) {
                 log.entry(properties);
 		this.orderings.clear(); 
 		return this;		
@@ -160,7 +166,8 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	/**
 	 * @see Filter#filterBy(String, Operator)
 	 */
-	public Filter<TIPO> filterBy(String property, Operator<?> operador) {
+	@SuppressWarnings("rawtypes")
+	public Filter<TIPO> filterBy(Path property, Operator<?> operador) {
                 log.entry(property, operador);
 		rootContainer.addOperation(new Operation(property, operador));
 		return this;
@@ -169,7 +176,7 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	/* (non-Javadoc)
 	 * @see br.jus.trt.lib.qbe.Filter#addOperation(java.lang.String, br.jus.trt.lib.qbe.Operator, java.lang.Object)
 	 */
-	public Filter<TIPO> filterBy(String property, Operator<?> operator, Object ... values) {
+	public Filter<TIPO> filterBy(Path property, Operator<?> operator, Object ... values) {
                 log.entry(property, operator, values);
 		rootContainer.addOperation(new Operation(property, operator, values));
 		return this;
@@ -225,17 +232,19 @@ public class QBEFilter<TIPO extends Identifiable> implements Serializable, Filte
 	}
 	
 	/* (non-Javadoc)
-	 * @see br.jus.trt.lib.qbe.Filter#addFetch(java.lang.String)
+	 * @see br.jus.trt.lib.qbe.Filter#addFetch(br.jus.trt.lib.qbe.FetchMode)
 	 */
-	public Filter<TIPO> addFetch(String...properties) {
-                log.entry(properties);
-		if (properties != null) {
-			for (String prop : properties) {
-				addFetch(new FetchMode(prop));
+	@SuppressWarnings("rawtypes")
+	public Filter<TIPO> addFetch(Path...paths) {
+                log.entry(fetches);
+		if (fetches != null) {
+			for (Path path : paths) {
+				this.fetches.add(new FetchMode(path));
 			}
 		}
 		return this;
 	}
+	
 	
 	/* (non-Javadoc)
 	 * @see br.jus.trt.lib.qbe.Filter#incrementNivel()

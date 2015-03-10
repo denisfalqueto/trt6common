@@ -1,6 +1,11 @@
 package br.jus.trt.lib.qbe;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,6 +15,9 @@ import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.api.operator.Operators;
 import br.jus.trt.lib.qbe.domain.Cidade;
 import br.jus.trt.lib.qbe.domain.Pessoa;
+import br.jus.trt.lib.qbe.domain.QCidade;
+import br.jus.trt.lib.qbe.domain.QPessoa;
+import br.jus.trt.lib.qbe.domain.QUF;
 import br.jus.trt.lib.qbe.domain.UF;
 import br.jus.trt.lib.qbe.repository.criteria.CriteriaQbeRepository;
 import br.jus.trt.lib.qbe.repository.criteria.OperatorProcessorRepositoryFactory;
@@ -27,7 +35,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	@Test
 	public void consultarEntidadeOperadorDefault() {
 		// busca a primeira cidade na base de dados
-		Cidade cidadeBD = getAny(Cidade.class);
+		Cidade cidadeBD = getQuerier().findAny(Cidade.class);
 		assertNotNull("Não foi encontrada nenhuma cidade para prosseguir com o teste", cidadeBD);
 		
 		// cria um exemplo com par�metros compat�veis com a cidade encontrada
@@ -36,7 +44,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		
 		// executa uma consulta com HQL filtrando pelo nome do exemplo
 		String hql = "from " + Cidade.class.getSimpleName() + " cid where cid.nome = ?";
-		List<Cidade> cidadesHQL = searchAndValidate(hql, exemplo.getNome());		
+		List<Cidade> cidadesHQL = getQuerier().searchAndValidateNotEmpty(hql, exemplo.getNome());		
 		
 		// executa a consulta utilizando QBE
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
@@ -51,7 +59,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorEqual() {
 		
 		// busca a primeira cidade na base de dados
-		Cidade cidadeBD = getAny(Cidade.class);
+		Cidade cidadeBD = getQuerier().findAny(Cidade.class);
 		assertNotNull("Não foi encontrada nenhuma cidade para prosseguir com o teste", cidadeBD);
 		
 		// cria um exemplo com par�metros compat�veis com a cidade encontrada
@@ -60,14 +68,14 @@ public class QBEOperatorTest extends QbeTestBase {
 		
 		// executa uma consulta com HQL filtrando pelo nome do exemplo
 		String hql = "from " + Cidade.class.getSimpleName() + " cid where cid.nome = ?";
-		List<Cidade> cidadesHQL = searchAndValidate(hql, exemplo.getNome());		
+		List<Cidade> cidadesHQL = getQuerier().searchAndValidateNotEmpty(hql, exemplo.getNome());		
 		
 		// executa a consulta utilizando QBE
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 		QBEFilter<Cidade> filtro = new QBEFilter<Cidade>(exemplo);
 		
 		// configura o operador para a propriedade de filtro
-		filtro.filterBy("nome", Operators.equal());
+		filtro.filterBy(QCidade.cidade.nome, Operators.equal());
 		
 		List<Cidade> cidadesQbe = qbe.search(filtro);
 		
@@ -80,7 +88,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorNotEqual() {
 		
 		// busca a primeira UF na base de dados
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		assertNotNull("Não foi encontrada nenhuma UF para prosseguir com o teste", ufBD);
 		
 		// cria um exemplo com par�metros compat�veis com a cidade encontrada
@@ -89,14 +97,14 @@ public class QBEOperatorTest extends QbeTestBase {
 		
 		// executa uma consulta com HQL filtrando pelo nome do exemplo
 		String hql = "from " + UF.class.getSimpleName() + " uf where uf.sigla != ?";
-		List<UF> ufHQL = searchAndValidate(hql, exemplo.getSigla());		
+		List<UF> ufHQL = getQuerier().searchAndValidateNotEmpty(hql, exemplo.getSigla());		
 		
 		// executa a consulta utilizando QBE
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 		QBEFilter<UF> filtro = new QBEFilter<UF>(exemplo);
 		
 		// configura o operador para a propriedade de filtro
-		filtro.filterBy("sigla", Operators.notEqual());
+		filtro.filterBy(QUF.uF.sigla, Operators.notEqual());
 		
 		List<UF> ufsQbe = qbe.search(filtro);
 		
@@ -110,7 +118,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorMaior() {
 		
 		// busca a primeira UF na base de dados
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		assertNotNull("Não foi encontrada nenhuma UF para prosseguir com o teste", ufBD);
 		
 		// cria algumas cidades para teste
@@ -134,7 +142,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBEFilter<Cidade> filtro = new QBEFilter<Cidade>(exemplo);
 		
 		// configura o operador para a propriedade de filtro
-		filtro.filterBy("nome", Operators.greater());
+		filtro.filterBy(QCidade.cidade.nome, Operators.greater());
 		List<Cidade> cidadesQbe = qbe.search(filtro);
 		
 		// verifica o resultado
@@ -148,7 +156,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorMaiorIgual() {
 		
 		// busca a primeira UF na base de dados
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		assertNotNull("Não foi encontrada nenhuma UF para prosseguir com o teste", ufBD);
 		
 		// cria algumas cidades para teste
@@ -172,7 +180,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBEFilter<Cidade> filtro = new QBEFilter<Cidade>(exemplo);
 		
 		// configura o operador para a propriedade de filtro
-		filtro.filterBy("nome", Operators.greateEqual());
+		filtro.filterBy(QCidade.cidade.nome, Operators.greateEqual());
 		List<Cidade> cidadesQbe = qbe.search(filtro);
 		
 		// verifica o resultado
@@ -212,7 +220,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBEFilter<Cidade> filtro = new QBEFilter<Cidade>(exemplo);
 		
 		// configura o operador para a propriedade de filtro
-		filtro.filterBy("nome", Operators.less());
+		filtro.filterBy(QCidade.cidade.nome, Operators.less());
 		List<Cidade> cidadesQbe = qbe.search(filtro);
 		
 		// verifica o resultado
@@ -251,7 +259,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBEFilter<Cidade> filtro = new QBEFilter<Cidade>(exemplo);
 		
 		// configura o operador para a propriedade de filtro
-		filtro.filterBy("nome", Operators.lessEqual());
+		filtro.filterBy(QCidade.cidade.nome, Operators.lessEqual());
 		List<Cidade> cidadesQbe = qbe.search(filtro);
 		
 		// verifica o resultado
@@ -265,7 +273,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorLike() {
 		
 		// busca a primeira UF na base de dados
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		assertNotNull("Não foi encontrada nenhuma UF para prosseguir com o teste", ufBD);
 		
 		// cria cidades com parte do nome comum para busca
@@ -287,7 +295,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBEFilter<Cidade> filtro = new QBEFilter<Cidade>(exemplo);
 		
 		// configura o operador like para a propriedade de filtro, com case sensitive
-		filtro.filterBy("nome", Operators.like(true));
+		filtro.filterBy(QCidade.cidade.nome, Operators.like(true));
 		List<Cidade> cidadesQbe = qbe.search(filtro);
 		
 		// verifica o resultado
@@ -297,7 +305,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		
 		// configura o operador para ser case INsensitive e espera valores diferentes
 		filtro = new QBEFilter<Cidade>(exemplo);
-		filtro.filterBy("nome", Operators.like(false));
+		filtro.filterBy(QCidade.cidade.nome, Operators.like(false));
 		
 		cidadesQbe = qbe.search(filtro);
 		
@@ -310,7 +318,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	@Test
 	public void consultarOperadorLikeInicio() {
 		// busca a primeira UF na base de dados
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		assertNotNull("Não foi encontrada nenhuma UF para prosseguir com o teste", ufBD);
 		
 		// cria cidades com parte do nome comum para busca
@@ -334,7 +342,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBEFilter<Cidade> filtro = new QBEFilter<Cidade>(exemplo);
 		
 		// configura o operador like para a propriedade de filtro, com case sensitive
-		filtro.filterBy("nome", Operators.likePrefix(true));
+		filtro.filterBy(QCidade.cidade.nome, Operators.likePrefix(true));
 		List<Cidade> cidadesQbe = qbe.search(filtro);
 		
 		// verifica o resultado
@@ -344,7 +352,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		
 		// configura o operador para ser case INsensitive e espera valores diferentes
 		filtro = new QBEFilter<Cidade>(exemplo);
-		filtro.filterBy("nome", Operators.likePrefix(false));
+		filtro.filterBy(QCidade.cidade.nome, Operators.likePrefix(false));
 		
 		cidadesQbe = qbe.search(filtro);
 		
@@ -358,7 +366,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorLikeFinal() {
 		
 		// busca a primeira UF na base de dados
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		assertNotNull("Não foi encontrada nenhuma UF para prosseguir com o teste", ufBD);
 		
 		// cria cidades com parte do nome comum para busca
@@ -382,7 +390,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBEFilter<Cidade> filtro = new QBEFilter<Cidade>(exemplo);
 		
 		// configura o operador like para a propriedade de filtro, com case sensitive
-		filtro.filterBy("nome", Operators.likeSufix(true));
+		filtro.filterBy(QCidade.cidade.nome, Operators.likeSufix(true));
 		List<Cidade> cidadesQbe = qbe.search(filtro);
 		
 		// verifica o resultado
@@ -392,7 +400,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		
 		// configura o operador para ser case INsensitive e espera valores diferentes
 		filtro = new QBEFilter<Cidade>(exemplo);
-		filtro.filterBy("nome", Operators.likeSufix(false));
+		filtro.filterBy(QCidade.cidade.nome, Operators.likeSufix(false));
 		
 		cidadesQbe = qbe.search(filtro);
 		
@@ -406,7 +414,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorIn() {
 		
 		// busca a primeira UF na base de dados
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		assertNotNull("Não foi encontrada nenhuma UF para prosseguir com o teste", ufBD);
 		
 		// cria algumas cidades
@@ -430,7 +438,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBEFilter<Cidade> filtro = new QBEFilter<Cidade>(Cidade.class);
 		
 		// configura o operador para a propriedade de filtro
-		filtro.filterBy("id", Operators.in(), idCidades);
+		filtro.filterBy(QCidade.cidade.id, Operators.in(), idCidades);
 		
 		List<Cidade> cidadesQbe = qbe.search(filtro);
 		
@@ -446,7 +454,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorNotIn() {
 		
 		// busca a primeira UF na base de dados
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		assertNotNull("Não foi encontrada nenhuma UF para prosseguir com o teste", ufBD);
 		
 		// cria algumas cidades
@@ -469,7 +477,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBEFilter<Cidade> filtro = new QBEFilter<Cidade>(Cidade.class);
 		
 		// configura o operador para a propriedade de filtro
-		filtro.filterBy("id", Operators.notIn(), idCidades);
+		filtro.filterBy(QCidade.cidade.id, Operators.notIn(), idCidades);
 		
 		List<Cidade> cidadesQbe = qbe.search(filtro);
 		
@@ -487,7 +495,7 @@ public class QBEOperatorTest extends QbeTestBase {
 	public void consultarOperadorBetween() throws Exception {
 		
 		// busca a primeira UF na base de dados
-		Cidade cidadeBD = getAny(Cidade.class);
+		Cidade cidadeBD = getQuerier().findAny(Cidade.class);
 		assertNotNull("Não foi encontrada nenhuma Cidade para prosseguir com o teste", cidadeBD);
 		
 		// cria algumas pessoas
@@ -510,7 +518,7 @@ public class QBEOperatorTest extends QbeTestBase {
 
 		// configura o operador para a propriedade de filtro com DATE
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(Pessoa.class);
-		filtro.filterBy("dataNascimento", Operators.between(), formatDate("02/01/2010"), formatDate("31/12/2011"));
+		filtro.filterBy(QPessoa.pessoa.dataNascimento, Operators.between(), formatDate("02/01/2010"), formatDate("31/12/2011"));
 		
 		List<Pessoa> pessoas = qbe.search(filtro);
 
@@ -522,7 +530,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		
 		// configura o operador para a propriedade de filtro com NUMBER
 		filtro = new QBEFilter<Pessoa>(Pessoa.class);
-		filtro.filterBy("id", Operators.between(), p2.getId(), p4.getId());
+		filtro.filterBy(QPessoa.pessoa.id, Operators.between(), p2.getId(), p4.getId());
 		
 		pessoas = qbe.search(filtro);
 
@@ -543,7 +551,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(Pessoa.class);
-		filtro.filterBy("email", Operators.isNull());
+		filtro.filterBy(QPessoa.pessoa.email, Operators.isNull());
 		
 		List<Pessoa> pessoas = qbe.search(filtro);
 
@@ -568,7 +576,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(Pessoa.class);
-		filtro.filterBy("email", Operators.isNotNull());
+		filtro.filterBy(QPessoa.pessoa.email, Operators.isNotNull());
 		
 		List<Pessoa> pessoas = qbe.search(filtro);
 
@@ -591,7 +599,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 
 		QBEFilter<UF> filtro = new QBEFilter<UF>(UF.class);
-		filtro.filterBy("cidades", Operators.isEmpty());
+		filtro.filterBy(QUF.uF.cidades(), Operators.isEmpty());
 		
 		List<UF> ufs = qbe.search(filtro);
 
@@ -613,7 +621,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 
 		QBEFilter<UF> filtro = new QBEFilter<UF>(UF.class);
-		filtro.filterBy("cidades", Operators.sizeEqual(), 3);
+		filtro.filterBy(QUF.uF.cidades(), Operators.sizeEqual(), 3);
 		
 		List<UF> ufs = qbe.search(filtro);
 
@@ -637,7 +645,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 
 		QBEFilter<UF> filtro = new QBEFilter<UF>(UF.class);
-		filtro.filterBy("cidades", Operators.sizeNotEqual(), 3);
+		filtro.filterBy(QUF.uF.cidades(), Operators.sizeNotEqual(), 3);
 		
 		List<UF> ufs = qbe.search(filtro);
 
@@ -658,7 +666,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 
 		QBEFilter<UF> filtro = new QBEFilter<UF>(UF.class);
-		filtro.filterBy("cidades", Operators.sizeGreater(), 3);
+		filtro.filterBy(QUF.uF.cidades(), Operators.sizeGreater(), 3);
 		
 		List<UF> ufs = qbe.search(filtro);
 
@@ -679,7 +687,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 
 		QBEFilter<UF> filtro = new QBEFilter<UF>(UF.class);
-		filtro.filterBy("cidades", Operators.sizeGreaterEqual(), 3);
+		filtro.filterBy(QUF.uF.cidades(), Operators.sizeGreaterEqual(), 3);
 		
 		List<UF> ufs = qbe.search(filtro);
 
@@ -700,7 +708,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 
 		QBEFilter<UF> filtro = new QBEFilter<UF>(UF.class);
-		filtro.filterBy("cidades", Operators.sizeLess(), 3);
+		filtro.filterBy(QUF.uF.cidades(), Operators.sizeLess(), 3);
 		
 		List<UF> ufs = qbe.search(filtro);
 
@@ -721,7 +729,7 @@ public class QBEOperatorTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 
 		QBEFilter<UF> filtro = new QBEFilter<UF>(UF.class);
-		filtro.filterBy("cidades", Operators.sizeLessEquals(), 3);
+		filtro.filterBy(QUF.uF.cidades(), Operators.sizeLessEquals(), 3);
 		
 		List<UF> ufs = qbe.search(filtro);
 

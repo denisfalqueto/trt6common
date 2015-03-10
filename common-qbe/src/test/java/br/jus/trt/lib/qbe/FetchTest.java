@@ -1,6 +1,7 @@
 package br.jus.trt.lib.qbe;
 
 import static org.junit.Assert.*;
+
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,11 @@ import br.jus.trt.lib.qbe.domain.Cidade;
 import br.jus.trt.lib.qbe.domain.Dependente;
 import br.jus.trt.lib.qbe.domain.Pessoa;
 import br.jus.trt.lib.qbe.domain.ProjetoServidor;
+import br.jus.trt.lib.qbe.domain.QCidade;
+import br.jus.trt.lib.qbe.domain.QPessoa;
+import br.jus.trt.lib.qbe.domain.QProjetoServidor;
+import br.jus.trt.lib.qbe.domain.QServidor;
+import br.jus.trt.lib.qbe.domain.QUF;
 import br.jus.trt.lib.qbe.domain.Servidor;
 import br.jus.trt.lib.qbe.domain.Servidor.SITUACAO;
 import br.jus.trt.lib.qbe.domain.UF;
@@ -31,7 +37,7 @@ public class FetchTest extends QbeTestBase {
 		
 		QBEFilter<Cidade> filtro = new QBEFilter<Cidade>(Cidade.class);
 		filtro.paginate(0, 5);
-		filtro.addFetch("uf");
+		filtro.addFetch(QCidade.cidade.uf());
 		
 		List<Cidade> cidadesQbe = qbe.search(filtro);
 		
@@ -51,7 +57,7 @@ public class FetchTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 		
 		QBEFilter<UF> filtro = new QBEFilter<UF>(UF.class);
-		filtro.addFetch("cidades");
+		filtro.addFetch(QUF.uF.cidades());
 		
 		List<UF> ufsQbe = qbe.search(filtro);
 		assertFalse("Não foram encontradas UFs.", ufsQbe.isEmpty());
@@ -73,7 +79,7 @@ public class FetchTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 		
 		QBEFilter<Pessoa> filtro = new QBEFilter<Pessoa>(Pessoa.class);
-		filtro.addFetch("cidade.uf");
+		filtro.addFetch(QPessoa.pessoa.cidade().uf());
 		
 		List<Pessoa> pessoasQbe = qbe.search(filtro);
 		assertFalse("Não foram encontradas Pessoas.", pessoasQbe.isEmpty());
@@ -94,10 +100,10 @@ public class FetchTest extends QbeTestBase {
 		QBEFilter<Servidor> filtro = new QBEFilter<Servidor>(Servidor.class);
 
 		// busca apenas servidores envolvidos em projetos
-		filtro.filterBy("projetos", Operators.isNotEmpty());
+		filtro.filterBy(QServidor.servidor.projetos(), Operators.isNotEmpty());
 		
 		// carrega as relacoes "projetos" (cole��o), inicialozando tamb�m o atributo "projeto" para cada ProjetoServidor encontrado
-		filtro.addFetch("projetos.projeto"); 
+		filtro.addFetch(QServidor.servidor.projetos().projeto()); 
 		
 		List<Servidor> servidoresQbe = qbe.search(filtro);
 		assertFalse("Não foram encontrados Servidores.", servidoresQbe.isEmpty());
@@ -126,8 +132,8 @@ public class FetchTest extends QbeTestBase {
 		
 		QBEFilter<ProjetoServidor> filtro = new QBEFilter<ProjetoServidor>(ProjetoServidor.class);
 
-		filtro.addFetch("servidor.dependentes"); 
-		filtro.filterBy("servidor.dependentes", Operators.isNotEmpty()); // para auxiliar na validação
+		filtro.addFetch(QProjetoServidor.projetoServidor.servidor().dependentes()); 
+		filtro.filterBy(QProjetoServidor.projetoServidor.servidor().dependentes(), Operators.isNotEmpty()); // para auxiliar na validação
 		
 		List<ProjetoServidor> servidoresQbe = qbe.search(filtro);
 		assertFalse("Não foram encontrados ProjetoServidor.", servidoresQbe.isEmpty());
@@ -156,8 +162,8 @@ public class FetchTest extends QbeTestBase {
 		
 		QBEFilter<ProjetoServidor> filtro = new QBEFilter<ProjetoServidor>(ProjetoServidor.class);
 
-		filtro.addFetch("servidor.dependentes.cidade"); 
-		filtro.filterBy("servidor.dependentes", Operators.isNotEmpty()); // para auxiliar na validação
+		filtro.addFetch(QProjetoServidor.projetoServidor.servidor().dependentes().cidade()); 
+		filtro.filterBy(QProjetoServidor.projetoServidor.servidor().dependentes(), Operators.isNotEmpty()); // para auxiliar na validação
 		
 		List<ProjetoServidor> servidoresQbe = qbe.search(filtro);
 		assertFalse("Não foram encontrados ProjetoServidor.", servidoresQbe.isEmpty());
@@ -185,7 +191,7 @@ public class FetchTest extends QbeTestBase {
 
 		// criando um servidor sem projeto para garantir que existe este caso
 		Servidor servidor = new Servidor();
-		servidor.setCidade(getAny(Cidade.class));
+		servidor.setCidade(getQuerier().findAny(Cidade.class));
 		servidor.setCpf("12554789631");
 		servidor.setDataNascimento(new Date());
 		servidor.setEmail("serv@serv.com");
@@ -198,7 +204,7 @@ public class FetchTest extends QbeTestBase {
 		
 		// criando hql com fetch que faz inner join: apenas de servidores com projeto
 		String hql = "from Servidor s inner join fetch s.projetos";
-		List<Servidor> servidoresHQL = executeQuery(getEntityManager(), hql);
+		List<Servidor> servidoresHQL = getQuerier().executeQuery(getEntityManager(), hql);
 		
 		assertFalse("Não foram encontrados Servidores.", servidoresHQL.isEmpty());
 		assertFalse("O servidor criado nao deveria estar na lista", servidoresHQL.contains(servidor));
@@ -207,7 +213,7 @@ public class FetchTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 		
 		QBEFilter<Servidor> filtro = new QBEFilter<Servidor>(Servidor.class);
-		filtro.addFetch(new FetchMode("projetos", JoinType.INNER)); 
+		filtro.addFetch(new FetchMode(QServidor.servidor.projetos(), JoinType.INNER)); 
 		
 		List<Servidor> servidoresQbe = qbe.search(filtro);
 
@@ -227,7 +233,7 @@ public class FetchTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 		
 		QBEFilter<Servidor> filtro = new QBEFilter<Servidor>(Servidor.class);
-		filtro.addFetch("projetos");
+		filtro.addFetch(QServidor.servidor.projetos());
 		
 		List<Servidor> servidoresQbe = qbe.search(filtro);
 		
@@ -257,7 +263,7 @@ public class FetchTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 		
 		QBEFilter<UF> filtro = new QBEFilter<UF>(UF.class);
-		filtro.addFetch("cidadesSet");
+		filtro.addFetch(QUF.uF.cidadesSet);
 		
 		List<UF> ufsQbe = qbe.search(filtro);
 		

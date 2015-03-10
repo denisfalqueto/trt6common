@@ -1,17 +1,20 @@
 package br.jus.trt.lib.qbe;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
 
-import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.api.OperationContainer.ContainerType;
+import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.api.operator.Operators;
 import br.jus.trt.lib.qbe.domain.Cidade;
 import br.jus.trt.lib.qbe.domain.Dependente;
 import br.jus.trt.lib.qbe.domain.Pessoa;
+import br.jus.trt.lib.qbe.domain.QCidade;
 import br.jus.trt.lib.qbe.domain.Servidor;
 import br.jus.trt.lib.qbe.domain.Servidor.SITUACAO;
 import br.jus.trt.lib.qbe.domain.UF;
@@ -39,7 +42,7 @@ public class QBEFilterTest extends QbeTestBase {
 		
 		// executa uma consulta com HQL filtrando pelo nome do exemplo
 		String hql = "from " + Cidade.class.getSimpleName() + " cid where cid.uf.sigla = ?";
-		List<Cidade> cidadesHQL = searchAndValidate(hql, exemplo.getUf().getSigla());		
+		List<Cidade> cidadesHQL = getQuerier().searchAndValidateNotEmpty(hql, exemplo.getUf().getSigla());		
 		
 		// executa a consulta utilizando QBE
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
@@ -69,15 +72,16 @@ public class QBEFilterTest extends QbeTestBase {
 		
 		// executa uma consulta com HQL filtrando pelo nome do exemplo
 		String hql = "from " + Cidade.class.getSimpleName() + " cid where cid.uf.sigla = ? or cid.uf.sigla = ?";
-		List<Cidade> cidadesHQL = searchAndValidate(hql, "PE", "PB");		
+		List<Cidade> cidadesHQL = getQuerier().searchAndValidateNotEmpty(hql, "PE", "PB");		
 		
 		// executa a consulta utilizando QBE
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 		QBEFilter<Cidade> filtro = new QBEFilter<Cidade>(Cidade.class);
 		
 		filtro.setRootContainerType(ContainerType.OR);
-		filtro.filterBy("uf.sigla", Operators.equal(), "PE");
-		filtro.filterBy("uf.sigla", Operators.equal(), "PB");
+		QCidade cidade = QCidade.cidade;
+		filtro.filterBy(cidade.uf().sigla, Operators.equal(), "PE");
+		filtro.filterBy(cidade.uf().sigla, Operators.equal(), "PB");
 		
 		List<Cidade> cidadesQbe = qbe.search(filtro);
 		
@@ -110,7 +114,7 @@ public class QBEFilterTest extends QbeTestBase {
 		
 		// cadastra um servidor ativo e outro inativo para garantir variedade de situacao
 		Servidor servidor1 = new Servidor();
-		servidor1.setCidade(getInPosition(Cidade.class, 0));
+		servidor1.setCidade(getQuerier().findAt(Cidade.class, 0));
 		servidor1.setCpf("99999999999");
 		servidor1.setDataNascimento(new Date());
 		servidor1.setEmail("serv@email.com");
@@ -119,7 +123,7 @@ public class QBEFilterTest extends QbeTestBase {
 		servidor1.setSituacao(SITUACAO.ATIVO);
 
 		Servidor servidor2 = new Servidor();
-		servidor2.setCidade(getInPosition(Cidade.class, 0));
+		servidor2.setCidade(getQuerier().findAt(Cidade.class, 0));
 		servidor2.setCpf("88888888888");
 		servidor2.setDataNascimento(new Date());
 		servidor2.setEmail("serv2@email.com");
@@ -156,7 +160,7 @@ public class QBEFilterTest extends QbeTestBase {
 		
 		// cadastra dependente, servidor ativo e outro inativo para garantir variedade de situacao
 		Servidor servidor1 = new Servidor();
-		servidor1.setCidade(getInPosition(Cidade.class, 0));
+		servidor1.setCidade(getQuerier().findAt(Cidade.class, 0));
 		servidor1.setCpf("99999999999");
 		servidor1.setDataNascimento(new Date());
 		servidor1.setEmail("serv@email.com");
@@ -165,7 +169,7 @@ public class QBEFilterTest extends QbeTestBase {
 		servidor1.setSituacao(SITUACAO.ATIVO);
 
 		Servidor servidor2 = new Servidor();
-		servidor2.setCidade(getInPosition(Cidade.class, 0));
+		servidor2.setCidade(getQuerier().findAt(Cidade.class, 0));
 		servidor2.setCpf("88888888888");
 		servidor2.setDataNascimento(new Date());
 		servidor2.setEmail("serv2@email.com");
@@ -174,11 +178,11 @@ public class QBEFilterTest extends QbeTestBase {
 		servidor2.setSituacao(SITUACAO.INATIVO);
 		
 		Dependente dependente = new Dependente();
-		dependente.setCidade(getInPosition(Cidade.class, 0));
+		dependente.setCidade(getQuerier().findAt(Cidade.class, 0));
 		dependente.setCpf("88888888888");
 		dependente.setDataNascimento(new Date());
 		dependente.setEmail("serv2@email.com");
-		dependente.setServidor(getInPosition(Servidor.class, 0));
+		dependente.setServidor(getQuerier().findAt(Servidor.class, 0));
 		dependente.setNome("Dependente");
 		dependente.setDataInicio(new Date());
 		

@@ -1,6 +1,8 @@
 package br.jus.trt.lib.qbe;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
 import org.hibernate.Hibernate;
@@ -13,6 +15,8 @@ import br.jus.trt.lib.qbe.domain.Cidade;
 import br.jus.trt.lib.qbe.domain.Dependente;
 import br.jus.trt.lib.qbe.domain.Pessoa;
 import br.jus.trt.lib.qbe.domain.ProjetoServidor;
+import br.jus.trt.lib.qbe.domain.QServidor;
+import br.jus.trt.lib.qbe.domain.QUF;
 import br.jus.trt.lib.qbe.domain.Servidor;
 import br.jus.trt.lib.qbe.domain.UF;
 import br.jus.trt.lib.qbe.repository.criteria.CriteriaQbeRepository;
@@ -27,8 +31,8 @@ public class FetchMultipleCollectionsTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 		
 		QBEFilter<Servidor> filtro = new QBEFilter<Servidor>(Servidor.class);
-		filtro.addFetch("projetos");
-		filtro.addFetch("dependentes");
+		filtro.addFetch(QServidor.servidor.projetos());
+		filtro.addFetch(QServidor.servidor.dependentes());
 		
 		List<Servidor> servidoresQbe = qbe.search(filtro);
 		
@@ -54,8 +58,8 @@ public class FetchMultipleCollectionsTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 		
 		QBEFilter<Servidor> filtro = new QBEFilter<Servidor>(Servidor.class);
-		filtro.addFetch("dependentes");
-		filtro.addFetch("projetos.projeto"); // propriedade aninhada na coleção
+		filtro.addFetch(QServidor.servidor.dependentes());
+		filtro.addFetch(QServidor.servidor.projetos().projeto()); // propriedade aninhada na coleção
 		
 		List<Servidor> servidoresQbe = qbe.search(filtro);
 		
@@ -82,24 +86,27 @@ public class FetchMultipleCollectionsTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 		
 		QBEFilter<Servidor> filtro = new QBEFilter<Servidor>(Servidor.class);
-		filtro.addFetch("projetos.projeto");
-		filtro.addFetch("dependentes.cidade.uf"); // propriedade aninhada na coleção em 2 níveis
+		
+		QServidor servidor = QServidor.servidor;
+		
+		filtro.addFetch(servidor.projetos().projeto());
+		filtro.addFetch(servidor.dependentes().cidade().uf()); // propriedade aninhada na coleção em 2 níveis
 		
 		List<Servidor> servidoresQbe = qbe.search(filtro);
 		
 		assertFalse("Não foram encontrados Servidores.", servidoresQbe.isEmpty());
 		
 		// verifica se as entidades carregadas via fetch estão inicializadas
-		for (Servidor servidor : servidoresQbe) {
-			assertTrue("Os dependentes deveriam estar inicializados", Hibernate.isInitialized(servidor.getDependentes()));
-			assertTrue("Os projetos deveriam estar inicializados", Hibernate.isInitialized(servidor.getProjetos()));
+		for (Servidor ser : servidoresQbe) {
+			assertTrue("Os dependentes deveriam estar inicializados", Hibernate.isInitialized(ser.getDependentes()));
+			assertTrue("Os projetos deveriam estar inicializados", Hibernate.isInitialized(ser.getProjetos()));
 			
-			for (Dependente dependente : servidor.getDependentes()) {
+			for (Dependente dependente : ser.getDependentes()) {
 				assertTrue("O dependente deveria estar inicializado", Hibernate.isInitialized(dependente));
 				assertTrue("A cidade do dependente deveria estar inicializada", Hibernate.isInitialized(dependente.getCidade()));
 				assertTrue("A UF do dependente deveria estar inicializada", Hibernate.isInitialized(dependente.getCidade().getUf()));
 			}
-			for (ProjetoServidor projetoServidor : servidor.getProjetos()) {
+			for (ProjetoServidor projetoServidor : ser.getProjetos()) {
 				assertTrue("O projetoServidor deveria estar inicializado", Hibernate.isInitialized(projetoServidor));
 				assertTrue("O projeto deveria estar inicializado", Hibernate.isInitialized(projetoServidor.getProjeto()));
 			}
@@ -112,8 +119,8 @@ public class FetchMultipleCollectionsTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 		
 		QBEFilter<Servidor> filtro = new QBEFilter<Servidor>(Servidor.class);
-		filtro.addFetch("dependentes");
-		filtro.addFetch(new FetchMode("projetos", JoinType.INNER)); // inner collection em fetch manual
+		filtro.addFetch(QServidor.servidor.dependentes());
+		filtro.addFetch(new FetchMode(QServidor.servidor.projetos(), JoinType.INNER)); // inner collection em fetch manual
 		
 		List<Servidor> servidoresQbe = qbe.search(filtro);
 		
@@ -144,7 +151,7 @@ public class FetchMultipleCollectionsTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 		
 		QBEFilter<UF> filtro = new QBEFilter<UF>(UF.class);
-		filtro.addFetch("cidades.pessoas"); // colecoes aninhadas
+		filtro.addFetch(QUF.uF.cidades().pessoas); // colecoes aninhadas
 		
 		List<UF> ufsQbe = qbe.search(filtro);
 		
@@ -189,7 +196,7 @@ public class FetchMultipleCollectionsTest extends QbeTestBase {
 		// com fetch
 		filter = new QBEFilter<UF>(UF.class);
 		filter.paginate(0,  5);
-		filter.addFetch("cidades");
+		filter.addFetch(QUF.uF.cidades());
 		List<UF> ufsFetch = qbe.search(filter);
 		
 		assertContentEqual(ufs, ufsFetch);

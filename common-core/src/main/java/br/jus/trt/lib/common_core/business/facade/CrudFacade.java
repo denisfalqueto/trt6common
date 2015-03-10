@@ -1,11 +1,15 @@
 package br.jus.trt.lib.common_core.business.facade;
 
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.metamodel.SingularAttribute;
+
 import br.jus.trt.lib.common_core.business.domain.Entity;
 import br.jus.trt.lib.common_core.integration.persistence.NonUniqueEntityException;
 import br.jus.trt.lib.qbe.api.Filter;
-import java.io.Serializable;
-import java.util.List;
-import javax.persistence.metamodel.SingularAttribute;
+
+import com.mysema.query.types.Path;
 
 public interface CrudFacade<E extends Entity<PK>, PK extends Serializable> extends Facade {
 
@@ -185,7 +189,7 @@ public interface CrudFacade<E extends Entity<PK>, PK extends Serializable> exten
      * @return A entidade identificada pelo id informado, ou null caso não seja
      * encontrada.
      */
-    public E findBy(PK id, String... fetch);
+    public E findBy(PK id, Path... fetch);
 
     /**
      * Realiza uma consulta com filtro, retornando apenas um elemento. O filtro
@@ -210,7 +214,7 @@ public interface CrudFacade<E extends Entity<PK>, PK extends Serializable> exten
      *
      * @return Lista de registros ordenados.
      */
-    public abstract List<E> findAll(boolean ascedant, String... orderBy);
+    public abstract List<E> findAll(boolean ascedant, Path... orderBy);
 
     /**
      * Conta a quantidade de registros da entidade.

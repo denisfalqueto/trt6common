@@ -8,7 +8,7 @@ import java.util.Date;
 
 import org.junit.Ignore;
 
-import br.jus.trt.lib.common_tests.jpa.TransactionTestBase;
+import br.jus.trt.lib.common_tests.LocalTransactionTestBase;
 
 /**
  * Classe base para os casos de testes do módulo QBE.
@@ -16,7 +16,7 @@ import br.jus.trt.lib.common_tests.jpa.TransactionTestBase;
  * @author augusto
  */
 @Ignore
-public class QbeTestBase extends TransactionTestBase {
+public class QbeTestBase extends LocalTransactionTestBase {
 
 	/**
 	 * Converte uma String em uma Data Formatada utilizando o formato padrão de data.

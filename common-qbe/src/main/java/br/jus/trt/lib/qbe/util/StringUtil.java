@@ -1,5 +1,8 @@
 package br.jus.trt.lib.qbe.util;
 
+import com.mysema.query.types.Path;
+import com.mysema.query.types.path.StringPath;
+
 
 public class StringUtil {
 
@@ -12,5 +15,13 @@ public class StringUtil {
 		return s == null || s.trim().isEmpty();
 	}
 	
+	public static String getStringPath(@SuppressWarnings("rawtypes") Path path) {
+		return path.toString().replaceFirst(".*?\\.", "");
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public static Path getFakePath(String path) {
+		return new StringPath("fake." + path);
+	}
 
 }

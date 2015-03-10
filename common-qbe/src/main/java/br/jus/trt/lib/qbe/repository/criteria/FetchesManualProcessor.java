@@ -13,6 +13,8 @@ import java.util.Set;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
@@ -27,8 +29,7 @@ import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.api.exception.QbeException;
 import br.jus.trt.lib.qbe.util.PropertyComparator;
 import br.jus.trt.lib.qbe.util.ReflectionUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import br.jus.trt.lib.qbe.util.StringUtil;
 
 /**
  * Realiza o fetch manual das coleções configuradas. Fetch manual significa realizar uma segunda consulta manualmente, simulando o funcionamento
@@ -366,7 +367,7 @@ public class FetchesManualProcessor extends FetchesProcessor {
 			} while (!isCollection(baseCollectionProp) && index < properties.length);
 			
 			// cria um grupo de propriedades, identificando a coleção base como propriedade primária
-			PropertyGroup group = new PropertyGroup(new FetchMode(baseCollectionProp, fetchMode.getJoinType()));
+			PropertyGroup group = new PropertyGroup(new FetchMode(StringUtil.getFakePath(baseCollectionProp), fetchMode.getJoinType()));
 			
 			// evita duplicações
 			int ig = groups.indexOf(group);
@@ -382,7 +383,7 @@ public class FetchesManualProcessor extends FetchesProcessor {
 				String lastProperty = null;
 				for (int i = index; i < properties.length; i++) {
 					String nestedProperty = lastProperty == null ? properties[i] : lastProperty + properties[i];
-					group.addNestedProperties(new FetchMode(nestedProperty, fetchMode.getJoinType()));
+					group.addNestedProperties(new FetchMode(StringUtil.getFakePath(nestedProperty), fetchMode.getJoinType()));
 					lastProperty = nestedProperty + ".";
 				}
 			}

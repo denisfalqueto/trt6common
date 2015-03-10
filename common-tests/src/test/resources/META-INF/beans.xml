@@ -1,9 +1,9 @@
-<?xml version="1.0"?>
-<beans xmlns="http://java.sun.com/xml/ns/javaee"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://jboss.org/schema/cdi/beans_1_0.xsd">
- <alternatives>
-  <class>br.jus.trt.lib.common_tests.cdi.producer.AlternativeEntityManagerProducer</class>
- </alternatives>
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
+       version="1.1" bean-discovery-mode="all" >
+       
  <interceptors>
   <class>br.jus.trt.lib.common_tests.dataloader.LoadDatasInterceptor</class>
   <class>br.jus.trt.lib.common_tests.dataloader.LoadDataInterceptor</class>

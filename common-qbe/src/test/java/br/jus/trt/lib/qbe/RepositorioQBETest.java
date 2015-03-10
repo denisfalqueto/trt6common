@@ -21,7 +21,7 @@ public class RepositorioQBETest extends QbeTestBase {
 	public void testNaoPriorizacaoID() {
 		
 		// cria uma cidade qualquer
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		
 		Cidade cid1 = new Cidade("cid1", ufBD);
 		getJpa().save(cid1);
@@ -53,7 +53,7 @@ public class RepositorioQBETest extends QbeTestBase {
 	public void testPriorizacaoID() {
 		
 		// cria uma cidade qualquer
-		UF ufBD = getAny(UF.class);
+		UF ufBD = getQuerier().findAny(UF.class);
 		
 		Cidade cid1 = new Cidade("cid1", ufBD);
 		getJpa().save(cid1);
@@ -88,7 +88,7 @@ public class RepositorioQBETest extends QbeTestBase {
 		// executa a consulta com HQL correto equivalente
 		String hql = "from " + UF.class.getSimpleName();
 		@SuppressWarnings("unchecked")
-		List<UF> ufsHQL = executeQuery(getEntityManager(), hql);
+		List<UF> ufsHQL = getQuerier().executeQuery(getEntityManager(), hql);
 		
 		// deve haver pelo menos uma UF cadastrada
 		if (ufsHQL == null || ufsHQL.isEmpty()) {
@@ -111,7 +111,7 @@ public class RepositorioQBETest extends QbeTestBase {
 		
 		// executa a consulta com HQL correto equivalente
 		String hql = "from " + Cidade.class.getSimpleName();
-		List<Cidade> cidadesHQL = executeQuery(getEntityManager(), hql, 1, 50, (Object[]) null);
+		List<Cidade> cidadesHQL = getQuerier().executeQuery(getEntityManager(), hql, 1, 50, (Object[]) null);
 		
 		// deve haver pelo menos uma cidade cadastrada
 		if (cidadesHQL == null || cidadesHQL.isEmpty()) {

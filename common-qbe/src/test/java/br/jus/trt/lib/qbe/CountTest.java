@@ -1,6 +1,7 @@
 package br.jus.trt.lib.qbe;
 
 import static org.junit.Assert.*;
+
 import java.text.ParseException;
 
 import javax.persistence.Query;
@@ -12,6 +13,8 @@ import br.jus.trt.lib.qbe.api.OperationContainer;
 import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.api.operator.Operators;
 import br.jus.trt.lib.qbe.domain.Pessoa;
+import br.jus.trt.lib.qbe.domain.QPessoa;
+import br.jus.trt.lib.qbe.domain.QUF;
 import br.jus.trt.lib.qbe.domain.UF;
 import br.jus.trt.lib.qbe.repository.criteria.CriteriaQbeRepository;
 import br.jus.trt.lib.qbe.repository.criteria.OperatorProcessorRepositoryFactory;
@@ -23,7 +26,7 @@ public class CountTest extends QbeTestBase {
 		
 		// executa a consulta com HQL correto equivalente
 		String hql = "select count(f.id) from " + UF.class.getSimpleName() + " f";
-		Long UfsHQL = executeCountQuery(getEntityManager(), hql);
+		Long UfsHQL = getQuerier().executeCountQuery(getEntityManager(), hql);
 		
 		// deve haver pelo menos uma Uf encontrada
 		if (UfsHQL <= 0) {
@@ -44,7 +47,7 @@ public class CountTest extends QbeTestBase {
 		
 		// executa a consulta com HQL correto equivalente
 		String hql = "select count(f.id) from " + UF.class.getSimpleName() + " f"; // hql n�o aceitar count + order by
-		Long UfsHQL = executeCountQuery(getEntityManager(), hql);
+		Long UfsHQL = getQuerier().executeCountQuery(getEntityManager(), hql);
 		
 		// deve haver pelo menos uma Uf encontrada
 		if (UfsHQL <= 0) {
@@ -54,7 +57,7 @@ public class CountTest extends QbeTestBase {
 		// executa a consulta utilizando QBE
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());;
 		QBEFilter<UF> filtro = new QBEFilter<UF>(UF.class);
-		filtro.sortAscBy("sigla"); 
+		filtro.sortAscBy(QUF.uF.sigla); 
 		
 		Long UfsQbe = qbe.count(filtro); // espera-se que a ordenacao seja desconsiderada
 		
@@ -68,7 +71,7 @@ public class CountTest extends QbeTestBase {
 		
 		// executa a consulta com HQL correto equivalente
 		String hql = "select count(f.id) from " + UF.class.getSimpleName() + " f";
-		Query query = createQuery(getEntityManager(), hql); // hql nao permite paginacao com count
+		Query query = getQuerier().createQuery(getEntityManager(), hql); // hql nao permite paginacao com count
 		Long UfsHQL = (Long) query.getSingleResult();
 		
 		// deve haver pelo menos uma Uf encontrada
@@ -93,7 +96,7 @@ public class CountTest extends QbeTestBase {
 		
 		// executa a consulta com HQL correto equivalente
 		String hql = "select count(f.id) from " + UF.class.getSimpleName() + " f";
-		Query query = createQuery(getEntityManager(), hql); // hql n�o permite pagina��o com count
+		Query query = getQuerier().createQuery(getEntityManager(), hql); // hql n�o permite pagina��o com count
 		Long UfsHQL = (Long) query.getSingleResult();
 		
 		// deve haver pelo menos uma Uf encontrada
@@ -127,7 +130,7 @@ public class CountTest extends QbeTestBase {
 		
 		// utiliza uma consulta hql para compara��o
 		String hql = "select count(p.id) from Pessoa p where p.email=? and ( p.cpf=? or (p.dataNascimento is null  or p.dataNascimento > ?) ) ";
-		Long pessoasHQL = executeCountQuery(getEntityManager(), hql, p2.getEmail(), p1.getCpf(), p1.getDataNascimento());
+		Long pessoasHQL = getQuerier().executeCountQuery(getEntityManager(), hql, p2.getEmail(), p1.getCpf(), p1.getDataNascimento());
 		
 		// Configura o filtro
 		Pessoa exemplo = new Pessoa(null, null, p2.getDataNascimento(), p2.getCpf(), p2.getEmail());
@@ -136,8 +139,8 @@ public class CountTest extends QbeTestBase {
 		filtro.setStringDefaultOperator(Operators.equal());
 		
 		OperationContainer containerOR = filtro.addOr(new Operation("cpf", Operators.equal()));
-		containerOR.addOr(new Operation("dataNascimento", Operators.isNotNull()),
-				 	      new Operation("dataNascimento", Operators.greater()));
+		containerOR.addOr(new Operation(QPessoa.pessoa.dataNascimento, Operators.isNotNull()),
+				 	      new Operation(QPessoa.pessoa.dataNascimento, Operators.greater()));
 		
 		// realiza a mesma consulta com qbe
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());

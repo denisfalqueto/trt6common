@@ -1,15 +1,20 @@
 package br.jus.trt.lib.common_core.business.facade;
 
+import java.io.Serializable;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.persistence.metamodel.SingularAttribute;
+
+import org.apache.logging.log4j.Logger;
+
 import br.jus.trt.lib.common_core.business.domain.Entity;
 import br.jus.trt.lib.common_core.integration.persistence.CrudRepository;
 import br.jus.trt.lib.common_core.util.DIContainerUtil;
 import br.jus.trt.lib.common_core.util.JavaGenericsUtil;
 import br.jus.trt.lib.qbe.api.Filter;
-import java.io.Serializable;
-import java.util.List;
-import javax.inject.Inject;
-import javax.persistence.metamodel.SingularAttribute;
-import org.apache.logging.log4j.Logger;
+
+import com.mysema.query.types.Path;
 
 @BusinessExceptionHandler
 public abstract class CrudFacadeBase<CR extends CrudRepository<E, PK>, E extends Entity<PK>, PK extends Serializable>
@@ -117,7 +122,7 @@ public abstract class CrudFacadeBase<CR extends CrudRepository<E, PK>, E extends
     }
 
     @Override
-    public E findBy(PK id, String... fetch) {
+    public E findBy(PK id, Path... fetch) {
         return getRepository().findBy(id, fetch);
     }
 
@@ -127,7 +132,7 @@ public abstract class CrudFacadeBase<CR extends CrudRepository<E, PK>, E extends
     }
 
     @Override
-    public List<E> findAll(boolean ascedant, String... orderBy) {
+    public List<E> findAll(boolean ascedant, Path... orderBy) {
         return getRepository().findAll(ascedant, orderBy);
     }
 

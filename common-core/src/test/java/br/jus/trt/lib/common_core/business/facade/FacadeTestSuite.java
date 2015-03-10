@@ -1,6 +1,6 @@
 package br.jus.trt.lib.common_core.business.facade;
 
-import br.jus.trt.lib.common_tests.suite.BaseSuite;
+import br.jus.trt.lib.common_tests.suite.SuiteBase;
 
 /**
  * Acomoda automaticamente todos os testes relacionados ao pacote de classes 
@@ -8,6 +8,6 @@ import br.jus.trt.lib.common_tests.suite.BaseSuite;
  * @author Augusto
  *
  */
-public class FacadeTestSuite extends BaseSuite {
+public class FacadeTestSuite extends SuiteBase {
 
 }
