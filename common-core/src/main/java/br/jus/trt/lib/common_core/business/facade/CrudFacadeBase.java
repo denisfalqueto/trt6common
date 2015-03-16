@@ -1,16 +1,20 @@
 package br.jus.trt.lib.common_core.business.facade;
 
+import java.io.Serializable;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.persistence.metamodel.SingularAttribute;
+
+import org.apache.logging.log4j.Logger;
+
 import br.jus.trt.lib.common_core.business.domain.Entity;
 import br.jus.trt.lib.common_core.integration.persistence.CrudRepository;
 import br.jus.trt.lib.common_core.util.DIContainerUtil;
 import br.jus.trt.lib.common_core.util.JavaGenericsUtil;
 import br.jus.trt.lib.qbe.api.Filter;
-import java.io.Serializable;
-import java.util.List;
-import javax.inject.Inject;
-import javax.persistence.metamodel.SingularAttribute;
-import org.apache.logging.log4j.Logger;
 
+@SuppressWarnings("serial")
 @BusinessExceptionHandler
 public abstract class CrudFacadeBase<CR extends CrudRepository<E, PK>, E extends Entity<PK>, PK extends Serializable>
         implements CrudFacade<E, PK> {
@@ -23,7 +27,8 @@ public abstract class CrudFacadeBase<CR extends CrudRepository<E, PK>, E extends
     protected CrudRepository<E, PK> getRepository() {
         if (repository == null) {
             List<Class<?>> genericsTypedArguments = JavaGenericsUtil.getGenericTypedArguments(CrudFacadeBase.class, this.getClass());
-            Class<CR> repositoryType = (Class<CR>) genericsTypedArguments.get(0); // o repostiório é o primeiro parãmetro genérico
+            @SuppressWarnings("unchecked")
+			Class<CR> repositoryType = (Class<CR>) genericsTypedArguments.get(0); // o repositório é o primeiro parâmetro genérico
             repository = new DIContainerUtil().lookup(repositoryType);
         }
         return repository;
@@ -31,39 +36,13 @@ public abstract class CrudFacadeBase<CR extends CrudRepository<E, PK>, E extends
 
     @Override
     public E save(E entity) {
-        return getRepository().save(entity);
-    }
-
-    @Override
-    public E saveAndFlush(E entity) {
         return getRepository().saveAndFlush(entity);
-    }
-
-    @Override
-    public E saveAndFlushAndRefresh(E entity) {
-        return getRepository().saveAndFlushAndRefresh(entity);
     }
 
     @Override
     public void remove(E entity) {
         log.entry();
-        getRepository().remove(entity);
-    }
-
-    @Override
-    public void removeAndFlush(E entity) {
-        log.entry();
         getRepository().removeAndFlush(entity);
-    }
-
-    @Override
-    public void refresh(E entity) {
-        getRepository().refresh(entity);
-    }
-
-    @Override
-    public void flush() {
-        getRepository().flush();
     }
 
     @Override

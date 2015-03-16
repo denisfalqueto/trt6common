@@ -323,7 +323,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	protected void doSave() {
 		log.entry();
 
-		getFacade().saveAndFlush(getEntity());
+		getFacade().save(getEntity());
 		
 		log.exit();
 	}
@@ -376,7 +376,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	protected void doInsert() {
 		log.entry();
 
-		getFacade().saveAndFlush(getEntity());
+		getFacade().save(getEntity());
 		
 		log.exit();
 	}
@@ -420,7 +420,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	protected void doUpdate() {
 		log.entry();
 
-		getFacade().saveAndFlush(getEntity());
+		getFacade().save(getEntity());
 		
 		log.exit();
 	}
@@ -470,7 +470,7 @@ public abstract class CrudActionBase<ENTITY extends Entity<PK>, PK extends Seria
 	protected void doDelete(ENTITY entidade) {
 		log.entry();
 
-		getFacade().removeAndFlush(entidade);
+		getFacade().remove(entidade);
 		
 		log.exit();
 	}
