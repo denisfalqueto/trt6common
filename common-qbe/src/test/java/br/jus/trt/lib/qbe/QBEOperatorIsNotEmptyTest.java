@@ -1,7 +1,6 @@
 package br.jus.trt.lib.qbe;
 
 import static org.junit.Assert.*;
-
 import java.util.List;
 
 import org.junit.Test;
@@ -11,8 +10,6 @@ import br.jus.trt.lib.qbe.api.operator.IsNotEmpty;
 import br.jus.trt.lib.qbe.api.operator.Operators;
 import br.jus.trt.lib.qbe.domain.Cidade;
 import br.jus.trt.lib.qbe.domain.Projeto;
-import br.jus.trt.lib.qbe.domain.QProjeto;
-import br.jus.trt.lib.qbe.domain.QUF;
 import br.jus.trt.lib.qbe.domain.UF;
 import br.jus.trt.lib.qbe.repository.criteria.CriteriaQbeRepository;
 import br.jus.trt.lib.qbe.repository.criteria.OperatorProcessorRepositoryFactory;
@@ -30,7 +27,7 @@ public class QBEOperatorIsNotEmptyTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());;
 
 		QBEFilter<UF> filtro = new QBEFilter<UF>(UF.class);
-		filtro.filterBy(QUF.uF.cidades(), Operators.isNotEmpty());
+		filtro.filterBy("cidades", Operators.isNotEmpty());
 		filtro.paginate(0, 3); // para evitar um número muito grande de registros
 		
 		List<UF> ufs = qbe.search(filtro);
@@ -57,7 +54,7 @@ public class QBEOperatorIsNotEmptyTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 
 		QBEFilter<Projeto> filtro = new QBEFilter<Projeto>(Projeto.class);
-		filtro.filterBy(QProjeto.projeto.ferramentas(), Operators.isNotEmpty());
+		filtro.filterBy("ferramentas", Operators.isNotEmpty());
 		filtro.paginate(0, 3); // para evitar um número muito grande de registros
 		
 		List<Projeto> projetos = qbe.search(filtro);

@@ -16,7 +16,6 @@ import br.jus.trt.lib.qbe.QBEFilter;
 import br.jus.trt.lib.qbe.api.SortConfig;
 import br.jus.trt.lib.qbe.api.SortConfig.SortType;
 import br.jus.trt.lib.qbe.api.operator.Operators;
-import br.jus.trt.lib.qbe.util.StringUtil;
 import br.jus.trt6.lib.common_web.action.ResultData;
 
 /**
@@ -101,7 +100,7 @@ public class LazyEntityDataModel<ENTITY extends Entity<?>> extends
 				// considera a ordenação apenas se for diferente de UNSORTED
 				if (!SortOrder.UNSORTED.equals(sortMeta.getSortOrder())) {
 					log.debug("Ordenação é diferente de unsorted e será adicionada");
-					filter.sortBy(new SortConfig(StringUtil.getFakePath(sortMeta.getSortField()), asSortType(sortMeta.getSortOrder())));
+					filter.sortBy(new SortConfig(sortMeta.getSortField(), asSortType(sortMeta.getSortOrder())));
 				}	
 			}
 		}
@@ -109,7 +108,7 @@ public class LazyEntityDataModel<ENTITY extends Entity<?>> extends
 		if (filters != null && !filters.isEmpty()) {
 			for (Entry<String, Object> filterEntry : filters.entrySet()) {
 				log.debug("Adicioando filtro do dataTable");
-				filter.filterBy(StringUtil.getFakePath(filterEntry.getKey()), Operators.like(false), filterEntry.getValue());
+				filter.filterBy(filterEntry.getKey(), Operators.like(false), filterEntry.getValue());
 			}
 		}
 

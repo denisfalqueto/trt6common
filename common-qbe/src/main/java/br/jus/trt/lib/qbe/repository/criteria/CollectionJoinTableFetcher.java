@@ -17,8 +17,6 @@ import br.jus.trt.lib.qbe.api.operator.Operators;
 import br.jus.trt.lib.qbe.repository.criteria.FetchesManualProcessor.PropertyGroup;
 import br.jus.trt.lib.qbe.util.EntityUtil;
 import br.jus.trt.lib.qbe.util.ReflectionUtil;
-import br.jus.trt.lib.qbe.util.StringUtil;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -104,10 +102,10 @@ public class CollectionJoinTableFetcher extends CollectionFetcher {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		QBEFilter<?> filter = new QBEFilter(entityType);
 		filter.setForcePreFetchCollection(true); // para forçar o fetch da coleção da maneira tradicional do hibernate, otimizando a consulta
-		filter.filterBy(StringUtil.getFakePath("id"), Operators.in(), ids); 		// restringindo os registros ao conjunto encontrado na consulta principal
+		filter.filterBy("id", Operators.in(), ids); 		// restringindo os registros ao conjunto encontrado na consulta principal
 		
 		
-		filter.addFetch(StringUtil.getFakePath(groupToFetch.getPrimaryProperty().getProperty()));				// fetch da colecao anotada com @JoinTable
+		filter.addFetch(groupToFetch.getPrimaryProperty().getProperty());				// fetch da colecao anotada com @JoinTable
 		filter.addFetch(groupToFetch.getNestedProperties().toArray(new FetchMode[0])); // fetch das propriedades aninhadas
 		
 		CriteriaQBEProcessor<Identifiable> qbeProcessor = new CriteriaQBEProcessor<Identifiable>(getOperatorProcessorRepository(), getSession(), filter);

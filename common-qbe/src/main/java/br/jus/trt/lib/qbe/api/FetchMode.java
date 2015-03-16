@@ -2,10 +2,6 @@ package br.jus.trt.lib.qbe.api;
 
 import java.io.Serializable;
 
-import br.jus.trt.lib.qbe.util.StringUtil;
-
-import com.mysema.query.types.Path;
-
 
 /**
  * Representa as possibilidades de configuração de carregamento das dependências de uma entidade durante 
@@ -29,19 +25,11 @@ public class FetchMode implements Serializable, Cloneable {
 	 * Utiliza o tipo de join "LEFT" por padrão.
 	 * @param propriedade Propriedade a ter sua forma de carregamento configurada.
 	 */
-	@SuppressWarnings("rawtypes")
-	public FetchMode(Path propriedade) {
+	public FetchMode(String propriedade) {
 		this(propriedade, JoinType.LEFT);
 	}
 
-	@SuppressWarnings("rawtypes")
-	public FetchMode(Path property, JoinType joinType) {
-		super();
-		this.property = StringUtil.getStringPath(property);
-		this.joinType = joinType;
-	}
-	
-	FetchMode(String property, JoinType joinType) {
+	public FetchMode(String property, JoinType joinType) {
 		super();
 		this.property = property;
 		this.joinType = joinType;

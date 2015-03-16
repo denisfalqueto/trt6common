@@ -11,7 +11,6 @@ import br.jus.trt.lib.qbe.QBEFilter;
 import br.jus.trt.lib.qbe.api.FetchMode;
 import br.jus.trt.lib.qbe.api.Filter;
 import br.jus.trt.lib.qbe.util.ReflectionUtil;
-import br.jus.trt.lib.qbe.util.StringUtil;
 
 /**
  * Responsável por realizar o processamento de fetches configurados em um {@link QBEFilter}.
@@ -78,7 +77,7 @@ public abstract class FetchesProcessor implements IProcessor {
 			String lastProperty = ""; 
 			for (String fetchProperty : fetchMode.getProperty().split("\\.")) {
 				String splittedProperty = lastProperty.isEmpty() ? fetchProperty : lastProperty + fetchProperty;
-				splitted.add(new FetchMode(StringUtil.getFakePath(splittedProperty), fetchMode.getJoinType()));
+				splitted.add(new FetchMode(splittedProperty, fetchMode.getJoinType()));
 				lastProperty += fetchProperty + ".";
 			}
 		}
