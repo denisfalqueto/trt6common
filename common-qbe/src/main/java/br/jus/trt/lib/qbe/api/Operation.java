@@ -2,14 +2,9 @@ package br.jus.trt.lib.qbe.api;
 
 import java.io.Serializable;
 
+import br.jus.trt.lib.qbe.api.exception.CloneException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import br.jus.trt.lib.qbe.api.exception.CloneException;
-import br.jus.trt.lib.qbe.util.StringUtil;
-
-import com.mysema.query.types.Path;
-import com.mysema.query.types.path.StringPath;
 
 /**
  * Classe que representa uma operação de restrição a ser aplicação em uma consulta QBE.
@@ -58,36 +53,6 @@ public class Operation implements Serializable, Cloneable {
 		super();
                 log.entry(property, operator);
 		this.property = property;
-		this.operator = operator;
-	}
-
-	
-	/**
-	 * Cria uma configuração de operação.
-	 * @param property Propriedade que sofrerá a operação na consulta.
-	 * @param operator Operador a ser aplicado sobre a propriedade.
-	 * @param values Valores a serem aplicados com o operador.
-	 */
-	@SuppressWarnings("rawtypes")
-	public Operation(Path property, Operator<?> operator, Object...values) {
-		super();
-        log.entry(property, operator, values);
-                
-		this.property = StringUtil.getStringPath(property);
-		this.operator = operator;
-		this.values = values;
-	}
-	
-	/**
-	 * Cria uma configuração de operação.
-	 * @param property Propriedade que sofrerá a operação na consulta.
-	 * @param operator Operador a ser aplicado sobre a propriedade.
-	 */
-	@SuppressWarnings("rawtypes")
-	public Operation(Path property, Operator<?> operator) {
-		super();
-                log.entry(property, operator);
-		this.property = StringUtil.getStringPath(property);
 		this.operator = operator;
 	}
 

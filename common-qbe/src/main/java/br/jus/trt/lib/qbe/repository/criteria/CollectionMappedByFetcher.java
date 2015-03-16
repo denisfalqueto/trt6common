@@ -18,8 +18,6 @@ import br.jus.trt.lib.qbe.api.exception.QbeException;
 import br.jus.trt.lib.qbe.api.operator.Operators;
 import br.jus.trt.lib.qbe.repository.criteria.FetchesManualProcessor.PropertyGroup;
 import br.jus.trt.lib.qbe.util.ReflectionUtil;
-import br.jus.trt.lib.qbe.util.StringUtil;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -62,8 +60,8 @@ public class CollectionMappedByFetcher extends CollectionFetcher {
 		
 		// implementa nova consulta para recuperar os relacionamentos para todos o registros encontrados na consulta principal
 		QBEFilter<Identifiable> filter = new QBEFilter<Identifiable>(entityCollectionType);
-		filter.filterBy(StringUtil.getFakePath(mappedByProperty), Operators.in(), getInProjectionToCollectionFetch()); // cria o filtro para identificar a coleção de dependentes
-		filter.addFetch(StringUtil.getFakePath(mappedByProperty)); // realiza fetch da associação inversa para evitar carregamento LAZY caso os objetos não estejam em cache
+		filter.filterBy(mappedByProperty, Operators.in(), getInProjectionToCollectionFetch()); // cria o filtro para identificar a coleção de dependentes
+		filter.addFetch(mappedByProperty); // realiza fetch da associação inversa para evitar carregamento LAZY caso os objetos não estejam em cache
 		filter.addFetch(getGroupToFetch().getNestedProperties().toArray(new FetchMode[0])); // fetch das propriedades aninhadas
 		
 		

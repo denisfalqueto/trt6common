@@ -2,10 +2,6 @@ package br.jus.trt.lib.qbe.api;
 
 import java.io.Serializable;
 
-import br.jus.trt.lib.qbe.util.StringUtil;
-
-import com.mysema.query.types.Path;
-
 /**
  * Classe que representa as formas de ordenação de uma consulta JPA
  * @author augusto
@@ -20,8 +16,7 @@ public class SortConfig implements Serializable {
 	 * @param propriedade Propriedade para ordenação.
 	 * @return Configuração de ordenação ascendente.
 	 */
-	@SuppressWarnings("rawtypes")
-	public static SortConfig ASC(Path propriedade) {
+	public static SortConfig ASC(String propriedade) {
 		return new SortConfig(propriedade, SortType.ASCENDING);
 	}
 	
@@ -30,8 +25,7 @@ public class SortConfig implements Serializable {
 	 * @param propriedade Propriedade para ordenação.
 	 * @return Configuração de ordenação descendente.
 	 */
-	@SuppressWarnings("rawtypes")
-	public static SortConfig DESC(Path propriedade) {
+	public static SortConfig DESC(String propriedade) {
 		return new SortConfig(propriedade, SortType.DESCENDING);
 	}
 	
@@ -53,8 +47,7 @@ public class SortConfig implements Serializable {
 	 * Utiliza tipo {@link SortType#ASCENDING} como default.
 	 * @param propriedade Propriedade para ordenação.
 	 */
-	@SuppressWarnings("rawtypes")
-	public SortConfig(Path propriedade) {
+	public SortConfig(String propriedade) {
 		this(propriedade, SortType.ASCENDING);
 	}
 
@@ -62,8 +55,7 @@ public class SortConfig implements Serializable {
 	 * @param propriedade Propriedade para ordenação.
 	 * @param tipo Tipo de ordenação.
 	 */
-	@SuppressWarnings("rawtypes")
-	public SortConfig(Path propriedade, SortType tipo) {
+	public SortConfig(String propriedade, SortType tipo) {
 		this(propriedade, tipo, JoinType.LEFT);
 	}
 	
@@ -72,10 +64,9 @@ public class SortConfig implements Serializable {
 	 * @param tipo Tipo de ordenação.
 	 * @param joinType Tipo de join utilizado caso a propriedade pertença a uma associação
 	 */
-	@SuppressWarnings("rawtypes")
-	public SortConfig(Path propriedade, SortType tipo, JoinType joinType) {
+	public SortConfig(String propriedade, SortType tipo, JoinType joinType) {
 		super();
-		this.property = StringUtil.getStringPath(propriedade);
+		this.property = propriedade;
 		this.joinType = joinType;
 		this.type = tipo;
 	}

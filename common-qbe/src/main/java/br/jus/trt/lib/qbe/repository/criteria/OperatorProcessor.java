@@ -2,6 +2,9 @@ package br.jus.trt.lib.qbe.repository.criteria;
 
 import java.io.Serializable;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Junction;
+
 import br.jus.trt.lib.qbe.api.Operator;
 
 /**

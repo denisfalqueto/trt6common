@@ -26,7 +26,6 @@ import br.jus.trt.lib.common_core.util.DIContainerUtil;
 import br.jus.trt.lib.common_core.util.JavaGenericsUtil;
 import br.jus.trt.lib.qbe.QBEFilter;
 import br.jus.trt.lib.qbe.api.FetchMode;
-import br.jus.trt.lib.qbe.util.StringUtil;
 
 /**
  * Classe base para Actions REST do tipo CRUD, associados a uma entidade de domínio
@@ -42,7 +41,7 @@ import br.jus.trt.lib.qbe.util.StringUtil;
  * @param <FACADE>
  *            Manager compatível com a entidade de negócio a ser utilizado.
  */
-public abstract class CrudRestBase<ENTITY extends Entity<PK>, PK extends Long, FACADE extends CrudFacade<ENTITY, PK>> {
+public abstract class CrudRestBase<ENTITY extends Entity<PK>, PK extends Serializable, FACADE extends CrudFacade<ENTITY, PK>> {
 
 	/**
 	 * Fachada de serviços para impleentação de um fluxo CRUD.
@@ -138,10 +137,10 @@ public abstract class CrudRestBase<ENTITY extends Entity<PK>, PK extends Long, F
 		return Response.ok(entity).build();
 	}
 
-	private com.mysema.query.types.Path[] toStringArray(List<FetchMode> fetches) {
-		com.mysema.query.types.Path[] result = new com.mysema.query.types.Path[fetches.size()];
+	private String[] toStringArray(List<FetchMode> fetches) {
+		String[] result = new String[fetches.size()];
 		for (int i = 0; i < result.length; i++) {
-			result[i] = StringUtil.getFakePath(fetches.get(i).getProperty());
+			result[i] = fetches.get(i).getProperty();
 		}
 		return result;
 	}

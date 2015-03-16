@@ -1,7 +1,6 @@
 package br.jus.trt.lib.qbe;
 
 import static org.junit.Assert.*;
-
 import java.util.List;
 
 import org.hibernate.Hibernate;
@@ -13,8 +12,6 @@ import br.jus.trt.lib.qbe.api.QBERepository;
 import br.jus.trt.lib.qbe.api.operator.Operators;
 import br.jus.trt.lib.qbe.domain.Projeto;
 import br.jus.trt.lib.qbe.domain.ProjetoServidor;
-import br.jus.trt.lib.qbe.domain.QProjeto;
-import br.jus.trt.lib.qbe.domain.QProjetoServidor;
 import br.jus.trt.lib.qbe.repository.criteria.CollectionJoinTableFetcher;
 import br.jus.trt.lib.qbe.repository.criteria.CriteriaQbeRepository;
 import br.jus.trt.lib.qbe.repository.criteria.OperatorProcessorRepositoryFactory;
@@ -38,7 +35,7 @@ public class FetchJoinTableTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 		
 		QBEFilter<Projeto> filtro = new QBEFilter<Projeto>(Projeto.class);
-		filtro.addFetch(new FetchMode(QProjeto.projeto.ferramentas(), JoinType.INNER)); 
+		filtro.addFetch(new FetchMode("ferramentas", JoinType.INNER)); 
 		
 		List<Projeto> projetosQbe = qbe.search(filtro);
 
@@ -63,8 +60,8 @@ public class FetchJoinTableTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 
 		QBEFilter<Projeto> filtro = new QBEFilter<Projeto>(Projeto.class);
-		filtro.filterBy(QProjeto.projeto.ferramentas(), Operators.isNotEmpty());
-		filtro.addFetch(QProjeto.projeto.ferramentas());
+		filtro.filterBy("ferramentas", Operators.isNotEmpty());
+		filtro.addFetch("ferramentas");
 		filtro.paginate(0, 3); // para evitar um número muito grande de registros
 		
 		List<Projeto> projetos = qbe.search(filtro);
@@ -93,8 +90,8 @@ public class FetchJoinTableTest extends QbeTestBase {
 		QBERepository qbe = new CriteriaQbeRepository(getJpa().getEm(), OperatorProcessorRepositoryFactory.create());
 
 		QBEFilter<ProjetoServidor> filtro = new QBEFilter<ProjetoServidor>(ProjetoServidor.class);
-		filtro.filterBy(QProjetoServidor.projetoServidor.projeto().ferramentas(), Operators.isNotEmpty());
-		filtro.addFetch(QProjetoServidor.projetoServidor.projeto().ferramentas());
+		filtro.filterBy("projeto.ferramentas", Operators.isNotEmpty());
+		filtro.addFetch("projeto.ferramentas");
 		filtro.paginate(0, 3); // para evitar um número muito grande de registros
 		
 		List<ProjetoServidor> projetos = qbe.search(filtro);

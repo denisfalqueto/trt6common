@@ -4,8 +4,6 @@ import java.util.List;
 
 import br.jus.trt.lib.qbe.api.OperationContainer.ContainerType;
 
-import com.mysema.query.types.Path;
-
 /**
  * Filtro para configuração das operações de consultas QBE.
  * @author augusto
@@ -35,24 +33,21 @@ public interface Filter<TIPO extends Identifiable> extends Cloneable {
 	 * @param properties Propriedade para ordenação.
 	 * @return this
 	 */
-	@SuppressWarnings("rawtypes")
-	public abstract Filter<TIPO> sortAscBy(Path... properties);
+	public abstract Filter<TIPO> sortAscBy(String... properties);
 
 	/**
 	 * Adicionar uma ordenação descendente para a propriedade.
 	 * @param properties Propriedade para ordenação.
 	 * @return this
 	 */
-	@SuppressWarnings("rawtypes")
-	public abstract Filter<TIPO> sortDescBy(Path... properties);
+	public abstract Filter<TIPO> sortDescBy(String... properties);
 
 	/**
 	 * Remove as ocorrências de ordenação para as propriedades informadas.
 	 * @param properties Lista de propriedades para remoção de ocorrências de ordenação
 	 * @return this
 	 */
-	@SuppressWarnings("rawtypes")
-	public abstract Filter<TIPO> clearSortings(Path... properties);
+	public abstract Filter<TIPO> clearSortings(String... properties);
 
 	/**
 	 * Configura uma paginação para a consulta a ser realizada.
@@ -79,8 +74,7 @@ public interface Filter<TIPO extends Identifiable> extends Cloneable {
 	 * @param property Propriedade a ser considerada.
 	 * @return this 
 	 */
-	@SuppressWarnings("rawtypes")
-	public abstract Filter<TIPO> filterBy(Path property, Operator<?> operador);
+	public abstract Filter<TIPO> filterBy(String property, Operator<?> operador);
 
 	/**
 	 * Adiciona uma operação com as características informadas. O valor
@@ -92,8 +86,7 @@ public interface Filter<TIPO extends Identifiable> extends Cloneable {
 	 * prioridade sobre o valor encontrado no objeto exemplo.
 	 * @return this 
 	 */
-	@SuppressWarnings("rawtypes")
-	public abstract Filter<TIPO> filterBy(Path property, Operator<?> operator, Object... values);
+	public abstract Filter<TIPO> filterBy(String property, Operator<?> operator, Object... values);
 
 	/**
 	 * Adiciona um subcontainer ao container raiz deste filtro.
@@ -129,8 +122,7 @@ public interface Filter<TIPO extends Identifiable> extends Cloneable {
 	 * @param properties Propriedade que deverá ser configurada para carregamento rápido.
 	 * @return this
 	 */
-	@SuppressWarnings("rawtypes")
-	public abstract Filter<TIPO> addFetch(Path... properties);
+	public abstract Filter<TIPO> addFetch(String... properties);
 
 	/**
 	 * Incrementa o nível da consulta em 1, fazendo com que o analizador do objeto exemplo

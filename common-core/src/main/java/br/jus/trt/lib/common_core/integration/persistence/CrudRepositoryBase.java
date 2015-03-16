@@ -5,7 +5,6 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.persistence.Id;
 
 import org.apache.deltaspike.data.api.EntityRepository;
@@ -21,9 +20,7 @@ import br.jus.trt.lib.qbe.api.SortConfig;
 import br.jus.trt.lib.qbe.api.SortConfig.SortType;
 import br.jus.trt.lib.qbe.api.operator.Operators;
 import br.jus.trt.lib.qbe.util.ReflectionUtil;
-import br.jus.trt.lib.qbe.util.StringUtil;
-
-import com.mysema.query.types.Path;
+import javax.persistence.EntityManager;
 
 /**
  * Querier Object para entidades de domínio. Expõe apenas operações para recuperação de 
@@ -63,19 +60,18 @@ public abstract class CrudRepositoryBase<ENTITY extends Entity<PK>, PK extends S
             em.flush();
         }
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public ENTITY findBy(PK id, Path... fetch) {
+	public ENTITY findBy(PK id, String... fetch) {
             log.entry(id, fetch);
 		
 		Field idField = getIdField(getEntityClass());
 		
 		Filter<ENTITY> filtro = new QBEFilter<ENTITY>(getEntityClass());
-		filtro.filterBy(StringUtil.getFakePath(idField.getName()), Operators.equal(), id);
+		filtro.filterBy(idField.getName(), Operators.equal(), id);
 		
 		// adicionando propriedades para fetch
 		if (fetch != null) {
-			for (Path f : fetch) {
+			for (String f : fetch) {
 				if (f != null) {
 					filtro.addFetch(f);
 				}
@@ -107,7 +103,7 @@ public abstract class CrudRepositoryBase<ENTITY extends Entity<PK>, PK extends S
 	 * @see QuerierObject#list(boolean, String...)
 	 */
 	@Override
-	public List<ENTITY> findAll(boolean ascedant, Path... orderBy) {
+	public List<ENTITY> findAll(boolean ascedant, String... orderBy) {
 		log.entry(ascedant, orderBy);
 		SortConfig.SortType tipoOrdenacao = ascedant ? SortType.ASCENDING
 				: SortType.DESCENDING;
@@ -115,7 +111,7 @@ public abstract class CrudRepositoryBase<ENTITY extends Entity<PK>, PK extends S
 		QBEFilter<ENTITY> filtro = new QBEFilter<ENTITY>(getEntityClass());
 		if (orderBy != null) {
 			log.debug("Ordenar o resultado");
-			for (Path prop : orderBy) {
+			for (String prop : orderBy) {
 				filtro.sortBy(new SortConfig(prop, tipoOrdenacao));
 			}
 		}
