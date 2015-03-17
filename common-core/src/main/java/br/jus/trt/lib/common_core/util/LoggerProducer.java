@@ -2,7 +2,6 @@ package br.jus.trt.lib.common_core.util;
 
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,13 +10,14 @@ import org.apache.logging.log4j.Logger;
  */
 public class LoggerProducer {
 
-	private Class<?> getInjectionClass(InjectionPoint ip) {
-		return ip.getMember().getDeclaringClass();
-	}
+    private Logger log = LogManager.getLogger();
 
-	@Produces
-	public Logger createLog4j2Logger(InjectionPoint caller) {
-		return LogManager.getFormatterLogger(getInjectionClass(caller));
-	}
+    private Class<?> getInjectionClass(InjectionPoint ip) {
+        return ip.getMember().getDeclaringClass();
+    }
 
+    @Produces
+    public Logger createLog4j2Logger(InjectionPoint caller) {
+        return LogManager.getFormatterLogger(getInjectionClass(caller));
+    }
 }
